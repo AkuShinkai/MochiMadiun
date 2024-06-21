@@ -1,37 +1,22 @@
-// import './App.css';
-// import { Navigate, Outlet, useNavigate } from 'react-router-dom';
-// import SidebarAdmin from './component/SidebarAdmin';
-// import HeaderAdmin from './component/HeaderAdmin';
-// // import { useEffect } from 'react';
-// // import { useStateContext } from './contexts/ContextProvider';
+// src/pages/Admin.jsx
+import React from 'react';
 
-// function AppAdmin() {
-//     // const { token, roles } = useStateContext();
-//     // const navigate = useNavigate();
+import { Outlet } from 'react-router-dom';
+import AdminNavbar from './component/AdminNavbar';
+import useCustomJS from './useCostumeJS';
+import Footer from './component/Footer';
 
-//     // useEffect(() => {
-//     //     // console.log("AppAdmin - roles:", roles);
-//     //     if (roles !== 'mentor') {
-//     //         navigate('/');
-//     //     }
-//     // }, [roles, navigate]);
+const AppAdmin = () => {
+    useCustomJS();
+    return (
+        <div className="w-screen max-w-full overflow-x-hidden py-5">
+            <AdminNavbar />
+            <main className="container mx-auto p-4">
+                <Outlet />
+            </main>
+            <Footer />
+        </div>
+    );
+};
 
-//     // if (!token) {
-//     //     // console.log("No token found, redirecting to /welcome");
-//     //     return <Navigate to="/welcome" />;
-//     // }
-
-//     return (
-//         <div className="bg-neutral-100 h-screen w-screen max-w-screen-lg overflow-hidden flex flex-row">
-//             <SidebarAdmin />
-//             <div className="flex flex-col flex-1">
-//                 <HeaderAdmin />
-//                 <div className="flex-1 p-2 min-h-0 overflow-auto">
-//                     <Outlet />
-//                 </div>
-//             </div>
-//         </div>
-//     );
-// }
-
-// export default AppAdmin;
+export default AppAdmin;

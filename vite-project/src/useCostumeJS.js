@@ -76,37 +76,37 @@ const useCustomJS = () => {
     });
 
     /*~~~~~~~~~~~~~~~ DARK LIGHT THEME ~~~~~~~~~~~~~~~*/
-    const html = document.querySelector("html");
-    const themeBtn = document.getElementById("theme-toggle");
+    // const html = document.querySelector("html");
+    // const themeBtn = document.getElementById("theme-toggle");
 
-    if (localStorage.getItem("mode") === "dark") {
-      darkMode();
-    } else {
-      lightMode();
-    }
+    // if (localStorage.getItem("mode") === "dark") {
+    //   darkMode();
+    // } else {
+    //   lightMode();
+    // }
 
-    themeBtn?.addEventListener("click", () => {
-      console.log("Theme button clicked");
-      if (localStorage.getItem("mode") === "light") {
-        darkMode();
-      } else {
-        lightMode();
-      }
-    });
+    // themeBtn?.addEventListener("click", () => {
+    //   console.log("Theme button clicked");
+    //   if (localStorage.getItem("mode") === "light") {
+    //     darkMode();
+    //   } else {
+    //     lightMode();
+    //   }
+    // });
 
-    function darkMode() {
-      console.log("Switching to dark mode");
-      html.classList.add("dark");
-      themeBtn.classList.replace("ri-moon-line", "ri-sun-line");
-      localStorage.setItem("mode", "dark");
-    }
+    // function darkMode() {
+    //   console.log("Switching to dark mode");
+    //   html.classList.add("dark");
+    //   themeBtn.classList.replace("ri-moon-line", "ri-sun-line");
+    //   localStorage.setItem("mode", "dark");
+    // }
 
-    function lightMode() {
-      console.log("Switching to light mode");
-      html.classList.remove("dark");
-      themeBtn.classList.replace("ri-sun-line", "ri-moon-line");
-      localStorage.setItem("mode", "light");
-    }
+    // function lightMode() {
+    //   console.log("Switching to light mode");
+    //   html.classList.remove("dark");
+    //   themeBtn.classList.replace("ri-sun-line", "ri-moon-line");
+    //   localStorage.setItem("mode", "light");
+    // }
 
     /*~~~~~~~~~~~~~~~ SHOW SCROLL UP ~~~~~~~~~~~~~~~*/
     const scrollUp = () => {

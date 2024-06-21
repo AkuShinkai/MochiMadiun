@@ -56,3 +56,8 @@
 .tabs_wrap ul li.active {
     @apply bg-secondaryColor text-blackColor;
 }
+
+.active-class {
+    @apply text-secondaryColor font-bold; /* Ganti dengan gaya yang Anda inginkan */
+  }
+
