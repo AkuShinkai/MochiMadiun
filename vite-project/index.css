@@ -29,6 +29,7 @@
 }
 
 @layer utilities {
+
     .home__title,
     .card__title,
     .section__title {
@@ -58,6 +59,50 @@
 }
 
 .active-class {
-    @apply text-secondaryColor font-bold; /* Ganti dengan gaya yang Anda inginkan */
-  }
+    @apply text-secondaryColor font-bold;
+    /* Ganti dengan gaya yang Anda inginkan */
+}
 
+.flex {
+    display: flex;
+}
+
+.sidebar {
+    background-color: #010d78;
+    color: white;
+    width: 250px;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.sidebar-menu button {
+    width: 100%;
+    text-align: left;
+    padding: 10px;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.sidebar-menu button:hover {
+    background-color: #bc8c35;
+    @apply rounded-xl
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        display: none; /* Sembunyikan sidebar saat layar kecil */
+    }
+    .dropdown-menu {
+        position: fixed;
+        top: 60px; /* Sesuaikan dengan tinggi navbar atau elemen lain di atasnya */
+        left: 0;
+        width: 100%;
+        background-color: #1a1a1a;
+        z-index: 1000;
+        display: none;
+    }
+    .dropdown-menu.show {
+        display: block;
+    }
+}

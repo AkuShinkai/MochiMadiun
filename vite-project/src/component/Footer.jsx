@@ -4,7 +4,7 @@ import useCustomJS from "../useCostumeJS";
 const Footer = () => {
     useCustomJS();
     return (
-        <footer className="w-screen">
+        <footer className="w-screen border-t border-secondaryColor">
             <section className="footer">
                 <div className="container">
                     <ul className="grid grid-cols-1 items-start gap-5 pb-5 md:grid-cols-2 lg:grid-cols-4">

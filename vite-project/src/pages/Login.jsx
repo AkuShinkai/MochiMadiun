@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import login from "../assets/login.jpg";
+import login from "../assets/teknologi.png";
 import { useNavigate } from 'react-router-dom';
 import { useStateContext } from "../contexts/ContextProvider";
 import axiosClient from "../axios-client";
@@ -30,9 +30,9 @@ function Login() {
                 setToken(data.token);
 
                 // Periksa roles dan arahkan ke halaman yang sesuai
-                if (data.roles === "mentor") {
+                if (data.roles === "admin") {
                     navigate('/admin');
-                } else if (data.roles === "apprentice") {
+                } else if (data.roles === "normal") {
                     navigate('/');
                 }
                 console.log(data)

@@ -44,9 +44,14 @@ class AuthController extends Controller
         $data = $request->validated();
         /** @var \App\Models\User $user */
         $user = User::create([
-            // 'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+        ]);
+
+        // Simpan data ke tabel user_profiles
+        $user->userProfile()->create([
+            'name' => $data['name'],
+            // tambahkan field lain yang diperlukan
         ]);
 
         $token = $user->createToken('main')->plainTextToken;
@@ -55,6 +60,7 @@ class AuthController extends Controller
             compact('user', 'token')
         );
     }
+
 
     public function logout(Request $request)
     {

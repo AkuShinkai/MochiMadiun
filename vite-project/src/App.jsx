@@ -1,21 +1,21 @@
-import { BrowserRouter as Router, Route, Routes, Outlet } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Outlet, useNavigate } from 'react-router-dom';
 import Navbar from './component/Navbar';
 import Footer from './component/Footer';
-import Home from './pages/Home';
-
-import About from './pages/About';
-import Contact from './pages/Contact';
-import News from './pages/Promo';
-import Items from './pages/Items';
-
 import useCustomJS from './useCostumeJS';
+import { useStateContext } from './contexts/ContextProvider';
 
 function App() {
     useCustomJS();
+    // const { token, roles } = useStateContext();
+    // const navigate = useNavigate();
+
+    // console.log(token)
+    // console.log(roles)
+
     return (
-        <div className="w-screen max-w-full overflow-x-hidden pt-5">
+        <div className="">
             <Navbar />
-            <div className="w-screen">
+            <div className="">
                 <Outlet />
             </div>
             <Footer />

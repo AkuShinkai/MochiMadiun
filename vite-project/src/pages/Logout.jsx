@@ -2,29 +2,30 @@
 import { Fragment, useRef } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
-// import { useStateContext } from '../contexts/ContextProvider'
-// import axiosClient from '../axios-client'
+import { useStateContext } from '../contexts/ContextProvider'
+import axiosClient from '../axios-client'
 import { Navigate } from 'react-router-dom'
 import classNames from 'classnames';
 
 export default function Logout({ setOpen }) {
     const cancelButtonRef = useRef(null)
-    const { setUser, setToken, token } = useStateContext()
+    const { setUser, setToken, setRoles, token } = useStateContext()
 
-    // const onLogout = (ev) => {
-    //     ev.preventDefault()
+    const onLogout = (ev) => {
+        ev.preventDefault()
 
-    //     axiosClient.post('/logout')
-    //         .then(() => {
-    //             setUser({})
-    //             setToken(null)
-    //             setOpen(false) // Tutup dialog setelah logout
-    //         })
-    // }
+        axiosClient.post('/logout')
+            .then(() => {
+                setUser({})
+                setToken(null)
+                localStorage.removeItem('USER_ROLES');
+                setOpen(false) // Tutup dialog setelah logout
+            })
+    }
 
-    // if (!token) {
-    //     return <Navigate to='/login' />
-    // }
+    if (!token) {
+        return <Navigate to='/' />
+    }
 
     return (
         <Transition.Root show={true} as={Fragment}>
@@ -38,7 +39,7 @@ export default function Logout({ setOpen }) {
                     leaveFrom="opacity-100"
                     leaveTo="opacity-0"
                 >
-                    <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+                    <div className="fixed inset-0 bg-black bg-opacity-50 transition-opacity" />
                 </Transition.Child>
 
                 <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
@@ -80,7 +81,7 @@ export default function Logout({ setOpen }) {
                                     </button>
                                     <button
                                         type="button"
-                                        className="inline-block w-full rounded-lg bg-red-100 px-6 py-2 my-1 text-sm sm:w-auto md:w-auto font-medium leading-normal text-red-700 transition duration-150 ease-in-out hover:ring-violet-200 hover:bg-red-200 focus:bg-red-100 focus:outline-1 focus:ring-0 active:bg-red-200"
+                                        className="inline-block w-full rounded-lg bg-red-100 px-6 py-2 my-1 text-sm sm:w-auto md:w-auto font-medium leading-normal text-red-700 transition duration-150 ease-in-out hover:bg-red-300 focus:bg-red-100 focus:outline-1 focus:ring-0 active:bg-red-200"
                                         onClick={() => setOpen(false)}
                                         ref={cancelButtonRef}
                                     >

@@ -6,17 +6,16 @@ import AuthNav from "./component/AuthNav";
 
 
 function AppAuth() {
-    // const { token } = useStateContext()
-    // if (token) {
-    //     return <Navigate to="/" />
-    // }
+    const { token } = useStateContext()
+    if (token) {
+        return <Navigate to="/" />
+    }
 
     return (
         <div className="">
             <AuthNav />
             <div className="">
                 <Outlet />
-
             </div>
         </div>
     )

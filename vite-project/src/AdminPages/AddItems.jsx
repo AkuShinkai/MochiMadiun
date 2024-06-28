@@ -1,0 +1,205 @@
+import React, { useState } from 'react';
+import axiosClient from '../axios-client';
+import { useNavigate } from 'react-router-dom';
+
+const AddItems = () => {
+    const [formData, setFormData] = useState({
+        name: '',
+        description: '',
+        stock: '',
+        photo: '',
+        price: '',
+        category: '',
+    });
+    const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(null);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
+
+    const handleFileChange = (e) => {
+        const { files } = e.target;
+        const file = files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const img = new Image();
+                img.src = reader.result;
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    const size = Math.min(img.width, img.height);
+                    canvas.width = size;
+                    canvas.height = size;
+                    ctx.drawImage(img, (img.width - size) / 2, (img.height - size) / 2, size, size, 0, 0, size, size);
+                    canvas.toBlob((blob) => {
+                        const resizedFile = new File([blob], file.name, { type: file.type });
+                        setFormData({ ...formData, photo: resizedFile });
+
+                        // Create a preview URL
+                        const reader = new FileReader();
+                        reader.onloadend = () => {
+                            setPreview(reader.result);
+                        };
+                        reader.readAsDataURL(resizedFile);
+                    }, file.type);
+                };
+            };
+            reader.readAsDataURL(file);
+        } else {
+            setFormData({ ...formData, photo: null });
+            setPreview(null);
+        }
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError(null);
+        setSuccess(null);
+
+        const data = new FormData();
+        Object.keys(formData).forEach((key) => {
+            data.append(key, formData[key]);
+        });
+
+        try {
+            await axiosClient.post('/items', data);
+            setSuccess('Item added successfully!');
+            setFormData({
+                name: '',
+                description: '',
+                stock: '',
+                photo: '',
+                price: '',
+                category: '',
+            });
+        } catch (error) {
+            setError('Failed to add item.');
+        }
+    };
+
+    const handleCancel = () => {
+        setFormData({
+            name: '',
+            description: '',
+            stock: '',
+            photo: '',
+            price: '',
+            category: '',
+        });
+        setError(null);
+        setSuccess(null);
+    };
+
+    return (
+        <div className="container pt-12 bg-primaryColorLight max-w-3xl mx-auto rounded-xl shadow-md mb-6 mt-10 p-5">
+            <h1 className="text-2xl font-bold mb-5">Add New Item</h1>
+            {error && <div className="text-red-500 bg-red-100 mb-3">{error}</div>}
+            {success && <div className="m-4 p-4 bg-green-100 text-green-700 rounded">{success}</div>}
+            <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="flex flex-col">
+                    <label htmlFor="name" className="font-semibold">
+                        Name <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        className="border rounded p-2 text-black"
+                        required
+                    />
+                </div>
+                <div className="flex flex-col">
+                    <label htmlFor="category" className="font-semibold">
+                        Category <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                        id="category"
+                        name="category"
+                        value={formData.category}
+                        onChange={handleChange}
+                        className="border rounded p-2 text-black"
+                        required
+                    >
+                        <option value="">Select Category</option>
+                        <option value="electronic">Electronic</option>
+                        <option value="gadget">Gadget</option>
+                        <option value="laptop">Laptop</option>
+                        <option value="accessories">Accessories</option>
+                    </select>
+                </div>
+                <div className="flex flex-col">
+                    <label htmlFor="description" className="font-semibold">
+                        Description <span className="text-red-500">*</span>
+                    </label>
+                    <textarea
+                        id="description"
+                        name="description"
+                        value={formData.description}
+                        onChange={handleChange}
+                        className="border rounded p-2 text-black"
+                        required
+                    ></textarea>
+                </div>
+                <div className="flex flex-col">
+                    <label htmlFor="stock" className="font-semibold">
+                        Stock <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                        type="number"
+                        id="stock"
+                        name="stock"
+                        value={formData.stock}
+                        onChange={handleChange}
+                        className="border rounded p-2 text-black"
+                        required
+                    />
+                </div>
+                <div className="flex flex-col">
+                    <label htmlFor="price" className="font-semibold">
+                        Price <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                        type="number"
+                        id="price"
+                        name="price"
+                        value={formData.price}
+                        onChange={handleChange}
+                        className="border rounded p-2 text-black"
+                        required
+                    />
+                </div>
+                <div className="flex flex-col">
+                    <label htmlFor="photo" className="font-semibold">
+                        Photo <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                        type="file"
+                        id="photo"
+                        name="photo"
+                        accept="image/*"
+                        onChange={handleFileChange}
+                        className="border rounded p-2 text-white cursor-pointer"
+                        required
+                    />
+                </div>
+                <div className="flex justify-between">
+                    <button type="submit" className="bg-green-700 hover:bg-green-400 text-white p-2 rounded">
+                        Add Item
+                    </button>
+                    <button
+                        onClick={() => window.history.back()}
+                        className="inline-flex items-center bg-red-500 text-md px-3 py-1 rounded text-white hover:bg-red-600">
+                        <span>Cancel</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    );
+};
+
+export default AddItems;

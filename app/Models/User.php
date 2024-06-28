@@ -42,4 +42,32 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    // protected static function boot()
+    // {
+    //     parent::boot();
+
+    //     // Event untuk membuat profil pengguna setelah pengguna berhasil didaftarkan
+    //     static::created(function ($user) {
+    //         // Periksa apakah pengguna sudah memiliki profil
+    //         if (!$user->userProfile) {
+
+    //             $userProfile = new UserProfile();
+
+    //             // Atur nama profil dengan nama dari SubmissionMember
+    //             // $userProfile->name = $submissionMember->name;
+
+    //             // Hubungkan profil pengguna dengan pengguna yang baru didaftarkan
+    //             $userProfile->users_id = $user->id;
+
+    //             // Simpan profil pengguna
+    //             $userProfile->save();
+    //         }
+    //     });
+    // }
+
+    public function userProfile()
+    {
+        return $this->hasOne(UserProfile::class, 'users_id');
+    }
 }

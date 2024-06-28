@@ -8,8 +8,16 @@ import AppAdmin from './AppAdmin.jsx';
 import AppAuth from './AppAuth.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
-// import AppAdmin from './AppAdmin.jsx';
-// import AdminDashboard from './AdminPages/AdminDashboard.jsx';
+import AppTokenOnly from './AppUserOnly.jsx';
+import Profile from './pages/Profile.jsx';
+import EditProfil from './pages/EditProfile.jsx';
+import AppUserOnly from './AppUserOnly.jsx';
+import Items from './pages/Items.jsx';
+import AddItems from './AdminPages/AddItems.jsx';
+import ItemList from './AdminPages/ItemList.jsx';
+import DetailItem from './pages/DetailItem.jsx';
+import OrderPage from './pages/OrderPage.jsx';
+
 
 const router = createBrowserRouter([
     {
@@ -19,6 +27,14 @@ const router = createBrowserRouter([
             {
                 path: '/',
                 element: <AppElement />
+            },
+            {
+                path: '/detailitem/:id',
+                element: <DetailItem />
+            },
+            {
+                path: "/order/:id",
+                element: <OrderPage />
             },
             {
                 path: '*',
@@ -45,13 +61,39 @@ const router = createBrowserRouter([
         ],
     },
     {
-        path: '/admin',
+        path: '/',
         element: <AppAdmin />,
         children: [
             {
-                path: '',
+                path: '/admin',
                 element: <h2>Admin Home</h2>
             },
+            {
+                path: '/itemlist',
+                element: <ItemList />
+            },
+            {
+                path: '/additems',
+                element: <AddItems />
+            },
+            // {
+            //     path:'/adminprofile',
+            //     element: <AdminProfile />
+            // }
+        ],
+    },
+    {
+        path: '/',
+        element: <AppUserOnly />,
+        children: [
+            {
+                path: '/profile',
+                element: <Profile />
+            },
+            {
+                path: '/editprofile',
+                element: <EditProfil />
+            }
         ],
     },
 ]);

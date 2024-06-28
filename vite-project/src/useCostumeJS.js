@@ -184,6 +184,8 @@ const useCustomJS = () => {
 
     sr.reveal(".footer");
 
+    sr.reveal(".profile");
+
   }, []);
 };
 

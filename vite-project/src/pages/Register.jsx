@@ -6,7 +6,7 @@ import { useStateContext } from "../contexts/ContextProvider";
 
 const Register = () => {
 
-//    const nameRef = useRef();
+   const nameRef = useRef();
    const emailRef = useRef();
    const passwordRef = useRef();
    const passwordConfirmationRef = useRef();
@@ -17,7 +17,7 @@ const Register = () => {
        ev.preventDefault()
 
        const payload = {
-        //    name: nameRef.current.value,
+           name: nameRef.current.value,
            email: emailRef.current.value,
            password: passwordRef.current.value,
            password_confirmation: passwordConfirmationRef.current.value,
@@ -49,15 +49,15 @@ const Register = () => {
                    </div>
                    }
                    <form action="#" onSubmit={onSubmit} className="flex flex-col gap-4">
-                       {/* <input
+                       <input
                            className=" form-input p-2 mt-8 border-b border-solid text-black border-gray-300 rounded focus:outline-none focus:border-[#FF9B50] focus:border-l-4"
                            type="text"
                            name="name"
                            ref={nameRef}
-                           placeholder="name" /> */}
+                           placeholder="name" />
                        <div className="relative">
                            <input
-                               className="p-2 mt-4 w-full border-b border-solid text-black border-gray-300 rounded focus:outline-none focus:border-[#FF9B50] focus:border-l-4"
+                               className="p-2 w-full border-b border-solid text-black border-gray-300 rounded focus:outline-none focus:border-[#FF9B50] focus:border-l-4"
                                type="email"
                                name="email"
                                ref={emailRef}
