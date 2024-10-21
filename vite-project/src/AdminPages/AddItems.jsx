@@ -6,10 +6,10 @@ const AddItems = () => {
     const [formData, setFormData] = useState({
         name: '',
         description: '',
-        stock: '',
-        photo: '',
+        // stock: '',
+        image: '',
         price: '',
-        category: '',
+        // category: '',
     });
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
@@ -36,7 +36,7 @@ const AddItems = () => {
                     ctx.drawImage(img, (img.width - size) / 2, (img.height - size) / 2, size, size, 0, 0, size, size);
                     canvas.toBlob((blob) => {
                         const resizedFile = new File([blob], file.name, { type: file.type });
-                        setFormData({ ...formData, photo: resizedFile });
+                        setFormData({ ...formData, image: resizedFile });
 
                         // Create a preview URL
                         const reader = new FileReader();
@@ -49,7 +49,7 @@ const AddItems = () => {
             };
             reader.readAsDataURL(file);
         } else {
-            setFormData({ ...formData, photo: null });
+            setFormData({ ...formData, image: null });
             setPreview(null);
         }
     };
@@ -65,18 +65,19 @@ const AddItems = () => {
         });
 
         try {
-            await axiosClient.post('/items', data);
+            await axiosClient.post('/products', data);
             setSuccess('Item added successfully!');
             setFormData({
                 name: '',
                 description: '',
-                stock: '',
-                photo: '',
+                // stock: '',
+                image: '',
                 price: '',
-                category: '',
+                // category: '',
             });
         } catch (error) {
             setError('Failed to add item.');
+            console.log(error)
         }
     };
 
@@ -84,10 +85,10 @@ const AddItems = () => {
         setFormData({
             name: '',
             description: '',
-            stock: '',
-            photo: '',
+            // stock: '',
+            image: '',
             price: '',
-            category: '',
+            // category: '',
         });
         setError(null);
         setSuccess(null);
@@ -113,7 +114,7 @@ const AddItems = () => {
                         required
                     />
                 </div>
-                <div className="flex flex-col">
+                {/* <div className="flex flex-col">
                     <label htmlFor="category" className="font-semibold">
                         Category <span className="text-red-500">*</span>
                     </label>
@@ -131,7 +132,7 @@ const AddItems = () => {
                         <option value="laptop">Laptop</option>
                         <option value="accessories">Accessories</option>
                     </select>
-                </div>
+                </div> */}
                 <div className="flex flex-col">
                     <label htmlFor="description" className="font-semibold">
                         Description <span className="text-red-500">*</span>
@@ -145,7 +146,7 @@ const AddItems = () => {
                         required
                     ></textarea>
                 </div>
-                <div className="flex flex-col">
+                {/* <div className="flex flex-col">
                     <label htmlFor="stock" className="font-semibold">
                         Stock <span className="text-red-500">*</span>
                     </label>
@@ -158,7 +159,7 @@ const AddItems = () => {
                         className="border rounded p-2 text-black"
                         required
                     />
-                </div>
+                </div> */}
                 <div className="flex flex-col">
                     <label htmlFor="price" className="font-semibold">
                         Price <span className="text-red-500">*</span>
@@ -174,13 +175,13 @@ const AddItems = () => {
                     />
                 </div>
                 <div className="flex flex-col">
-                    <label htmlFor="photo" className="font-semibold">
-                        Photo <span className="text-red-500">*</span>
+                    <label htmlFor="image" className="font-semibold">
+                        image <span className="text-red-500">*</span>
                     </label>
                     <input
                         type="file"
-                        id="photo"
-                        name="photo"
+                        id="image"
+                        name="image"
                         accept="image/*"
                         onChange={handleFileChange}
                         className="border rounded p-2 text-white cursor-pointer"

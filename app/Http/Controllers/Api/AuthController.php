@@ -30,11 +30,11 @@ class AuthController extends Controller
         // Membuat token berdasarkan peran user
         /** @var User $user */
         $user = Auth::user();
-        $user->load('userProfile'); // Load user profile relationship
+        // $user->load('userProfile'); // Load user profile relationship
         $token = $user->createToken('main')->plainTextToken;
         return response([
             'user' => $user,
-            'roles' => $user->userProfile->roles, // Include roles in response
+            'roles' => $user->roles, // Include roles in response
             'token' => $token
         ]);
     }
@@ -45,14 +45,15 @@ class AuthController extends Controller
         /** @var \App\Models\User $user */
         $user = User::create([
             'email' => $data['email'],
+            'name' => $data['name'],
             'password' => bcrypt($data['password']),
         ]);
 
         // Simpan data ke tabel user_profiles
-        $user->userProfile()->create([
-            'name' => $data['name'],
-            // tambahkan field lain yang diperlukan
-        ]);
+        // $user->userProfile()->create([
+        //     'name' => $data['name'],
+        //     // tambahkan field lain yang diperlukan
+        // ]);
 
         $token = $user->createToken('main')->plainTextToken;
 

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ItemController;
+use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\OrderController;
 use Illuminate\Http\Request;
@@ -33,13 +34,20 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/profile', [ProfileController::class, 'show']);
     Route::put('/profile', [ProfileController::class, 'update']);
 
+    // // items route
+    // Route::post('/items', [ItemController::class, 'store']);
+    // Route::put('/items/{id}', [ItemController::class, 'update']);
+
     // items route
-    Route::post('/items', [ItemController::class, 'store']);
-    Route::put('/items/{id}', [ItemController::class, 'update']);
+    Route::post('/products', [ProductController::class, 'store']);
+    Route::put('/products/{id}', [ProductController::class, 'update']);
 
     // orders route
     Route::post('/orders', [OrderController::class, 'store']);
 });
 
-Route::get('/items/{id}', [ItemController::class, 'show']);
-Route::get('/items', [ItemController::class, 'index']);
+// Route::get('/items/{id}', [ItemController::class, 'show']);
+// Route::get('/items', [ItemController::class, 'index']);
+
+Route::get('/products/{id}', [ProductController::class, 'show']);
+Route::get('/products', [ProductController::class, 'index']);

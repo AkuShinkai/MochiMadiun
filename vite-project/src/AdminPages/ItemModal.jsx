@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import axiosClient from '../axios-client';
 
-const ItemModal = ({ item, onClose, onUpdateItem }) => {
+const productModal = ({ product, onClose, onUpdateproduct }) => {
     const [formData, setFormData] = useState({
-        name: item.name,
-        description: item.description,
-        stock: item.stock,
-        price: item.price,
-        category: item.category,
+        name: product.name,
+        description: product.description,
+        stock: product.stock,
+        price: product.price,
+        category: product.category,
         photo: null
     });
     const [error, setError] = useState(null);
@@ -39,28 +39,28 @@ const ItemModal = ({ item, onClose, onUpdateItem }) => {
         console.log('Data to send:', data);  // Tambahkan log ini
 
         try {
-            const response = await axiosClient.put(`/items/${item.id}`, data, {
+            const response = await axiosClient.put(`/products/${product.id}`, data, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            setSuccess('Item updated successfully!');
-            onUpdateItem(response.data.item);
+            setSuccess('product updated successfully!');
+            onUpdateproduct(response.data.product);
             onClose();
         } catch (error) {
             if (error.response && error.response.data) {
-                setError(error.response.data.errors || 'Failed to update item.');
+                setError(error.response.data.errors || 'Failed to update product.');
             } else {
-                setError('Failed to update item.');
+                setError('Failed to update product.');
             }
         }
     };
 
 
     return (
-        <div className="fixed inset-0 overflow-auto flex items-center justify-center bg-black bg-opacity-50 z-50 p-4">
+        <div className="fixed inset-0 overflow-auto flex products-center justify-center bg-black bg-opacity-50 z-50 p-4">
             <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg mx-auto">
-                <h2 className="text-xl font-bold mb-4">Edit Item</h2>
+                <h2 className="text-xl font-bold mb-4">Edit product</h2>
                 {error && <div className="text-red-500 mb-3">{JSON.stringify(error)}</div>}
                 {success && <div className="text-green-500 mb-3">{success}</div>}
                 <form onSubmit={handleSubmit} className="space-y-4">
@@ -90,7 +90,7 @@ const ItemModal = ({ item, onClose, onUpdateItem }) => {
                             className="border rounded p-2 text-black"
                         ></textarea>
                     </div>
-                    <div className="flex flex-col">
+                    {/* <div className="flex flex-col">
                         <label htmlFor="stock" className="font-bold text-black">
                             Stock
                         </label>
@@ -103,7 +103,7 @@ const ItemModal = ({ item, onClose, onUpdateItem }) => {
                             className="border rounded p-2 text-black"
                             required
                         />
-                    </div>
+                    </div> */}
                     <div className="flex flex-col">
                         <label htmlFor="price" className="font-bold text-black">
                             Price
@@ -118,7 +118,7 @@ const ItemModal = ({ item, onClose, onUpdateItem }) => {
                             required
                         />
                     </div>
-                    <div className="flex flex-col">
+                    {/* <div className="flex flex-col">
                         <label htmlFor="category" className="font-bold text-black">
                             Category
                         </label>
@@ -136,7 +136,7 @@ const ItemModal = ({ item, onClose, onUpdateItem }) => {
                             <option value="laptop">Laptop</option>
                             <option value="accessories">Accessories</option>
                         </select>
-                    </div>
+                    </div> */}
                     <div className="flex flex-col">
                         <label htmlFor="photo" className="font-bold text-black">
                             Photo
@@ -171,4 +171,4 @@ const ItemModal = ({ item, onClose, onUpdateItem }) => {
     );
 };
 
-export default ItemModal;
+export default productModal;
