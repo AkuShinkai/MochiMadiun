@@ -38,8 +38,8 @@ class ProductController extends Controller
 
     private function encodePhoto($product)
     {
-        if ($product->photo) {
-            $product->photo = base64_encode($product->photo);
+        if ($product->image) {
+            $product->image = base64_encode($product->image);
         }
         return $product;
     }
@@ -55,7 +55,7 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        $product = product::find($id);
+        $product = Product::find($id);
         return $this->encodePhoto($product);
         if ($product) {
             return response()->json($product);
@@ -89,7 +89,7 @@ class ProductController extends Controller
         if ($request->hasFile('image')) {
             $photoContents = file_get_contents($request->file('image')->getRealPath());
             $base64Proof = base64_encode($photoContents);
-            $product->photo = $base64Proof;
+            $product->image = $base64Proof;
         }
 
         // Save the updated product

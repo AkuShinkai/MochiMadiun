@@ -19,6 +19,7 @@ const ItemList = () => {
                 setLoading(false);
             } catch (error) {
                 setError('Failed to fetch items.');
+                console.log(error)
                 setLoading(false);
             }
         };
@@ -65,15 +66,15 @@ const ItemList = () => {
                                     <th className="py-3 px-6 bg-primaryColor text-left text-sm font-semibold text-white">
                                         Description
                                     </th>
-                                    <th className="py-3 px-6 bg-primaryColor text-left text-sm font-semibold text-white">
+                                    {/* <th className="py-3 px-6 bg-primaryColor text-left text-sm font-semibold text-white">
                                         Stock
-                                    </th>
+                                    </th> */}
                                     <th className="py-3 px-6 bg-primaryColor text-left text-sm font-semibold text-white">
                                         Price
                                     </th>
-                                    <th className="py-3 px-6 bg-primaryColor text-left text-sm font-semibold text-white">
+                                    {/* <th className="py-3 px-6 bg-primaryColor text-left text-sm font-semibold text-white">
                                         Category
-                                    </th>
+                                    </th> */}
                                     <th className="py-3 px-6 bg-primaryColor text-left text-sm font-semibold text-white">
                                         Photo
                                     </th>
@@ -87,13 +88,13 @@ const ItemList = () => {
                                     <tr key={item.id} className="border-b">
                                         <td className="py-3 px-6 text-black">{item.name}</td>
                                         <td className="py-3 px-6 text-black">{item.description}</td>
-                                        <td className="py-3 px-6 text-black">{item.stock}</td>
+                                        {/* <td className="py-3 px-6 text-black">{item.stock}</td> */}
                                         <td className="py-3 px-6 text-black">{item.price}</td>
-                                        <td className="py-3 px-6 text-black">{item.category}</td>
+                                        {/* <td className="py-3 px-6 text-black">{item.category}</td> */}
                                         <td className="py-3 px-6 text-black">
                                             {item.photo && (
                                                 <img
-                                                    src={`data:image/jpeg;base64,${item.photo}`}
+                                                    src={`data:image/jpeg;base64,${item.image}`}
                                                     alt={item.name}
                                                     className="h-16 w-16 object-cover rounded-md"
                                                 />
