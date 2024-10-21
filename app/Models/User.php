@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'roles',
     ];
 
     /**
@@ -66,8 +67,12 @@ class User extends Authenticatable
     //     });
     // }
 
-    public function userProfile()
+    // public function userProfile()
+    // {
+    //     return $this->hasOne(UserProfile::class, 'users_id');
+    // }
+    public function Product()
     {
-        return $this->hasOne(UserProfile::class, 'users_id');
+        return $this->hasOne(Product::class, 'id_user');
     }
 }

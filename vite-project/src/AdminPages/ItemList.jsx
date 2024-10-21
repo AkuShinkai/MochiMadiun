@@ -14,7 +14,7 @@ const ItemList = () => {
     useEffect(() => {
         const fetchItems = async () => {
             try {
-                const response = await axiosClient.get('/items');
+                const response = await axiosClient.get('/products');
                 setItems(response.data);
                 setLoading(false);
             } catch (error) {

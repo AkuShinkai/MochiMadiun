@@ -64,12 +64,12 @@ const router = createBrowserRouter([
         path: '/',
         element: <AppAdmin />,
         children: [
+            // {
+            //     path: '/admin',
+            //     element: <h2>Admin Home</h2>
+            // },
             {
                 path: '/admin',
-                element: <h2>Admin Home</h2>
-            },
-            {
-                path: '/itemlist',
                 element: <ItemList />
             },
             {
