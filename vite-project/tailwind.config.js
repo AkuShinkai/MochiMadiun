@@ -10,11 +10,11 @@ export default {
     },
     extend: {
       colors: {
-        primaryColor: '#010a5e',
-        primaryColorLight: "#010d78",
-        secondaryColor: '#FFCC00',
-        paragraphColor: '#c0c0c0',
-        whiteColor: '#fff',
+        primaryColor: '#f2ebde',
+        primaryColorLight: "#efbbae",
+        secondaryColor: '#eb4863',
+        paragraphColor: '#921A40',
+        whiteColor: '#65C18C',
         blackColor: "#000",
         greenColor: "#007936",
         redColor: "#cc3433",

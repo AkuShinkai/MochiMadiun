@@ -12,7 +12,7 @@ import AppTokenOnly from './AppUserOnly.jsx';
 import Profile from './pages/Profile.jsx';
 import EditProfil from './pages/EditProfile.jsx';
 import AppUserOnly from './AppUserOnly.jsx';
-import Items from './pages/Items.jsx';
+// import Items from './pages/Items.jsx';
 import AddItems from './AdminPages/AddItems.jsx';
 import ItemList from './AdminPages/ItemList.jsx';
 import DetailItem from './pages/DetailItem.jsx';

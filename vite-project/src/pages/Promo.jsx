@@ -11,7 +11,7 @@ function Promo() {
                 <div className="flex flex-col gap-5 lg:gap-10 lg:flex-row">
 
                     <div
-                        className="promo__card-1 bg-primaryColorLight dark:bg-darkColorLight flex flex-col p-5 rounded-lg md:flex-row md:items-center lg:flex-row-reverse lg:flex-1">
+                        className="promo__card-1 bg-primaryColorLight dark:bg-darkColorLight flex flex-col p-5 rounded-lg md:flex-row md:items-center lg:flex-row-reverse lg:flex-1 font-bold">
                         <img src="/src/assets/github-mark-white.png" alt="promo image" className="w-40 mx-auto hover:animate-movingY md:mx-5" />
 
                         <div className="space-y-2 pt-5 md:pt-0">
@@ -24,7 +24,7 @@ function Promo() {
                     </div>
 
                     <div
-                        className="promo__card-2 bg-primaryColorLight dark:bg-darkColorLight flex flex-col p-5 rounded-lg md:flex-row md:items-center lg:flex-row-reverse lg:flex-1">
+                        className="promo__card-2 bg-primaryColorLight dark:bg-darkColorLight flex flex-col p-5 rounded-lg md:flex-row md:items-center lg:flex-row-reverse lg:flex-1 font-bold">
                         <img src="/src/assets/tailwindcss-mark.3c5441fc7a190fb1800d4a5c7f07ba4b1345a9c8.svg" alt="promo image"
                             className="w-40 mx-auto hover:animate-movingY md:mx-5" />
 

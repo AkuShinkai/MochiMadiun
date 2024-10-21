@@ -33,7 +33,7 @@
     .home__title,
     .card__title,
     .section__title {
-        @apply text-4xl font-oswald font-bold uppercase lg:text-6xl;
+        @apply text-4xl font-oswald font-bold lg:text-6xl;
     }
 
     .section__title {

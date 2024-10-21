@@ -9,7 +9,7 @@ function Contact() {
                 <div className="container flex flex-col gap-5 md:items-center md:flex-row">
                     <div className="space-y-4 md:flex-1">
                         <h2 className="section__title text-blackColor uppercase">dapatkan update setiap hari</h2>
-                        <p className="text-sm">Kirimkan Email Address Anda Untuk Mendapatkan Update Terbaru</p>
+                        <p className="text-sm text-white">Kirimkan Email Address Anda Untuk Mendapatkan Update Terbaru</p>
                     </div>
 
                     <div className="flex flex-col gap-3 md:flex-row md:flex-1">
