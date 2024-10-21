@@ -12,14 +12,19 @@ class Product extends Model
     protected $fillable = [
         'name',
         'description',
-        'image',
         'status',
         'price',
-        'id_user'
+        'id_user',
+        'image'
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class, 'id_user');
     }
+
+    // public function images()
+    // {
+    //     return $this->hasMany(Image::class);
+    // }
 }

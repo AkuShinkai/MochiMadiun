@@ -21,38 +21,12 @@ const AddItems = () => {
 
     const handleFileChange = (e) => {
         const { files } = e.target;
-        const file = files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                const img = new Image();
-                img.src = reader.result;
-                img.onload = () => {
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
-                    const size = Math.min(img.width, img.height);
-                    canvas.width = size;
-                    canvas.height = size;
-                    ctx.drawImage(img, (img.width - size) / 2, (img.height - size) / 2, size, size, 0, 0, size, size);
-                    canvas.toBlob((blob) => {
-                        const resizedFile = new File([blob], file.name, { type: file.type });
-                        setFormData({ ...formData, image: resizedFile });
-
-                        // Create a preview URL
-                        const reader = new FileReader();
-                        reader.onloadend = () => {
-                            setPreview(reader.result);
-                        };
-                        reader.readAsDataURL(resizedFile);
-                    }, file.type);
-                };
-            };
-            reader.readAsDataURL(file);
-        } else {
-            setFormData({ ...formData, image: null });
-            setPreview(null);
+        if (files) {
+            const fileArray = Array.from(files);
+            setFormData({ ...formData, image: fileArray });
         }
     };
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -61,7 +35,16 @@ const AddItems = () => {
 
         const data = new FormData();
         Object.keys(formData).forEach((key) => {
-            data.append(key, formData[key]);
+            if (key === 'image') {
+                // Hanya tambahkan jika ada gambar yang dipilih
+                if (formData.image.length > 0) {
+                    formData.image.forEach((file) => {
+                        data.append('images[]', file);
+                    });
+                }
+            } else {
+                data.append(key, formData[key]);
+            }
         });
 
         try {
@@ -70,16 +53,15 @@ const AddItems = () => {
             setFormData({
                 name: '',
                 description: '',
-                // stock: '',
-                image: '',
+                image: [],
                 price: '',
-                // category: '',
             });
         } catch (error) {
             setError('Failed to add item.');
-            console.log(error)
+            console.log(error);
         }
     };
+
 
     const handleCancel = () => {
         setFormData({
@@ -183,6 +165,7 @@ const AddItems = () => {
                         id="image"
                         name="image"
                         accept="image/*"
+                        multiple // Tambahkan ini
                         onChange={handleFileChange}
                         className="border rounded p-2 text-white cursor-pointer"
                         required

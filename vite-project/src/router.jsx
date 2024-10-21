@@ -77,6 +77,10 @@ const router = createBrowserRouter([
                 element: <AddItems />
             },
             // {
+            //     path: '/detailitems',
+            //     element: <DetailItem/>
+            // }
+            // {
             //     path:'/adminprofile',
             //     element: <AdminProfile />
             // }

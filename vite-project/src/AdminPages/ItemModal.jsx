@@ -1,17 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axiosClient from '../axios-client';
 
-const productModal = ({ product, onClose, onUpdateproduct }) => {
+const ItemModal = ({ item, onClose, onUpdateItem }) => {
     const [formData, setFormData] = useState({
-        name: product.name,
-        description: product.description,
-        stock: product.stock,
-        price: product.price,
-        category: product.category,
+        name: item?.name || '',
+        description: item?.description || '',
+        price: item?.price || '',
         photo: null
     });
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
+
+    useEffect(() => {
+        if (item) {
+            setFormData({
+                name: item.name,
+                description: item.description,
+                price: item.price,
+                photo: null // reset file photo jika perlu
+            });
+        }
+    }, [item]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -35,17 +44,14 @@ const productModal = ({ product, onClose, onUpdateproduct }) => {
             }
         });
 
-        console.log('Form data:', formData);  // Tambahkan log ini
-        console.log('Data to send:', data);  // Tambahkan log ini
-
         try {
-            const response = await axiosClient.put(`/products/${product.id}`, data, {
+            const response = await axiosClient.put(`/products/${item.id}`, data, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            setSuccess('product updated successfully!');
-            onUpdateproduct(response.data.product);
+            setSuccess('Product updated successfully!');
+            onUpdateItem(response.data.product);
             onClose();
         } catch (error) {
             if (error.response && error.response.data) {
@@ -56,18 +62,15 @@ const productModal = ({ product, onClose, onUpdateproduct }) => {
         }
     };
 
-
     return (
         <div className="fixed inset-0 overflow-auto flex products-center justify-center bg-black bg-opacity-50 z-50 p-4">
             <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg mx-auto">
-                <h2 className="text-xl font-bold mb-4">Edit product</h2>
+                <h2 className="text-xl font-bold mb-4">Edit Product</h2>
                 {error && <div className="text-red-500 mb-3">{JSON.stringify(error)}</div>}
                 {success && <div className="text-green-500 mb-3">{success}</div>}
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="flex flex-col">
-                        <label htmlFor="name" className="font-bold text-black">
-                            Name
-                        </label>
+                        <label htmlFor="name" className="font-bold text-black">Name</label>
                         <input
                             type="text"
                             id="name"
@@ -79,9 +82,7 @@ const productModal = ({ product, onClose, onUpdateproduct }) => {
                         />
                     </div>
                     <div className="flex flex-col">
-                        <label htmlFor="description" className="font-bold text-black">
-                            Description
-                        </label>
+                        <label htmlFor="description" className="font-bold text-black">Description</label>
                         <textarea
                             id="description"
                             name="description"
@@ -90,24 +91,8 @@ const productModal = ({ product, onClose, onUpdateproduct }) => {
                             className="border rounded p-2 text-black"
                         ></textarea>
                     </div>
-                    {/* <div className="flex flex-col">
-                        <label htmlFor="stock" className="font-bold text-black">
-                            Stock
-                        </label>
-                        <input
-                            type="number"
-                            id="stock"
-                            name="stock"
-                            value={formData.stock}
-                            onChange={handleChange}
-                            className="border rounded p-2 text-black"
-                            required
-                        />
-                    </div> */}
                     <div className="flex flex-col">
-                        <label htmlFor="price" className="font-bold text-black">
-                            Price
-                        </label>
+                        <label htmlFor="price" className="font-bold text-black">Price</label>
                         <input
                             type="number"
                             id="price"
@@ -118,29 +103,8 @@ const productModal = ({ product, onClose, onUpdateproduct }) => {
                             required
                         />
                     </div>
-                    {/* <div className="flex flex-col">
-                        <label htmlFor="category" className="font-bold text-black">
-                            Category
-                        </label>
-                        <select
-                            id="category"
-                            name="category"
-                            value={formData.category}
-                            onChange={handleChange}
-                            className="border rounded p-2 text-black"
-                            required
-                        >
-                            <option value="">Select Category</option>
-                            <option value="electronic">Electronic</option>
-                            <option value="gadget">Gadget</option>
-                            <option value="laptop">Laptop</option>
-                            <option value="accessories">Accessories</option>
-                        </select>
-                    </div> */}
                     <div className="flex flex-col">
-                        <label htmlFor="photo" className="font-bold text-black">
-                            Photo
-                        </label>
+                        <label htmlFor="photo" className="font-bold text-black">Photo</label>
                         <input
                             type="file"
                             id="photo"
@@ -171,4 +135,4 @@ const productModal = ({ product, onClose, onUpdateproduct }) => {
     );
 };
 
-export default productModal;
+export default ItemModal;

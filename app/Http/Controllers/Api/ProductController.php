@@ -14,41 +14,39 @@ class ProductController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            // 'stock' => 'required|integer',
-            'image' => 'required|file|mimes:jpeg,png,jpg,gif,svg|max:2048', // Ganti validator sesuai kebutuhan
             'price' => 'required|numeric',
-            // 'category' => 'required|string'
+            'images.*' => 'required|file|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validasi multiple images
         ]);
 
-        // Simpan gambar ke dalam basis data sebagai BLOB
-        $photoContents = file_get_contents($request->file('image'));
-
+        // Simpan produk terlebih dahulu
         $product = new Product();
         $product->name = $request->name;
         $product->description = $request->description;
-        $product->image = $photoContents;
         $product->price = $request->price;
         $product->id_user = Auth::id(); // Mengisi id_user
 
-        $product->save();
-
-        return response()->json(['success' => 'product added successfully!']);
-    }
-
-
-    private function encodePhoto($product)
-    {
-        if ($product->image) {
-            $product->image = base64_encode($product->image);
+        // Simpan gambar
+        if ($request->hasFile('images')) {
+            $imagePaths = []; // Array untuk menyimpan path gambar
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('product_images', 'public'); // Simpan di storage
+                $imagePaths[] = $path; // Tambahkan path ke array
+            }
+            $product->image = json_encode($imagePaths); // Encode array ke JSON
         }
-        return $product;
+
+        $product->save(); // Simpan produk
+
+        return response()->json(['success' => 'Product added successfully with images!']);
     }
 
     public function index()
     {
         $products = Product::all();
         $products->map(function ($product) {
-            return $this->encodePhoto($product);
+            // Hanya decode jika perlu
+            $product->image = json_decode($product->image); // Decode JSON ke array
+            return $product; // Kembalikan objek produk
         });
         return response()->json($products);
     }
@@ -56,8 +54,8 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = Product::find($id);
-        return $this->encodePhoto($product);
         if ($product) {
+            $product->image = json_decode($product->image); // Decode JSON ke array
             return response()->json($product);
         } else {
             return response()->json(['message' => 'product not found'], 404);
@@ -66,19 +64,15 @@ class ProductController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'image' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'price' => 'required|numeric',
+            'images.*' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         // Find the product by ID
-        $product = Product::where('id', $id);
-
-        if (!$product) {
-            return response()->json(['error' => 'product not found'], 404);
-        }
+        $product = Product::findOrFail($id);
 
         // Update product properties
         $product->name = $request->name;
@@ -86,16 +80,18 @@ class ProductController extends Controller
         $product->price = $request->price;
 
         // Handle photo update if a new file is uploaded
-        if ($request->hasFile('image')) {
-            $photoContents = file_get_contents($request->file('image')->getRealPath());
-            $base64Proof = base64_encode($photoContents);
-            $product->image = $base64Proof;
+        if ($request->hasFile('images')) {
+            $imagePaths = []; // Array untuk menyimpan path gambar
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('product_images', 'public'); // Simpan di storage
+                $imagePaths[] = $path; // Tambahkan path ke array
+            }
+            $product->image = json_encode($imagePaths); // Encode array ke JSON
         }
 
         // Save the updated product
         $product->save();
 
-        // Return response with success message and encoded photo if needed
-        return response()->json(['success' => 'product updated successfully!', 'product' => $this->encodePhoto($product)]);
+        return response()->json(['success' => 'Product updated successfully!', 'product' => $product]);
     }
 }
