@@ -5,7 +5,7 @@ import Home from './pages/Home';
 
 import About from './pages/About';
 import Contact from './pages/Contact';
-// import Items from './pages/Items';
+import Items from './pages/Items';
 
 import useCustomJS from './useCostumeJS';
 import Promo from './pages/Promo';
@@ -17,7 +17,7 @@ function AppElement() {
             <Home />
             <Promo />
             <About />
-            {/* <Items /> */}
+            <Items />
             <Contact />
         </div>
     );

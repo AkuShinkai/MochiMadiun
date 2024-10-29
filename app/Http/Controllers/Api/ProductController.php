@@ -15,39 +15,37 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric',
-            'images.*' => 'required|file|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validasi multiple images
+            'images.*' => 'required|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        // Simpan produk terlebih dahulu
-        $product = new Product();
-        $product->name = $request->name;
-        $product->description = $request->description;
-        $product->price = $request->price;
-        $product->id_user = Auth::id(); // Mengisi id_user
+        // Simpan produk
+        $product = Product::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'price' => $request->price,
+            'id_user' => Auth::id(),
+        ]);
 
-        // Simpan gambar
+        // Simpan gambar menggunakan Media Library
         if ($request->hasFile('images')) {
-            $imagePaths = []; // Array untuk menyimpan path gambar
             foreach ($request->file('images') as $image) {
-                $path = $image->store('product_images', 'public'); // Simpan di storage
-                $imagePaths[] = $path; // Tambahkan path ke array
+                // Menyimpan gambar dengan nama asli ke media collection
+                $product->addMedia($image)
+                    ->usingFileName($image->getClientOriginalName()) // Menggunakan nama file asli
+                    ->toMediaCollection('product_images');
             }
-            $product->image = json_encode($imagePaths); // Encode array ke JSON
         }
-
-        $product->save(); // Simpan produk
 
         return response()->json(['success' => 'Product added successfully with images!']);
     }
 
     public function index()
     {
-        $products = Product::all();
-        $products->map(function ($product) {
-            // Hanya decode jika perlu
-            $product->image = json_decode($product->image); // Decode JSON ke array
-            return $product; // Kembalikan objek produk
+        $products = Product::all()->map(function ($product) {
+            $product->image_urls = $product->getMedia('product_images')->map->getUrl();
+            return $product;
         });
+
         return response()->json($products);
     }
 
@@ -55,10 +53,10 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         if ($product) {
-            $product->image = json_decode($product->image); // Decode JSON ke array
+            $product->image_urls = $product->getMedia('product_images')->map->getUrl();
             return response()->json($product);
         } else {
-            return response()->json(['message' => 'product not found'], 404);
+            return response()->json(['message' => 'Product not found'], 404);
         }
     }
 
@@ -81,12 +79,12 @@ class ProductController extends Controller
 
         // Handle photo update if a new file is uploaded
         if ($request->hasFile('images')) {
-            $imagePaths = []; // Array untuk menyimpan path gambar
+            $product->clearMediaCollection('product_images'); // Hapus gambar lama jika perlu
             foreach ($request->file('images') as $image) {
-                $path = $image->store('product_images', 'public'); // Simpan di storage
-                $imagePaths[] = $path; // Tambahkan path ke array
+                $product->addMedia($image)
+                    ->usingFileName($image->getClientOriginalName()) // Menggunakan nama file asli
+                    ->toMediaCollection('product_images');
             }
-            $product->image = json_encode($imagePaths); // Encode array ke JSON
         }
 
         // Save the updated product

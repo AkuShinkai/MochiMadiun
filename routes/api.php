@@ -24,30 +24,17 @@ Route::middleware('auth:sanctum')->group(function () {
         return $request->user();
     });
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/profile', [ProfileController::class, 'show']);
+    Route::put('/profile', [ProfileController::class, 'update']);
+
+    // product route
+    Route::post('/products', [ProductController::class, 'store']);
+    Route::put('/products/{id}', [ProductController::class, 'update']);
 });
 
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'show']);
-    Route::put('/profile', [ProfileController::class, 'update']);
-
-    // // items route
-    // Route::post('/items', [ItemController::class, 'store']);
-    // Route::put('/items/{id}', [ItemController::class, 'update']);
-
-    // items route
-    Route::post('/products', [ProductController::class, 'store']);
-    Route::put('/products/{id}', [ProductController::class, 'update']);
-
-    // orders route
-    Route::post('/orders', [OrderController::class, 'store']);
-});
-
-// Route::get('/items/{id}', [ItemController::class, 'show']);
-// Route::get('/items', [ItemController::class, 'index']);
 
 Route::get('/products/{id}', [ProductController::class, 'show']);
 Route::get('/products', [ProductController::class, 'index']);

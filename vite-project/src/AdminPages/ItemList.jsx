@@ -46,6 +46,9 @@ const ItemList = () => {
         navigate('/additems');
     };
 
+    // Array untuk menyimpan status gambar
+    const imageErrorState = {};
+
     return (
         <section id="itemslist">
             <div className="container pt-12 bg-primaryColorLight max-w-screen mx-auto rounded-3xl shadow-md mb-6 mt-10 p-5">
@@ -74,7 +77,30 @@ const ItemList = () => {
                                         <td className="py-3 px-6 text-black">{item.description}</td>
                                         <td className="py-3 px-6 text-black">{item.price}</td>
                                         <td className="py-3 px-6 text-black">
-                                            {/* Tampilkan gambar jika ada */}
+                                            {item.image_urls && item.image_urls.length > 0 ? (
+                                                item.image_urls.map((imgPath, index) => {
+                                                    // Memastikan gambar ada dalam state error
+                                                    if (!imageErrorState[item.id]) {
+                                                        imageErrorState[item.id] = [];
+                                                    }
+
+                                                    const handleError = () => {
+                                                        imageErrorState[item.id][index] = true; // Tandai gambar yang gagal dimuat
+                                                    };
+
+                                                    return (
+                                                        <img
+                                                            key={index}
+                                                            src={imageErrorState[item.id][index] ? 'path/to/default_image.jpg' : imgPath} // Ganti dengan gambar default yang valid
+                                                            alt={`${item.name} ${index + 1}`}
+                                                            className="h-16 w-16 object-cover rounded-md"
+                                                            onError={handleError}
+                                                        />
+                                                    );
+                                                })
+                                            ) : (
+                                                <span>No images available</span>
+                                            )}
                                         </td>
                                         <td className="py-3 px-6 text-black">
                                             <button

@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Product extends Model
+class Product extends Model implements HasMedia
 {
-    use HasFactory;
+    use HasFactory, InteractsWithMedia;
 
     protected $fillable = [
         'name',
@@ -15,16 +17,10 @@ class Product extends Model
         'status',
         'price',
         'id_user',
-        'image'
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class, 'id_user');
     }
-
-    // public function images()
-    // {
-    //     return $this->hasMany(Image::class);
-    // }
 }
