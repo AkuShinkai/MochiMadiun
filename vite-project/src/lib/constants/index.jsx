@@ -56,14 +56,14 @@ export const DASHBOARD_SIDEBAR_BOTTOM_LINKS = [
 export const ADMIN_SIDEBAR_LINKS = [
 	{
 		key: 'dashboardAdmin',
-		label: 'Dashboard',
+		label: 'Produk',
 		path: '/admin',
 		icon: <HiOutlineViewGrid />
 	},
 	{
 		key: 'user',
-		label: 'Users',
-		path: '/dataintern',
+		label: 'Promo',
+		path: '/promo',
 		icon: < HiIdentification/>
 	},
 	{

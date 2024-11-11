@@ -17,6 +17,8 @@ import AddItems from './AdminPages/AddItems.jsx';
 import ItemList from './AdminPages/ItemList.jsx';
 import DetailItem from './pages/DetailItem.jsx';
 import OrderPage from './pages/OrderPage.jsx';
+import AddPromo from './AdminPages/AddPromo.jsx';
+import PromoList from './AdminPages/PromoList.jsx';
 
 
 const router = createBrowserRouter([
@@ -76,6 +78,14 @@ const router = createBrowserRouter([
                 path: '/additems',
                 element: <AddItems />
             },
+            {
+                path: '/promo',
+                element: <PromoList />
+            },
+            {
+                path: '/addpromo',
+                element: <AddPromo />
+            }
             // {
             //     path: '/detailitems',
             //     element: <DetailItem/>

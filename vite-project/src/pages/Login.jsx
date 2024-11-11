@@ -30,9 +30,9 @@ function Login() {
                 setToken(data.token);
 
                 // Periksa roles dan arahkan ke halaman yang sesuai
-                if (data.roles === "admin") {
+                if (data.roles == 'admin' || data.roles == 'super admin') {
                     navigate('/admin');
-                } else if (data.roles === "normal") {
+                } else if (data.roles === "costumer") {
                     navigate('/');
                 }
                 console.log(data)

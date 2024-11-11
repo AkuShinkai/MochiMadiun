@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\ItemController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\PromoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,7 +30,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // product route
     Route::post('/products', [ProductController::class, 'store']);
+    Route::get('/products', [ProductController::class, 'index']);
     Route::put('/products/{id}', [ProductController::class, 'update']);
+
+    Route::post('/promos', [PromoController::class, 'store']);
+    Route::get('/promos', [PromoController::class, 'index']);
 });
 
 
@@ -37,4 +42,4 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::get('/products/{id}', [ProductController::class, 'show']);
-Route::get('/products', [ProductController::class, 'index']);
+
