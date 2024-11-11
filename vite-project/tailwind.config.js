@@ -10,16 +10,17 @@ export default {
     },
     extend: {
       colors: {
-        primaryColor: '#f2ebde',
-        primaryColorLight: "#efbbae",
+        primaryColor: '#fff',
+        primaryColorLight: "#F8E8EE",
         secondaryColor: '#eb4863',
         paragraphColor: '#921A40',
-        whiteColor: '#65C18C',
+        whiteColor: '#5c2424',
         blackColor: "#000",
-        greenColor: "#007936",
+        greenColor: "#89bb2f",
         redColor: "#cc3433",
         darkColor: '#000',
         darkColorLight: "#171717",
+        itemlistColor: "#cdcdcd"
       },
       keyframes: {
         move: {

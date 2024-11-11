@@ -12,7 +12,7 @@ const linkClass =
 export default function SidebarAdmin() {
     const [showModal, setShowModal] = useState(false);
 	return (
-		<div className="hidden bg-gray-400 p-3 md:flex flex-col">
+		<div className="hidden bg-amber-900 p-3 md:flex flex-col">
 			{/* <div className="flex items-center gap-2 px-1">
             <img src={logo} alt="Your Icon" style={{ width: '50px', height: '50px' }} />
 				<span className="text-gray-600 text-lg font-bold">ADMIN</span>
@@ -22,7 +22,7 @@ export default function SidebarAdmin() {
 					<SidebarLink key={link.key} link={link} />
 				))}
 			</div>
-			<div className="flex flex-col gap-0.5 pt-2 border-t border-neutral-700">
+			<div className="flex flex-col gap-0.5 pt-2 border-t border-neutral-400">
 				{ADMIN_SIDEBAR_BOTTOM_LINKS.map((link) => (
 					<SidebarLink key={link.key} link={link} />
 				))}
