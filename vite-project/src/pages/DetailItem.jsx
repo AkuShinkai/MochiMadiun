@@ -10,7 +10,7 @@ const DetailItem = () => {
     useEffect(() => {
         const fetchItem = async () => {
             try {
-                const response = await axiosClient.get(`/items/${id}`);
+                const response = await axiosClient.get(`/products/${id}`);
                 setItem(response.data);
             } catch (error) {
                 console.error('Failed to fetch item:', error);

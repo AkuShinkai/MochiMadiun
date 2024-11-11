@@ -29,10 +29,10 @@ class ProductController extends Controller
         // Simpan gambar menggunakan Media Library
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                // Menyimpan gambar dengan nama asli ke media collection
+                // Menyimpan gambar ke koleksi 'product_images'
                 $product->addMedia($image)
-                    ->usingFileName($image->getClientOriginalName()) // Menggunakan nama file asli
-                    ->toMediaCollection('product_images');
+                        ->usingFileName($image->getClientOriginalName()) // Menggunakan nama file asli
+                        ->toMediaCollection('product_images');
             }
         }
 
@@ -42,6 +42,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all()->map(function ($product) {
+            // Mengambil URL gambar dari koleksi 'product_images'
             $product->image_urls = $product->getMedia('product_images')->map->getUrl();
             return $product;
         });
@@ -69,26 +70,28 @@ class ProductController extends Controller
             'images.*' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        // Find the product by ID
+        // Cari produk berdasarkan ID
         $product = Product::findOrFail($id);
 
-        // Update product properties
-        $product->name = $request->name;
-        $product->description = $request->description;
-        $product->price = $request->price;
+        // Perbarui data produk
+        $product->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'price' => $request->price,
+        ]);
 
-        // Handle photo update if a new file is uploaded
+        // Perbarui gambar jika ada yang diunggah
         if ($request->hasFile('images')) {
-            $product->clearMediaCollection('product_images'); // Hapus gambar lama jika perlu
+            // Hapus gambar lama dari koleksi
+            $product->clearMediaCollection('product_images');
+
+            // Simpan gambar baru ke koleksi
             foreach ($request->file('images') as $image) {
                 $product->addMedia($image)
-                    ->usingFileName($image->getClientOriginalName()) // Menggunakan nama file asli
-                    ->toMediaCollection('product_images');
+                        ->usingFileName($image->getClientOriginalName()) // Menggunakan nama file asli
+                        ->toMediaCollection('product_images');
             }
         }
-
-        // Save the updated product
-        $product->save();
 
         return response()->json(['success' => 'Product updated successfully!', 'product' => $product]);
     }

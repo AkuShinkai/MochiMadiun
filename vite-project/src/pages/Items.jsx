@@ -12,7 +12,7 @@ const Items = () => {
         const fetchItems = async () => {
             try {
                 const response = await axiosClient.get('/products');
-                console.log(response.data); // Debug: cek data
+                console.log("Fetched Items:", response.data); // Debugging: check data
                 setItems(response.data);
                 setFilteredItems(response.data);
             } catch (error) {
@@ -27,7 +27,7 @@ const Items = () => {
         if (activeCategory === 'all') {
             setFilteredItems(items);
         } else {
-            setFilteredItems(items.filter(item => item.category === activeCategory)); // Pastikan category ada di data produk
+            setFilteredItems(items.filter(item => item.category === activeCategory));
         }
     }, [activeCategory, items]);
 
@@ -48,11 +48,11 @@ const Items = () => {
 
                     <div className="tabs_wrap">
                         <ul className="flex flex-wrap justify-center gap-2 py-10">
-                            <li data-tabs="all" className={`btn bg-primaryColorLight dark:bg-darkColorLight ${activeCategory === 'all' ? 'active' : ''}`} onClick={() => handleCategoryClick('all')}>All</li>
-                            <li data-tabs="gadget" className={`btn bg-primaryColorLight dark:bg-darkColorLight ${activeCategory === 'gadget' ? 'active' : ''}`} onClick={() => handleCategoryClick('gadget')}>Gadget</li>
-                            <li data-tabs="accessories" className={`btn bg-primaryColorLight dark:bg-darkColorLight ${activeCategory === 'accessories' ? 'active' : ''}`} onClick={() => handleCategoryClick('accessories')}>Accessories</li>
-                            <li data-tabs="laptop" className={`btn bg-primaryColorLight dark:bg-darkColorLight ${activeCategory === 'laptop' ? 'active' : ''}`} onClick={() => handleCategoryClick('laptop')}>Laptop</li>
-                            <li data-tabs="electronic" className={`btn bg-primaryColorLight dark:bg-darkColorLight ${activeCategory === 'electronic' ? 'active' : ''}`} onClick={() => handleCategoryClick('electronic')}>Electronic</li>
+                            <li className={`btn ${activeCategory === 'all' ? 'active' : ''}`} onClick={() => handleCategoryClick('all')}>All</li>
+                            <li className={`btn ${activeCategory === 'gadget' ? 'active' : ''}`} onClick={() => handleCategoryClick('gadget')}>Gadget</li>
+                            <li className={`btn ${activeCategory === 'accessories' ? 'active' : ''}`} onClick={() => handleCategoryClick('accessories')}>Accessories</li>
+                            <li className={`btn ${activeCategory === 'laptop' ? 'active' : ''}`} onClick={() => handleCategoryClick('laptop')}>Laptop</li>
+                            <li className={`btn ${activeCategory === 'electronic' ? 'active' : ''}`} onClick={() => handleCategoryClick('electronic')}>Electronic</li>
                         </ul>
                     </div>
                 </div>
@@ -62,8 +62,11 @@ const Items = () => {
                         {filteredItems.map(item => (
                             <li key={item.id} className="item_wrap relative overflow-hidden rounded-xl" onClick={() => handleItemClick(item.id)}>
                                 <div className="image-container h-52 w-full bg-primaryColorLight dark:bg-darkColorLight rounded-3xl flex items-center justify-center">
-                                    {/* Menggunakan URL gambar yang disimpan di database */}
-                                    <img src={`data:image/jpeg;base64,${item.photo}`} alt={item.name} className="h-full w-full object-cover transition-transform transform hover:scale-110 ease-linear duration-200 rounded-3xl" />
+                                    {item.image_urls && item.image_urls.length > 0 ? (
+                                        <img src={item.image_urls[0]} alt={item.name} className="h-full w-full object-cover transition-transform transform hover:scale-110 ease-linear duration-200 rounded-3xl" />
+                                    ) : (
+                                        <span>No image available</span>
+                                    )}
                                 </div>
                                 <div className="description pt-3 text-center">
                                     <h4 className="card__title uppercase">{item.name}</h4>
