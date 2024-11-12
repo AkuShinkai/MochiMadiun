@@ -41,8 +41,8 @@ class PromoController extends Controller
             $image = $request->file('image_promo');
             // Menyimpan gambar ke koleksi 'promo_images'
             $promo->addMedia($image)
-                  ->usingFileName($image->getClientOriginalName()) // Menggunakan nama file asli
-                  ->toMediaCollection('promo_images');
+                ->usingFileName($image->getClientOriginalName()) // Menggunakan nama file asli
+                ->toMediaCollection('promo_images');
         }
 
         return response()->json(['success' => 'Promo added successfully with image!']);
@@ -50,14 +50,20 @@ class PromoController extends Controller
 
     public function index()
     {
-        $promos = Promo::all()->map(function ($promo) {
-            // Mengambil URL gambar dari koleksi 'promo_images'
+        // Mengambil semua promo dan produk terkait (eager loading)
+        $promos = Promo::with('product')->get()->map(function ($promo) {
+            // Menambahkan URL gambar dari koleksi 'promo_images'
             $promo->image_urls = $promo->getMedia('promo_images')->map->getUrl();
+
+            // Menyertakan nama produk jika relasi tersedia
+            $promo->product_name = $promo->product ? $promo->product->name : 'N/A';
+
             return $promo;
         });
 
         return response()->json($promos);
     }
+
 
     public function show($id)
     {
@@ -105,8 +111,8 @@ class PromoController extends Controller
             // Simpan gambar baru ke koleksi
             $image = $request->file('image_promo');
             $promo->addMedia($image)
-                  ->usingFileName($image->getClientOriginalName()) // Menggunakan nama file asli
-                  ->toMediaCollection('promo_images');
+                ->usingFileName($image->getClientOriginalName()) // Menggunakan nama file asli
+                ->toMediaCollection('promo_images');
         }
 
         return response()->json(['success' => 'Promo updated successfully!', 'promo' => $promo]);

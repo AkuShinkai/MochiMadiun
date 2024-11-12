@@ -14,6 +14,7 @@ const Items = () => {
                 const response = await axiosClient.get('/products');
                 console.log("Fetched Items:", response.data); // Debugging: check data
                 setItems(response.data);
+                console.log(response.data)
                 setFilteredItems(response.data);
             } catch (error) {
                 console.error('Failed to fetch items:', error);

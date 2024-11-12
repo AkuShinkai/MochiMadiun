@@ -23,7 +23,6 @@ const PromoList = () => {
                 setLoading(false);
             } catch (error) {
                 setError('Failed to fetch promos.');
-                console.log(error);
                 setLoading(false);
             }
         };
@@ -73,7 +72,8 @@ const PromoList = () => {
                             <thead>
                                 <tr>
                                     <th className="py-3 px-6 bg-primaryColor text-left text-sm font-semibold text-white">Image</th>
-                                    <th className="py-3 px-6 bg-primaryColor text-left text-sm font-semibold text-white">Name</th>
+                                    <th className="py-3 px-6 bg-primaryColor text-left text-sm font-semibold text-white">Product Name</th>
+                                    <th className="py-3 px-6 bg-primaryColor text-left text-sm font-semibold text-white">Promo Name</th>
                                     <th className="py-3 px-6 bg-primaryColor text-left text-sm font-semibold text-white">Description</th>
                                     <th className="py-3 px-6 bg-primaryColor text-left text-sm font-semibold text-white">Price</th>
                                     <th className="py-3 px-6 bg-primaryColor text-left text-sm font-semibold text-white">Discount</th>
@@ -85,21 +85,18 @@ const PromoList = () => {
                                 {promos.map((promo) => (
                                     <tr key={promo.id} className="border-b">
                                         <td className="py-3 px-6 text-black">
-                                        {promo.image_urls && promo.image_urls.length > 0 ? (
+                                            {promo.image_urls && promo.image_urls.length > 0 ? (
                                                 promo.image_urls.map((imgPath, index) => {
-                                                    // Memastikan gambar ada dalam state error
                                                     if (!imageErrorState[promo.id]) {
                                                         imageErrorState[promo.id] = [];
                                                     }
-
                                                     const handleError = () => {
-                                                        imageErrorState[promo.id][index] = true; // Tandai gambar yang gagal dimuat
+                                                        imageErrorState[promo.id][index] = true;
                                                     };
-
                                                     return (
                                                         <img
                                                             key={index}
-                                                            src={imageErrorState[promo.id][index] ? 'path/to/default_image.jpg' : imgPath} // Ganti dengan gambar default yang valid
+                                                            src={imageErrorState[promo.id][index] ? 'path/to/default_image.jpg' : imgPath}
                                                             alt={`${promo.name} ${index + 1}`}
                                                             className="h-16 w-16 object-cover rounded-md"
                                                             onError={handleError}
@@ -110,6 +107,7 @@ const PromoList = () => {
                                                 <span>No images available</span>
                                             )}
                                         </td>
+                                        <td className="py-3 px-6 text-black">{promo.product_name || 'N/A'}</td>
                                         <td className="py-3 px-6 text-black">{promo.name_promo}</td>
                                         <td className="py-3 px-6 text-black">{promo.description_promo}</td>
                                         <td className="py-3 px-6 text-black">{promo.price_promo}</td>
