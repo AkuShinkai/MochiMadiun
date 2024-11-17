@@ -78,6 +78,7 @@ class PromoController extends Controller
 
     public function update(Request $request, $id)
     {
+        dd($request->all());
         $validated = $request->validate([
             'name_promo' => 'required|string|max:255',
             'description_promo' => 'nullable|string',

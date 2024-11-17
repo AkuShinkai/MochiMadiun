@@ -30,11 +30,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // product route
     Route::post('/products', [ProductController::class, 'store']);
-
     Route::put('/products/{id}', [ProductController::class, 'update']);
+
 
     Route::post('/promos', [PromoController::class, 'store']);
     Route::get('/promos', [PromoController::class, 'index']);
+    Route::put('/promos/{id}', [PromoController::class, 'update']);
 });
 
 

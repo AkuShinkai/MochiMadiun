@@ -31,8 +31,8 @@ class ProductController extends Controller
             foreach ($request->file('images') as $image) {
                 // Menyimpan gambar ke koleksi 'product_images'
                 $product->addMedia($image)
-                        ->usingFileName($image->getClientOriginalName()) // Menggunakan nama file asli
-                        ->toMediaCollection('product_images');
+                    ->usingFileName($image->getClientOriginalName()) // Menggunakan nama file asli
+                    ->toMediaCollection('product_images');
             }
         }
 
@@ -60,39 +60,36 @@ class ProductController extends Controller
             return response()->json(['message' => 'Product not found'], 404);
         }
     }
-
     public function update(Request $request, $id)
     {
-        $validated = $request->validate([
+        // Temukan produk berdasarkan ID
+        $product = Product::findOrFail($id);
+
+        // Validasi input dari request (jika diperlukan)
+        $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric',
             'images.*' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        // Cari produk berdasarkan ID
-        $product = Product::findOrFail($id);
+        // Mengupdate produk dengan data yang diterima dari request
+        $product->update($request->all());
 
-        // Perbarui data produk
-        $product->update([
-            'name' => $request->name,
-            'description' => $request->description,
-            'price' => $request->price,
-        ]);
-
-        // Perbarui gambar jika ada yang diunggah
+        // Jika ada gambar baru yang di-upload
         if ($request->hasFile('images')) {
-            // Hapus gambar lama dari koleksi
+            // Hapus gambar lama sebelum menambahkan yang baru
             $product->clearMediaCollection('product_images');
 
-            // Simpan gambar baru ke koleksi
+            // Menambahkan gambar baru ke koleksi 'product_images'
             foreach ($request->file('images') as $image) {
                 $product->addMedia($image)
-                        ->usingFileName($image->getClientOriginalName()) // Menggunakan nama file asli
-                        ->toMediaCollection('product_images');
+                    ->usingFileName($image->getClientOriginalName())
+                    ->toMediaCollection('product_images');
             }
         }
 
-        return response()->json(['success' => 'Product updated successfully!', 'product' => $product]);
+        // Mengembalikan respons JSON dengan data produk yang diperbarui
+        return response()->json(['product' => $product]);
     }
 }

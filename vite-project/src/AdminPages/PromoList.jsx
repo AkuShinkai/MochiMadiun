@@ -58,7 +58,7 @@ const PromoList = () => {
     };
 
     return (
-        <section id="promolist">
+        <section id="promolist" className='pt-0'>
             <div className="container pt-12 bg-primaryColorLight max-w-screen mx-auto rounded-3xl shadow-md mb-6 mt-10 p-5">
                 <h1 className="text-2xl font-bold mb-5">Promo List</h1>
                 {error && <div className="text-red-500 mb-3">{error}</div>}
