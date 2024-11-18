@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axiosClient from '../axios-client';
+import Slider from 'react-slick';
 
 const DetailItem = () => {
     const { id } = useParams();
@@ -28,18 +29,46 @@ const DetailItem = () => {
         navigate(`/order/${id}`);
     };
 
+    // Slick settings for auto-slide and manual control
+    const settings = {
+        dots: true, // Show dots for navigation
+        infinite: true, // Infinite loop
+        speed: 500, // Transition speed
+        slidesToShow: 1, // Show one image at a time
+        slidesToScroll: 1, // Scroll one image at a time
+        autoplay: true, // Auto slide
+        autoplaySpeed: 3000, // Delay for auto slide
+    };
+
     return (
         <section id="detailitem" className="bg-primaryColorLight py-10 pt-24">
             <div className="container mx-auto px-4 md:px-0">
                 <div className="max-w-screen-lg mx-auto bg-primaryColor rounded-3xl shadow-md overflow-hidden">
                     <div className="md:flex">
-                        <div className="md:w-1/2">
-                            <img
-                                src={`data:image/jpeg;base64,${item.photo}`}
-                                alt={item.name}
-                                className="w-full h-auto object-cover rounded-t-3xl md:rounded-l-3xl md:rounded-t-none"
-                                style={{ maxHeight: '400px' }}
-                            />
+                        <div className="md:w-1/2 m-5 items-center">
+                            <Slider {...settings}>
+                                {item.image_urls && item.image_urls.length > 0 ? (
+                                    item.image_urls.map((url, index) => (
+                                        <div key={index} className="flex justify-center items-center my-5">
+                                            <img
+                                                src={url}
+                                                alt={`Product image ${index + 1}`}
+                                                className="w-full h-auto object-contain rounded-xl"
+                                                style={{ maxHeight: '400px' }}
+                                            />
+                                        </div>
+                                    ))
+                                ) : (
+                                    <div className="flex justify-center items-center my-5">
+                                        <img
+                                            src="/path/to/default-image.jpg"
+                                            alt="Default image"
+                                            className="w-full h-auto object-contain rounded-xl"
+                                            style={{ maxHeight: '400px' }}
+                                        />
+                                    </div>
+                                )}
+                            </Slider>
                         </div>
                         <div className="md:w-1/2 p-6 md:py-10">
                             <h1 className="text-3xl font-bold mb-4">{item.name}</h1>

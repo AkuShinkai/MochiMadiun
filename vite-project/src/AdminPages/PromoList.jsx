@@ -71,14 +71,14 @@ const PromoList = () => {
                         <table className="min-w-full bg-white rounded-xl shadow-md">
                             <thead>
                                 <tr>
-                                    <th className="py-3 px-6 bg-primaryColor text-left text-sm font-semibold text-white">Image</th>
-                                    <th className="py-3 px-6 bg-primaryColor text-left text-sm font-semibold text-white">Product Name</th>
-                                    <th className="py-3 px-6 bg-primaryColor text-left text-sm font-semibold text-white">Promo Name</th>
-                                    <th className="py-3 px-6 bg-primaryColor text-left text-sm font-semibold text-white">Description</th>
-                                    <th className="py-3 px-6 bg-primaryColor text-left text-sm font-semibold text-white">Price</th>
-                                    <th className="py-3 px-6 bg-primaryColor text-left text-sm font-semibold text-white">Discount</th>
-                                    <th className="py-3 px-6 bg-primaryColor text-left text-sm font-semibold text-white">Status</th>
-                                    <th className="py-3 px-6 bg-primaryColor text-left text-sm font-semibold text-white">Actions</th>
+                                    <th className="py-3 px-6 bg-primaryColor text-left text-sm font-bold text-black">Image</th>
+                                    <th className="py-3 px-6 bg-primaryColor text-left text-sm font-bold text-black">Product Name</th>
+                                    <th className="py-3 px-6 bg-primaryColor text-left text-sm font-bold text-black">Promo Name</th>
+                                    <th className="py-3 px-6 bg-primaryColor text-left text-sm font-bold text-black">Description</th>
+                                    <th className="py-3 px-6 bg-primaryColor text-left text-sm font-bold text-black">Price</th>
+                                    <th className="py-3 px-6 bg-primaryColor text-left text-sm font-bold text-black">Discount</th>
+                                    <th className="py-3 px-6 bg-primaryColor text-left text-sm font-bold text-black">Status</th>
+                                    <th className="py-3 px-6 bg-primaryColor text-left text-sm font-bold text-black">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>

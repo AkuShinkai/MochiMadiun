@@ -8,19 +8,22 @@ const ItemList = () => {
     const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
+    const [selectedFiles, setSelectedFiles] = useState([]); // State untuk file gambar baru
+    const [previewImages, setPreviewImages] = useState([]); // State untuk preview gambar baru
     const navigate = useNavigate();
 
+    const fetchItems = async () => {
+        try {
+            const response = await axiosClient.get('/products');
+            setItems(response.data);
+            setLoading(false);
+        } catch (error) {
+            setError('Failed to fetch items.');
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        const fetchItems = async () => {
-            try {
-                const response = await axiosClient.get('/products');
-                setItems(response.data);
-                setLoading(false);
-            } catch (error) {
-                setError('Failed to fetch items.');
-                setLoading(false);
-            }
-        };
         fetchItems();
     }, []);
 
@@ -31,17 +34,41 @@ const ItemList = () => {
 
     const closeModal = () => {
         setSelectedItem(null);
+        setSelectedFiles([]);
+        setPreviewImages([]);
         setIsModalOpen(false);
+    };
+
+    const handleFileChange = (e) => {
+        const files = e.target.files;
+        setSelectedFiles(files);
+
+        // Generate preview URL untuk gambar baru
+        const previews = Array.from(files).map((file) => URL.createObjectURL(file));
+        setPreviewImages(previews);
     };
 
     const handleUpdateItem = async (updatedItem) => {
         try {
-            const response = await axiosClient.put(`/products/${updatedItem.id}`, updatedItem);
-            console.log(response.data); // Log respons untuk memeriksa apakah gambar terupdate dengan benar
-            const updatedItems = items.map((item) =>
-                item.id === updatedItem.id ? response.data : item
-            );
-            setItems(updatedItems);
+            const formData = new FormData();
+            formData.append('name', updatedItem.name);
+            formData.append('description', updatedItem.description);
+            formData.append('price', updatedItem.price);
+
+            // Tambahkan file gambar baru ke FormData
+            if (selectedFiles.length > 0) {
+                Array.from(selectedFiles).forEach((file) => {
+                    formData.append('images[]', file);
+                });
+            }
+
+            await axiosClient.post(`/products/${updatedItem.id}?_method=PUT`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+            fetchItems();
             closeModal();
         } catch (error) {
             setError('Failed to update item.');
@@ -52,9 +79,6 @@ const ItemList = () => {
     const navigateToAddItem = () => {
         navigate('/additems');
     };
-
-    // Array untuk menyimpan status gambar
-    const imageErrorState = {};
 
     return (
         <section id="itemslist" className="pt-0">
@@ -70,11 +94,11 @@ const ItemList = () => {
                         <table className="min-w-full bg-white rounded-xl shadow-md">
                             <thead>
                                 <tr>
-                                    <th className="py-3 px-6 bg-primaryColor text-left text-sm font-semibold text-white">Name</th>
-                                    <th className="py-3 px-6 bg-primaryColor text-left text-sm font-semibold text-white">Description</th>
-                                    <th className="py-3 px-6 bg-primaryColor text-left text-sm font-semibold text-white">Price</th>
-                                    <th className="py-3 px-6 bg-primaryColor text-left text-sm font-semibold text-white">Photo</th>
-                                    <th className="py-3 px-6 bg-primaryColor text-left text-sm font-semibold text-white">Actions</th>
+                                    <th className="py-3 px-6 bg-primaryColor text-left text-sm text-black font-bold">Name</th>
+                                    <th className="py-3 px-6 bg-primaryColor text-left text-sm text-black font-bold">Description</th>
+                                    <th className="py-3 px-6 bg-primaryColor text-left text-sm text-black font-bold">Price</th>
+                                    <th className="py-3 px-6 bg-primaryColor text-left text-sm text-black font-bold">Photo</th>
+                                    <th className="py-3 px-6 bg-primaryColor text-left text-sm text-black font-bold">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -84,29 +108,14 @@ const ItemList = () => {
                                         <td className="py-3 px-6 text-black">{item.description}</td>
                                         <td className="py-3 px-6 text-black">{item.price}</td>
                                         <td className="py-3 px-6 text-black">
-                                            {item.image_urls && item.image_urls.length > 0 ? (
-                                                item.image_urls.map((imgPath, index) => {
-                                                    if (!imageErrorState[item.id]) {
-                                                        imageErrorState[item.id] = [];
-                                                    }
-
-                                                    const handleError = () => {
-                                                        imageErrorState[item.id][index] = true;
-                                                    };
-
-                                                    return (
-                                                        <img
-                                                            key={index}
-                                                            src={imageErrorState[item.id][index] ? 'path/to/default_image.jpg' : imgPath}
-                                                            alt={`${item.name} ${index + 1}`}
-                                                            className="h-16 w-16 object-cover rounded-md"
-                                                            onError={handleError}
-                                                        />
-                                                    );
-                                                })
-                                            ) : (
-                                                <span>No images available</span>
-                                            )}
+                                            {item.image_urls?.map((imgPath, idx) => (
+                                                <img
+                                                    key={idx}
+                                                    src={imgPath}
+                                                    alt={`${item.name} ${idx + 1}`}
+                                                    className="h-16 w-16 object-cover rounded-md"
+                                                />
+                                            )) || <span>No images available</span>}
                                         </td>
                                         <td className="py-3 px-6 text-black">
                                             <button
@@ -123,7 +132,7 @@ const ItemList = () => {
                     </div>
                 )}
 
-                {/* Modal Inline */}
+                {/* Modal */}
                 {isModalOpen && selectedItem && (
                     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
                         <div className="bg-white p-5 rounded-lg w-1/3">
@@ -153,6 +162,38 @@ const ItemList = () => {
                                     onChange={(e) => setSelectedItem({ ...selectedItem, price: e.target.value })}
                                     className="w-full p-2 border rounded"
                                 />
+                            </div>
+                            <div className="mb-3">
+                                <label className="font-semibold">Current Images</label>
+                                <div className="flex flex-wrap gap-2">
+                                    {selectedItem.image_urls?.map((url, idx) => (
+                                        <img
+                                            key={idx}
+                                            src={url}
+                                            alt={`Current ${idx + 1}`}
+                                            className="w-20 h-20 object-cover rounded-md"
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="mb-3">
+                                <label className="font-semibold">Upload New Images</label>
+                                <input
+                                    type="file"
+                                    multiple
+                                    onChange={handleFileChange}
+                                    className="w-full p-2 border rounded"
+                                />
+                                <div className="flex flex-wrap gap-2 mt-2">
+                                    {previewImages.map((src, idx) => (
+                                        <img
+                                            key={idx}
+                                            src={src}
+                                            alt={`Preview ${idx + 1}`}
+                                            className="w-20 h-20 object-cover rounded-md"
+                                        />
+                                    ))}
+                                </div>
                             </div>
                             <button
                                 className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"

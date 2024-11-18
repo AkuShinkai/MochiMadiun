@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
-// import './index.css';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css"; // Import the Slick carousel styles
 import { RouterProvider } from 'react-router-dom';
 import router from './router.jsx';
 import { ContextProvider } from './contexts/ContextProvider.jsx';

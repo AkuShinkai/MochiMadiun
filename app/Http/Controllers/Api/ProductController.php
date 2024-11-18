@@ -54,12 +54,15 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         if ($product) {
-            $product->image_urls = $product->getMedia('product_images')->map->getUrl();
+            // Ensure that image URLs are returned as an array
+            $product->image_urls = $product->getMedia('product_images')->map->getUrl()->toArray();
             return response()->json($product);
         } else {
             return response()->json(['message' => 'Product not found'], 404);
         }
     }
+
+
     public function update(Request $request, $id)
     {
         // Temukan produk berdasarkan ID
