@@ -11,7 +11,7 @@ const AddPromo = () => {
         end_promo: '',
         image_promo: null,
         discount: '',
-        id_products: [], // Array untuk menampung produk yang dipilih
+        id_product: '', // ID produk yang sudah ada
     });
     const [products, setProducts] = useState([]);
     const [error, setError] = useState(null);
@@ -22,7 +22,7 @@ const AddPromo = () => {
         // Ambil produk yang tersedia
         axiosClient.get('/products')
             .then(response => setProducts(response.data))
-            .catch(() => setError('Failed to fetch products'));
+            .catch(error => setError('Failed to fetch products'));
     }, []);
 
     const handleChange = (e) => {
@@ -35,22 +35,6 @@ const AddPromo = () => {
         setFormData({ ...formData, image_promo: file });
     };
 
-    const addProduct = () => {
-        setFormData({ ...formData, id_products: [...formData.id_products, ''] });
-    };
-
-    const updateProduct = (index, value) => {
-        const updatedProducts = [...formData.id_products];
-        updatedProducts[index] = value;
-        setFormData({ ...formData, id_products: updatedProducts });
-    };
-
-    const removeProduct = (index) => {
-        const updatedProducts = [...formData.id_products];
-        updatedProducts.splice(index, 1);
-        setFormData({ ...formData, id_products: updatedProducts });
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(null);
@@ -58,10 +42,7 @@ const AddPromo = () => {
 
         const data = new FormData();
         Object.keys(formData).forEach((key) => {
-            if (key === 'id_products') {
-                // Append multiple product IDs
-                formData[key].forEach((id) => data.append('id_products[]', id));
-            } else if (formData[key] !== null && formData[key] !== '') {
+            if (formData[key] !== null && formData[key] !== '') {
                 data.append(key, formData[key]);
             }
         });
@@ -69,7 +50,7 @@ const AddPromo = () => {
         try {
             await axiosClient.post('/promos', data);
             setSuccess('Promo added successfully!');
-            navigate('/promos'); // Redirect to promo list page
+            navigate('/promo'); // Redirect to promo list page
         } catch (error) {
             if (error.response && error.response.data) {
                 setError(error.response.data.errors || 'Failed to add promo.');
@@ -157,36 +138,20 @@ const AddPromo = () => {
                     />
                 </div>
                 <div className="flex flex-col">
-                    <label className="font-bold text-black">Products</label>
-                    {formData.id_products.map((id, index) => (
-                        <div key={index} className="flex items-center space-x-2">
-                            <select
-                                value={id}
-                                onChange={(e) => updateProduct(index, e.target.value)}
-                                className="border rounded p-2 flex-1"
-                                required
-                            >
-                                <option value="">Select a Product</option>
-                                {products.map(product => (
-                                    <option key={product.id} value={product.id}>{product.name}</option>
-                                ))}
-                            </select>
-                            <button
-                                type="button"
-                                onClick={() => removeProduct(index)}
-                                className="bg-red-500 text-white p-2 rounded"
-                            >
-                                Remove
-                            </button>
-                        </div>
-                    ))}
-                    <button
-                        type="button"
-                        onClick={addProduct}
-                        className="bg-green-500 text-white p-2 rounded mt-2"
+                    <label htmlFor="id_product" className="font-bold text-black">Product</label>
+                    <select
+                        id="id_product"
+                        name="id_product"
+                        value={formData.id_product}
+                        onChange={handleChange}
+                        className="border rounded p-2"
+                        required
                     >
-                        Add Product
-                    </button>
+                        <option value="">Select a Product</option>
+                        {products.map(product => (
+                            <option key={product.id} value={product.id}>{product.name}</option>
+                        ))}
+                    </select>
                 </div>
                 <div className="flex flex-col">
                     <label htmlFor="image_promo" className="font-bold text-black">Promo Image</label>

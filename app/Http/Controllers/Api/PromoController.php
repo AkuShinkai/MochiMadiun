@@ -78,7 +78,9 @@ class PromoController extends Controller
 
     public function update(Request $request, $id)
     {
-        dd($request->all());
+        // Temukan promo berdasarkan ID
+        $promo = Promo::findOrFail($id);
+        // Validasi input
         $validated = $request->validate([
             'name_promo' => 'required|string|max:255',
             'description_promo' => 'nullable|string',
@@ -87,33 +89,23 @@ class PromoController extends Controller
             'end_promo' => 'required|date',
             'discount' => 'required|numeric',
             'id_product' => 'required|exists:products,id', // ID produk yang valid
-            'image_promo' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'images.*' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048', // Untuk multiple images
         ]);
-
-        // Cari promo berdasarkan ID
-        $promo = Promo::findOrFail($id);
 
         // Perbarui data promo
-        $promo->update([
-            'name_promo' => $request->name_promo,
-            'description_promo' => $request->description_promo,
-            'price_promo' => $request->price_promo,
-            'start_promo' => $request->start_promo,
-            'end_promo' => $request->end_promo,
-            'discount' => $request->discount,
-            'id_product' => $request->id_product,
-        ]);
+        $promo->update($request->all());
 
-        // Perbarui gambar jika ada yang diunggah
-        if ($request->hasFile('image_promo')) {
-            // Hapus gambar lama dari koleksi
+        // Jika ada gambar baru yang diunggah
+        if ($request->hasFile('images')) {
+            // Hapus semua gambar lama
             $promo->clearMediaCollection('promo_images');
 
-            // Simpan gambar baru ke koleksi
-            $image = $request->file('image_promo');
-            $promo->addMedia($image)
-                ->usingFileName($image->getClientOriginalName()) // Menggunakan nama file asli
-                ->toMediaCollection('promo_images');
+            // Tambahkan gambar baru ke koleksi
+            foreach ($request->file('images') as $image) {
+                $promo->addMedia($image)
+                    ->usingFileName($image->getClientOriginalName()) // Gunakan nama file asli
+                    ->toMediaCollection('promo_images');
+            }
         }
 
         return response()->json(['success' => 'Promo updated successfully!', 'promo' => $promo]);
