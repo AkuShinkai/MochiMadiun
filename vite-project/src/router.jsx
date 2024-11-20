@@ -9,8 +9,8 @@ import AppAuth from './AppAuth.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import AppTokenOnly from './AppUserOnly.jsx';
-import Profile from './pages/Profile.jsx';
-import EditProfil from './pages/EditProfile.jsx';
+// import Profile from './pages/Profile.jsx';
+// import EditProfil from './pages/EditProfile.jsx';
 import AppUserOnly from './AppUserOnly.jsx';
 // import Items from './pages/Items.jsx';
 import AddItems from './AdminPages/AddItems.jsx';
@@ -95,21 +95,7 @@ const router = createBrowserRouter([
             //     element: <AdminProfile />
             // }
         ],
-    },
-    {
-        path: '/',
-        element: <AppUserOnly />,
-        children: [
-            {
-                path: '/profile',
-                element: <Profile />
-            },
-            {
-                path: '/editprofile',
-                element: <EditProfil />
-            }
-        ],
-    },
+    }
 ]);
 
 export default router;

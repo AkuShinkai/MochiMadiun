@@ -19,11 +19,11 @@ export const ContextProvider = ({ children }) => {
     const [token, _setToken] = useState(localStorage.getItem('ACCESS_TOKEN'));
     const [roles, setRoles] = useState(localStorage.getItem('USER_ROLES'));
 
-    useEffect(() => {
-        if (token) {
-            fetchProfileData();
-        }
-    }, [token]);
+    // useEffect(() => {
+    //     if (token) {
+    //         fetchProfileData();
+    //     }
+    // }, [token]);
 
     const setToken = (token) => {
         _setToken(token);
@@ -52,15 +52,15 @@ export const ContextProvider = ({ children }) => {
         // }
     };
 
-    const fetchProfileData = async () => {
-        try {
-            const response = await axiosClient.get("/profile");
-            const data = response.data;
-            setUser(data);
-        } catch (error) {
-            console.error("Error fetching profile data:", error);
-        }
-    };
+    // const fetchProfileData = async () => {
+    //     try {
+    //         const response = await axiosClient.get("/profile");
+    //         const data = response.data;
+    //         setUser(data);
+    //     } catch (error) {
+    //         console.error("Error fetching profile data:", error);
+    //     }
+    // };
 
     return (
         <StateContext.Provider value={{

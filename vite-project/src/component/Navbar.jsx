@@ -50,12 +50,12 @@ const Navbar = () => {
                                     src={user.profile_picture}
                                     alt="Profile"
                                     className="w-8 h-8 rounded-full cursor-pointer ml-4 ring-2 ring-orange-300"
-                                    onClick={() => window.location.href = '/profile'}
+                                    onClick={() => window.location.href = '/admin'}
                                 />
                             ) : (
                                 <button
                                     className="fa-solid fa-user cursor-pointer hover:text-secondaryColor ml-4 text-xl"
-                                    onClick={() => window.location.href = '/profile'}
+                                    onClick={() => window.location.href = '/admin'}
                                 ></button>
                             )}
                         </div>

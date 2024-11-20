@@ -26,27 +26,7 @@ const Header = ({ toggleSidebar }) => {
     const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
 
-    const [profileData, setProfileData] = useState({
-        profile_picture: "",
-        name:""
-    });
-
-    const profileImageUrl = profileData.profile_picture ? profileData.profile_picture : placeholderImageUrl;
-
-    useEffect(() => {
-        // Ambil data profil pengguna saat komponen dimuat
-        fetchProfileData();
-    }, []);
-
-    const fetchProfileData = async () => {
-        try {
-            const response = await axiosClient.get("/profile");
-            const data = response.data;
-            setProfileData(data);
-        } catch (error) {
-            console.error("Error fetching profile data:", error);
-        }
-    };
+    const profileImageUrl = placeholderImageUrl;
 
     return (
         <div className='w-full'>
@@ -56,7 +36,7 @@ const Header = ({ toggleSidebar }) => {
                 </button>
                 <div className="flex items-center gap-2 mr-2 md:mr-0">
                     <Popover className="relative">
-                        <p>{profileData.name ? profileData.name : "Admin"}</p>
+                        <p>{"Admin"}</p>
                     </Popover>
 
                     <Menu as="div" className="relative">
