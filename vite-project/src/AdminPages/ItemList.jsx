@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axiosClient from '../axios-client';
 import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 const ItemList = () => {
     const [items, setItems] = useState([]);
@@ -8,8 +10,8 @@ const ItemList = () => {
     const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
-    const [selectedFiles, setSelectedFiles] = useState([]); // State untuk file gambar baru
-    const [previewImages, setPreviewImages] = useState([]); // State untuk preview gambar baru
+    const [selectedFiles, setSelectedFiles] = useState([]);
+    const [previewImages, setPreviewImages] = useState([]);
     const navigate = useNavigate();
 
     const fetchItems = async () => {
@@ -22,6 +24,17 @@ const ItemList = () => {
             setLoading(false);
         }
     };
+
+    const deleteProduct = async (id) => {
+        try {
+            const response = await axiosClient.delete(`/products/${id}`);
+            alert(response.data.message); // Tampilkan pesan sukses
+            fetchItems(); // Panggil ulang fungsi untuk memuat daftar produk
+        } catch (error) {
+            alert(error.response?.data?.message || 'Failed to delete product');
+        }
+    };
+
 
     useEffect(() => {
         fetchItems();
@@ -43,7 +56,6 @@ const ItemList = () => {
         const files = e.target.files;
         setSelectedFiles(files);
 
-        // Generate preview URL untuk gambar baru
         const previews = Array.from(files).map((file) => URL.createObjectURL(file));
         setPreviewImages(previews);
     };
@@ -55,7 +67,6 @@ const ItemList = () => {
             formData.append('description', updatedItem.description);
             formData.append('price', updatedItem.price);
 
-            // Tambahkan file gambar baru ke FormData
             if (selectedFiles.length > 0) {
                 Array.from(selectedFiles).forEach((file) => {
                     formData.append('images[]', file);
@@ -117,13 +128,14 @@ const ItemList = () => {
                                                 />
                                             )) || <span>No images available</span>}
                                         </td>
-                                        <td className="py-3 px-6 text-black">
-                                            <button
-                                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                                                onClick={() => openModal(item)}
-                                            >
-                                                View/Edit
+                                        <td className="py-16 px-6 text-black flex items-center space-x-4">
+                                            <button onClick={() => openModal(item)} title="Edit">
+                                                <FontAwesomeIcon icon={faEdit} className="text-blue-500 text-lg cursor-pointer hover:text-blue-700" />
                                             </button>
+                                            <button onClick={() => deleteProduct(item.id)} title="Delete">
+                                                <FontAwesomeIcon icon={faTrashAlt} className="text-red-500 text-lg cursor-pointer hover:text-red-700" />
+                                            </button>
+
                                         </td>
                                     </tr>
                                 ))}
@@ -132,7 +144,6 @@ const ItemList = () => {
                     </div>
                 )}
 
-                {/* Modal */}
                 {isModalOpen && selectedItem && (
                     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
                         <div className="bg-white p-5 rounded-lg w-1/3">

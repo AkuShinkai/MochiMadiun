@@ -4,7 +4,7 @@ import { useStateContext } from "../contexts/ContextProvider"; // Import useStat
 
 const Navbar = () => {
     useCustomJS();
-    const { token, user, roles } = useStateContext(); // Gunakan konteks untuk mendapatkan token dan data pengguna
+    const { token, user } = useStateContext(); // Gunakan konteks untuk mendapatkan token dan data pengguna
     const isLoggedIn = !!token; // Cek apakah pengguna sudah login
 
     return (
@@ -43,7 +43,7 @@ const Navbar = () => {
                 </div>
 
                 <div className="flex items-center gap-5">
-                    {isLoggedIn ? (
+                    {isLoggedIn && (
                         <div className="flex items-center">
                             {user.profile_picture ? (
                                 <img
@@ -59,8 +59,6 @@ const Navbar = () => {
                                 ></button>
                             )}
                         </div>
-                    ) : (
-                        <a className="ri-door-open-fill cursor-pointer hover:text-secondaryColor ml-4 text-xl" href="/login"></a>
                     )}
 
                     <div className="md:hidden" id="hamburger">

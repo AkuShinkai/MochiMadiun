@@ -110,4 +110,17 @@ class PromoController extends Controller
 
         return response()->json(['success' => 'Promo updated successfully!', 'promo' => $promo]);
     }
+
+    public function destroy($id)
+    {
+        $promo = Promo::findOrFail($id);
+
+        // Hapus media yang terkait dengan promo
+        $promo->clearMediaCollection('promo_images');
+
+        // Hapus promo dari database
+        $promo->delete();
+
+        return response()->json(['success' => 'Promo deleted successfully!']);
+    }
 }

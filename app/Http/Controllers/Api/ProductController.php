@@ -95,4 +95,33 @@ class ProductController extends Controller
         // Mengembalikan respons JSON dengan data produk yang diperbarui
         return response()->json(['product' => $product]);
     }
+
+    public function destroy($id)
+    {
+        // Temukan produk berdasarkan ID
+        $product = Product::find($id);
+
+        // Jika produk tidak ditemukan, kembalikan respons error
+        if (!$product) {
+            return response()->json(['message' => 'Product not found'], 404);
+        }
+
+        // Cek apakah produk sedang digunakan dalam promo apa pun
+        $isUsedInPromo = \App\Models\Promo::where('id_product', $id)->exists();
+
+        if ($isUsedInPromo) {
+            return response()->json([
+                'message' => 'Product is currently used in a promo. Please remove the promo before deleting the product.'
+            ], 400);
+        }
+
+        // Hapus semua gambar dari koleksi 'product_images'
+        $product->clearMediaCollection('product_images');
+
+        // Hapus produk dari database
+        $product->delete();
+
+        // Kembalikan respons sukses
+        return response()->json(['message' => 'Product deleted successfully']);
+    }
 }

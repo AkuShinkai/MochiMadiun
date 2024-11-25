@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axiosClient from '../axios-client';
 import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const PromoList = () => {
     const [promos, setPromos] = useState([]);
@@ -30,6 +31,18 @@ const PromoList = () => {
             setProducts(response.data);
         } catch (error) {
             console.error('Failed to fetch products:', error);
+        }
+    };
+
+    const handleDeletePromo = async (id) => {
+        if (window.confirm("Are you sure you want to delete this promo?")) {
+            try {
+                await axiosClient.delete(`/promos/${id}`);
+                setPromos((prevPromos) => prevPromos.filter((promo) => promo.id !== id));
+            } catch (error) {
+                setError("Failed to delete promo.");
+                console.error(error);
+            }
         }
     };
 
@@ -147,10 +160,18 @@ const PromoList = () => {
                                         </td>
                                         <td className="py-3 px-6 text-black">
                                             <button
-                                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                                className="text-blue-500 hover:text-blue-700"
+                                                title="View/Edit"
                                                 onClick={() => openModal(promo)}
                                             >
-                                                View/Edit
+                                                <i className="fas fa-edit"></i>
+                                            </button>
+                                            <button
+                                                className="text-red-500 hover:text-red-700 ml-4"
+                                                title="Delete"
+                                                onClick={() => handleDeletePromo(promo.id)}
+                                            >
+                                                <i className="fas fa-trash-alt"></i>
                                             </button>
                                         </td>
                                     </tr>

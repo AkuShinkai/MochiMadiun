@@ -1,10 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\ItemController;
 use App\Http\Controllers\Api\ProductController;
-use App\Http\Controllers\Api\ProfileController;
-use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PromoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -25,17 +22,16 @@ Route::middleware('auth:sanctum')->group(function () {
         return $request->user();
     });
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::get('/profile', [ProfileController::class, 'show']);
-    Route::put('/profile', [ProfileController::class, 'update']);
 
     // product route
     Route::post('/products', [ProductController::class, 'store']);
     Route::put('/products/{id}', [ProductController::class, 'update']);
+    Route::delete('/products/{id}', [ProductController::class, 'destroy']);
 
 
     Route::post('/promos', [PromoController::class, 'store']);
-    Route::get('/promos', [PromoController::class, 'index']);
     Route::put('/promos/{id}', [PromoController::class, 'update']);
+    Route::delete('/promos/{id}', [PromoController::class, 'destroy']);
 });
 
 
@@ -44,3 +40,6 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::get('/products/{id}', [ProductController::class, 'show']);
 Route::get('/products', [ProductController::class, 'index']);
+
+Route::get('/promos', [PromoController::class, 'index']);
+Route::get('/promos/{id}', [PromoController::class, 'show']);
