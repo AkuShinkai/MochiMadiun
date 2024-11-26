@@ -13,14 +13,14 @@ const linkClass =
 export default function SidebarAdmin() {
     const [showModal, setShowModal] = useState(false);
 	return (
-		<div className="hidden bg-amber-900 p-3 md:flex flex-col">
+		<div className="hidden bg-amber-900 p-3 md:flex flex-col w-[250px]">
 			{/* Bagian logo UMKM dengan tautan ke dashboard */}
 			<div className="flex justify-center items-center mx-2 my-2">
 				<Link to="/">
-					<img 
-						src={logoUMKM} 
-						alt="Logo UMKM" 
-						style={{ width: '70px', height: 'auto', cursor: 'pointer' }} 
+					<img
+						src={logoUMKM}
+						alt="Logo UMKM"
+						style={{ width: '70px', height: 'auto', cursor: 'pointer' }}
 					/>
 				</Link>
 			</div>

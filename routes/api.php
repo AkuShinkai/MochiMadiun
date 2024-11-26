@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\PromoController;
@@ -32,6 +33,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/promos', [PromoController::class, 'store']);
     Route::put('/promos/{id}', [PromoController::class, 'update']);
     Route::delete('/promos/{id}', [PromoController::class, 'destroy']);
+
+    Route::get('/admins', [AdminController::class, 'index']);       // List admin
+    Route::post('/admins', [AdminController::class, 'store']);      // Tambah admin
+    Route::put('/admins/{id}', [AdminController::class, 'update']); // Update admin
+    Route::delete('/admins/{id}', [AdminController::class, 'destroy']); // Hapus admin
 });
 
 

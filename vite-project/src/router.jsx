@@ -8,17 +8,13 @@ import AppAdmin from './AppAdmin.jsx';
 import AppAuth from './AppAuth.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
-import AppTokenOnly from './AppUserOnly.jsx';
-// import Profile from './pages/Profile.jsx';
-// import EditProfil from './pages/EditProfile.jsx';
-import AppUserOnly from './AppUserOnly.jsx';
-// import Items from './pages/Items.jsx';
 import AddItems from './AdminPages/AddItems.jsx';
 import ItemList from './AdminPages/ItemList.jsx';
 import DetailItem from './pages/DetailItem.jsx';
 import OrderPage from './pages/OrderPage.jsx';
 import AddPromo from './AdminPages/AddPromo.jsx';
 import PromoList from './AdminPages/PromoList.jsx';
+import UserList from './AdminPages/UserList.jsx';
 
 
 const router = createBrowserRouter([
@@ -85,6 +81,10 @@ const router = createBrowserRouter([
             {
                 path: '/addpromo',
                 element: <AddPromo />
+            },
+            {
+                path: '/adminlist',
+                element: <UserList />
             }
             // {
             //     path: '/detailitems',
