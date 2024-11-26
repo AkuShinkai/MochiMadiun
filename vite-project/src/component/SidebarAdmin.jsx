@@ -3,8 +3,9 @@ import classNames from 'classnames'
 import { Link, useLocation } from 'react-router-dom'
 import { HiOutlineLogout } from 'react-icons/hi'
 import { ADMIN_SIDEBAR_LINKS, ADMIN_SIDEBAR_BOTTOM_LINKS } from '../lib/constants'
-// import logo from '../assets/SiMagang.png'
 import Logout from '../pages/Logout'
+// Import logo UMKM
+import logoUMKM from '../assets/[LT]-Dinada.png'
 
 const linkClass =
 	'flex items-center gap-2 font-light px-3 py-2 hover:bg-[#FF9843] hover:no-underline hover:text-white active:text-white active:bg-[#FF9843] rounded-full text-base'
@@ -13,10 +14,16 @@ export default function SidebarAdmin() {
     const [showModal, setShowModal] = useState(false);
 	return (
 		<div className="hidden bg-amber-900 p-3 md:flex flex-col">
-			{/* <div className="flex items-center gap-2 px-1">
-            <img src={logo} alt="Your Icon" style={{ width: '50px', height: '50px' }} />
-				<span className="text-gray-600 text-lg font-bold">ADMIN</span>
-			</div> */}
+			{/* Bagian logo UMKM dengan tautan ke dashboard */}
+			<div className="flex justify-center items-center mx-2 my-2">
+				<Link to="/">
+					<img 
+						src={logoUMKM} 
+						alt="Logo UMKM" 
+						style={{ width: '70px', height: 'auto', cursor: 'pointer' }} 
+					/>
+				</Link>
+			</div>
 			<div className="pt-7 pb-8 flex flex-1 flex-col gap-1">
 				{ADMIN_SIDEBAR_LINKS.map((link) => (
 					<SidebarLink key={link.key} link={link} />
