@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axiosClient from "../axios-client";
 import useCustomJS from "../useCostumeJS";
+import Slider from "react-slick"; // Import Slider
 
 function Promo() {
     useCustomJS();
@@ -9,7 +10,8 @@ function Promo() {
 
     // Ambil data promo dari API
     useEffect(() => {
-        axiosClient.get("/promos") // Ganti dengan endpoint API yang sesuai
+        axiosClient
+            .get("/promos") // Ganti dengan endpoint API yang sesuai
             .then((response) => {
                 setPromos(response.data);
             })
@@ -18,48 +20,65 @@ function Promo() {
             });
     }, []);
 
+    // Pengaturan Slider
+    const settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 3000,
+        arrows: false,
+        centerMode: true, // Untuk menampilkan satu slide di tengah dan menyesuaikan sisa konten
+        centerPadding: "0", // Menghilangkan padding antar slide
+        focusOnSelect: true, // Menjaga agar slide dipilih saat diklik
+    };
+
     return (
-        <section id="promo" className="py-16">
+        <section id="promo" className="py-8">
             <div className="container">
                 <h2 className="section__title text-center">Hot Promo</h2>
                 <div className="separator mx-auto"></div>
 
-                {/* Gunakan grid untuk layout promo */}
-                <div className="grid grid-cols-1 gap-5 lg:grid-cols-2 xl:grid-cols-3">
+                {/* Slider untuk promo */}
+                <Slider {...settings}>
                     {promos.map((promo) => (
                         <div
                             key={promo.id}
-                            className="promo__card bg-primaryColorLight dark:bg-darkColorLight flex flex-col p-5 rounded-lg md:flex-row md:items-center lg:flex-row-reverse lg:flex-1 font-bold transform transition-all duration-300 hover:scale-105 hover:shadow-lg animate__animated animate__fadeIn"
+                            className="promo_card bg-primaryColorLight dark:bg-darkColorLight flex items-center p-4 rounded-lg mb-0 max-w-full mx-auto"
                         >
-                            {/* Cek apakah promo memiliki gambar */}
-                            {promo.image_urls && promo.image_urls.length > 0 ? (
-                                <img
-                                    src={promo.image_urls[0]} // Ambil gambar pertama
-                                    alt={promo.name_promo}
-                                    className="w-40 mx-auto hover:animate-movingY md:mx-5 transition-transform duration-300"
-                                />
-                            ) : (
-                                <img
-                                    src="/default-promo-image.jpg" // Gambar default jika promo tidak memiliki gambar
-                                    alt={promo.name_promo}
-                                    className="w-40 mx-auto hover:animate-movingY md:mx-5 transition-transform duration-300"
-                                />
-                            )}
+                            {/* Gambar di sebelah kiri */}
+                            <div className="flex-shrink-0 mr-4">
+                                {promo.image_urls && promo.image_urls.length > 0 ? (
+                                    <img
+                                        src={promo.image_urls[0]} // Ambil gambar pertama
+                                        alt={promo.name_promo}
+                                        className="w-16 h-16 object-cover rounded-md" // Ukuran gambar lebih kecil
+                                    />
+                                ) : (
+                                    <img
+                                        src="/default-promo-image.jpg" // Gambar default jika promo tidak memiliki gambar
+                                        alt={promo.name_promo}
+                                        className="w-16 h-16 object-cover rounded-md" // Ukuran gambar lebih kecil
+                                    />
+                                )}
+                            </div>
 
-                            <div className="space-y-2 pt-5 md:pt-0">
-                                <p className="text-xs text-secondaryColor">Promo: {promo.name_promo}</p>
-                                <h3 className="card__title uppercase">{promo.product_name}</h3>
-                                <p className="paragraph">{promo.description_promo}</p>
-                                <p className="text-sm font-semibold">Price: ${promo.price_promo}</p>
-                                <p className="text-sm text-red-500">Discount: {promo.discount}%</p>
+                            {/* Deskripsi di sebelah kanan */}
+                            <div className="flex flex-col justify-between">
+                                <h3 className="text-sm font-bold mb-1 uppercase">{promo.product_name}</h3>
+                                <p className="text-xs text-gray-600 mb-2">{promo.description_promo}</p>
+                                <p className="text-sm font-semibold mb-1">Price: ${promo.price_promo}</p>
+                                <p className="text-sm text-red-500 font-semibold mb-1">Discount: {promo.discount}%</p>
                                 <p className="text-xs text-secondaryColor">
                                     Valid from {new Date(promo.start_promo).toLocaleDateString()} to {new Date(promo.end_promo).toLocaleDateString()}
                                 </p>
-                                <a href="#" className="text-xs text-secondaryColor">Read More</a>
+                                <a href="#" className="text-xs text-primaryColor underline mt-2">Read More</a>
                             </div>
                         </div>
                     ))}
-                </div>
+                </Slider>
             </div>
         </section>
     );
