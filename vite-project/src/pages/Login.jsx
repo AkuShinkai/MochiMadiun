@@ -20,37 +20,30 @@ function Login() {
         };
 
         setErrors(null);
+
         axiosClient.post('/login', payload)
             .then(({ data }) => {
                 setUser(data.user);
                 setToken(data.token);
-                // Menetapkan peran pengguna ke dalam state atau localStorage
                 localStorage.setItem('USER_ROLES', data.roles);
-                setUser(data.user, data.roles); // Memperbarui state user dengan roles
-                setToken(data.token);
 
-                // Periksa roles dan arahkan ke halaman yang sesuai
-                if (data.roles == 'admin' || data.roles == 'super admin') {
+                // Arahkan berdasarkan peran pengguna
+                if (data.roles === 'admin' || data.roles === 'super admin') {
                     navigate('/admin');
-                } else if (data.roles === "costumer") {
+                } else if (data.roles === 'costumer') {
                     navigate('/');
                 }
-                console.log(data)
             })
-
             .catch(err => {
                 const response = err.response;
-                if (response && response.status === 422) {
-                    if (response.data.errors) {
-                        setErrors(response.data.errors);
-                    } else {
-                        setErrors({
-                            email: [response.data.message]
-                        });
-                    }
+                if (response && response.status === 403) {
+                    // Tampilkan pesan khusus untuk akun tidak aktif
+                    setErrors({ account: ['Akun Anda tidak aktif. Silakan hubungi administrator.'] });
+                } else if (response && response.status === 422) {
+                    // Tampilkan pesan kesalahan validasi lainnya
+                    setErrors(response.data.errors || { email: [response.data.message] });
                 }
             });
-
     };
 
     return (
@@ -58,11 +51,11 @@ function Login() {
             <div className="bg-white flex rounded-2xl shadow-lg max-w-3xl p-5 items-center">
                 <div className="md:w-1/2 px-8 md:px-16">
                     <h2 className="font-bold text-2xl text-[#002D74]">MyToko</h2>
-                    <p className="text-xs mt-4 text-[#002D74]">If you are already a member, easily log in</p>
+                    <p className="text-xs mt-4 text-[#002D74] mb-4">If you are already a member, easily log in</p>
 
                     {errors && <div className="bg-red-600 rounded-lg p-2">
                         {Object.keys(errors).map(key => (
-                            <p key={key} className="font-bold px-2 text-xs">{errors[key][0]}</p>
+                            <p key={key} className="font-extrabold text-gray-200 px-2 text-xs">{errors[key][0]}</p>
                         ))}
                     </div>
                     }

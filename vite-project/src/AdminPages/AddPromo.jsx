@@ -6,14 +6,15 @@ const AddPromo = () => {
     const [formData, setFormData] = useState({
         name_promo: '',
         description_promo: '',
-        price_promo: '',
         start_promo: '',
         end_promo: '',
+        status: 'not available',
         image_promo: null,
         discount: '',
         id_product: '', // ID produk yang sudah ada
     });
     const [products, setProducts] = useState([]);
+    const [productPrice, setProductPrice] = useState(0); // Harga produk
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
     const navigate = useNavigate();
@@ -21,13 +22,27 @@ const AddPromo = () => {
     useEffect(() => {
         // Ambil produk yang tersedia
         axiosClient.get('/products')
-            .then(response => setProducts(response.data))
+            .then(response => {
+                setProducts(response.data);
+            })
             .catch(error => setError('Failed to fetch products'));
     }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
+    };
+
+    const handleProductChange = (e) => {
+        const productId = e.target.value;
+        setFormData({ ...formData, id_product: productId });
+
+        const selectedProduct = products.find(product => product.id === parseInt(productId));
+        if (selectedProduct) {
+            setProductPrice(selectedProduct.price);
+        } else {
+            setProductPrice(0); // Reset harga produk jika tidak ditemukan
+        }
     };
 
     const handleFileChange = (e) => {
@@ -60,6 +75,11 @@ const AddPromo = () => {
         }
     };
 
+    // Menghitung harga setelah diskon
+    const priceAfterDiscount = (productPrice > 0 && formData.discount) ?
+        productPrice - (productPrice * (parseInt(formData.discount) / 100)) :
+        productPrice;
+
     return (
         <div className="container">
             <h1 className="text-2xl font-bold mb-5">Add Promo</h1>
@@ -90,18 +110,6 @@ const AddPromo = () => {
                     ></textarea>
                 </div>
                 <div className="flex flex-col">
-                    <label htmlFor="price_promo" className="font-bold text-black">Price</label>
-                    <input
-                        type="number"
-                        id="price_promo"
-                        name="price_promo"
-                        value={formData.price_promo}
-                        onChange={handleChange}
-                        className="border rounded p-2"
-                        required
-                    />
-                </div>
-                <div className="flex flex-col">
                     <label htmlFor="start_promo" className="font-bold text-black">Start Date</label>
                     <input
                         type="date"
@@ -126,24 +134,12 @@ const AddPromo = () => {
                     />
                 </div>
                 <div className="flex flex-col">
-                    <label htmlFor="discount" className="font-bold text-black">Discount</label>
-                    <input
-                        type="number"
-                        id="discount"
-                        name="discount"
-                        value={formData.discount}
-                        onChange={handleChange}
-                        className="border rounded p-2"
-                        required
-                    />
-                </div>
-                <div className="flex flex-col">
                     <label htmlFor="id_product" className="font-bold text-black">Product</label>
                     <select
                         id="id_product"
                         name="id_product"
                         value={formData.id_product}
-                        onChange={handleChange}
+                        onChange={handleProductChange}
                         className="border rounded p-2"
                         required
                     >
@@ -153,6 +149,44 @@ const AddPromo = () => {
                         ))}
                     </select>
                 </div>
+                <div className="flex flex-col">
+                    <label htmlFor="discount" className="font-bold text-black">Discount (%)</label>
+                    <input
+                        type="number"
+                        id="discount"
+                        name="discount"
+                        value={formData.discount}
+                        onChange={handleChange}
+                        className="border rounded p-2"
+                        required
+                        min="0"
+                    />
+                </div>
+                {/* Debugging: Menampilkan nilai harga produk dan diskon */}
+                {productPrice > 0 && formData.discount !== '' && (
+                    <div className="flex flex-col">
+                        <label className="font-bold text-black">Promo Price Preview</label>
+                        <p>Harga sebelum diskon: Rp {productPrice.toLocaleString()}</p>
+                        <p>Harga setelah diskon: Rp {priceAfterDiscount.toFixed(2).toLocaleString()}</p>
+                    </div>
+                )}
+                <div className="flex flex-col">
+                    <label htmlFor="status" className="font-semibold">
+                        Status <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                        id="status"
+                        name="status"
+                        value={formData.status}
+                        onChange={handleChange}
+                        className="border rounded p-2 text-black"
+                        required
+                    >
+                        <option value="available">Available</option>
+                        <option value="not available">Not Available</option>
+                    </select>
+                </div>
+
                 <div className="flex flex-col">
                     <label htmlFor="image_promo" className="font-bold text-black">Promo Image</label>
                     <input
@@ -164,8 +198,14 @@ const AddPromo = () => {
                         required
                     />
                 </div>
-                <div className="flex justify-end">
+
+                <div className="flex justify-between">
                     <button type="submit" className="bg-blue-500 text-white p-2 rounded">Add Promo</button>
+                    <button
+                        onClick={() => window.history.back()}
+                        className="inline-flex items-center bg-red-500 text-md px-3 py-1 rounded text-white hover:bg-red-600">
+                        <span>Cancel</span>
+                    </button>
                 </div>
             </form>
         </div>

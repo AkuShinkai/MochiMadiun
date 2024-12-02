@@ -24,6 +24,7 @@ class AdminController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
             'password' => 'required|string|min:6',
+            'status' => 'required|in:active,nonactive',
             'roles' => 'required|in:admin,super admin', // Validasi roles
         ]);
 
@@ -31,6 +32,7 @@ class AdminController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
+            'status'=>$request->status,
             'roles' => $request->roles, // Mengambil roles dari request
         ]);
 
@@ -43,6 +45,7 @@ class AdminController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email',
+            'status' => 'required|in:active,nonactive',
             'roles' => 'sometimes|required|in:admin,super admin', // Validasi roles jika ada perubahan
         ]);
 

@@ -6,11 +6,11 @@ const AddItems = () => {
     const [formData, setFormData] = useState({
         name: '',
         description: '',
-        // stock: '',
-        image: '',
+        image: [],
         price: '',
-        // category: '',
+        status: 'not available', // Default status
     });
+
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
 
@@ -96,25 +96,6 @@ const AddItems = () => {
                         required
                     />
                 </div>
-                {/* <div className="flex flex-col">
-                    <label htmlFor="category" className="font-semibold">
-                        Category <span className="text-red-500">*</span>
-                    </label>
-                    <select
-                        id="category"
-                        name="category"
-                        value={formData.category}
-                        onChange={handleChange}
-                        className="border rounded p-2 text-black"
-                        required
-                    >
-                        <option value="">Select Category</option>
-                        <option value="electronic">Electronic</option>
-                        <option value="gadget">Gadget</option>
-                        <option value="laptop">Laptop</option>
-                        <option value="accessories">Accessories</option>
-                    </select>
-                </div> */}
                 <div className="flex flex-col">
                     <label htmlFor="description" className="font-semibold">
                         Description <span className="text-red-500">*</span>
@@ -128,20 +109,6 @@ const AddItems = () => {
                         required
                     ></textarea>
                 </div>
-                {/* <div className="flex flex-col">
-                    <label htmlFor="stock" className="font-semibold">
-                        Stock <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                        type="number"
-                        id="stock"
-                        name="stock"
-                        value={formData.stock}
-                        onChange={handleChange}
-                        className="border rounded p-2 text-black"
-                        required
-                    />
-                </div> */}
                 <div className="flex flex-col">
                     <label htmlFor="price" className="font-semibold">
                         Price <span className="text-red-500">*</span>
@@ -156,6 +123,23 @@ const AddItems = () => {
                         required
                     />
                 </div>
+                <div className="flex flex-col">
+                    <label htmlFor="status" className="font-semibold">
+                        Status <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                        id="status"
+                        name="status"
+                        value={formData.status}
+                        onChange={handleChange}
+                        className="border rounded p-2 text-black"
+                        required
+                    >
+                        <option value="available">Available</option>
+                        <option value="not available">Not Available</option>
+                    </select>
+                </div>
+
                 <div className="flex flex-col">
                     <label htmlFor="image" className="font-semibold">
                         image <span className="text-red-500">*</span>

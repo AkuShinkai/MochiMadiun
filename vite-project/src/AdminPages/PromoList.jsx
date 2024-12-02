@@ -71,11 +71,18 @@ const PromoList = () => {
     };
 
     const handleUpdatePromo = async (updatedPromo) => {
+        const priceBeforeDiscount = updatedPromo.product?.price || 0;
+        const discountAmount = (priceBeforeDiscount * updatedPromo.discount) / 100;
+        const priceAfterDiscount = priceBeforeDiscount - discountAmount;
+
+        // Anda bisa menambahkan perhitungan harga di sini jika perlu
+        console.log('Price before discount:', priceBeforeDiscount);
+        console.log('Price after discount:', priceAfterDiscount);
+
         try {
             const formData = new FormData();
             formData.append('name_promo', updatedPromo.name_promo);
             formData.append('description_promo', updatedPromo.description_promo);
-            formData.append('price_promo', updatedPromo.price_promo);
             formData.append('discount', updatedPromo.discount);
             formData.append('status', updatedPromo.status);
             formData.append('start_promo', updatedPromo.start_promo);
@@ -110,64 +117,61 @@ const PromoList = () => {
         <section id="promolist" className="pt-4">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="bg-white rounded-3xl shadow-md p-5">
-                    <h1 className="text-3xl font-bold mb-6">Promo List</h1>
+                    <h1 className="text-2xl font-bold mb-6">Promo List</h1>
                     {error && <div className="text-red-500 mb-3">{error}</div>}
 
                     {loading ? (
-                        <div className="flex items-center justify-center">
-                            <div className="animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-orange-500"></div>
+                        <div className="flex justify-center items-center h-32">
+                            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
                         </div>
                     ) : (
-                        <div className="overflow-x-auto rounded-xl shadow-md">
-                            <table className="min-w-full bg-white rounded-xl">
+                        <div className="overflow-x-auto rounded-xl">
+                            <table className="min-w-full bg-gray-50 rounded-xl shadow-md">
                                 <thead>
                                     <tr>
-                                        {['Promo Name', 'Description', 'Price', 'Discount', 'Status', 'Images', 'Actions'].map((header) => (
-                                            <th key={header} className="py-4 px-6 text-left text-sm font-bold text-black">{header}</th>
+                                        {['Promo Name', 'Description', 'Price Before Discount', 'Price After Discount', 'Discount', 'Start Promo', 'End Promo', 'Status', 'Images', 'Actions'].map((header) => (
+                                            <th key={header} className="py-4 px-6 text-left bg-gray-200 text-sm font-bold text-black">{header}</th>
                                         ))}
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {promos.map((promo, index) => (
-                                        <tr key={promo.id || index} className="border-b">
-                                            <td className="py-3 px-6">{promo.name_promo}</td>
-                                            <td className="py-3 px-6">{promo.description_promo}</td>
-                                            <td className="py-3 px-6">{promo.price_promo}</td>
-                                            <td className="py-3 px-6">{promo.discount}%</td>
-                                            <td className="py-3 px-6">{promo.status}</td>
-                                            <td className="py-3 px-6">
-                                                {promo.image_urls?.map((url, idx) => (
-                                                    <img
-                                                        key={idx}
-                                                        src={url}
-                                                        alt={`Promo ${idx + 1}`}
-                                                        className="h-16 w-16 object-cover rounded-md"
-                                                    />
-                                                )) || <span>No images available</span>}
-                                            </td>
-                                            <td className="py-3 px-6">
-                                                <button
-                                                    className="text-blue-500 hover:text-blue-700"
-                                                    title="View/Edit"
-                                                    onClick={() => openModal(promo)}
-                                                >
-                                                    <i className="fa fa-edit"></i>
-                                                </button>
-                                                <button
-                                                    className="text-red-500 hover:text-red-700 ml-4"
-                                                    title="Delete"
-                                                    onClick={() => handleDeletePromo(promo.id)}
-                                                >
-                                                    <i className="fa fa-trash-alt"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    ))}
+                                    {promos.map((promo, index) => {
+                                        const priceBeforeDiscount = promo.product?.price || 0;
+                                        const discountAmount = (priceBeforeDiscount * promo.discount) / 100;
+                                        const priceAfterDiscount = priceBeforeDiscount - discountAmount;
+
+                                        return (
+                                            <tr key={promo.id || index} className="border-b">
+                                                <td className="py-3 px-6">{promo.name_promo}</td>
+                                                <td className="py-3 px-6">{promo.description_promo}</td>
+                                                <td className="py-3 px-6">Rp.{priceBeforeDiscount.toLocaleString()}</td>
+                                                <td className="py-3 px-6">Rp.{priceAfterDiscount.toLocaleString()}</td>
+                                                <td className="py-3 px-6">{promo.discount}%</td>
+                                                <td className="py-3 px-6">{promo.start_promo}</td>
+                                                <td className="py-3 px-6">{promo.end_promo}</td>
+                                                <td className={`py-3 px-6 ${promo.status === 'available' ? 'text-green-600 font-bold' : 'text-red-600 font-bold'}`}>
+                                                    {promo.status === 'available' ? 'Tersedia' : 'Tidak Tersedia'}
+                                                </td>
+                                                <td className="py-3 px-6">
+                                                    {promo.image_urls?.map((url, idx) => (
+                                                        <img key={idx} src={url} alt={`Promo ${idx + 1}`} className="h-16 w-16 object-cover rounded-md" />
+                                                    )) || <span>No images available</span>}
+                                                </td>
+                                                <td className="py-3 px-6">
+                                                    <button className="text-blue-500 hover:text-blue-700" title="View/Edit" onClick={() => openModal(promo)}>
+                                                        <i className="fa fa-edit"></i>
+                                                    </button>
+                                                    <button className="text-red-500 hover:text-red-700 ml-4" title="Delete" onClick={() => handleDeletePromo(promo.id)}>
+                                                        <i className="fa fa-trash-alt"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
                                 </tbody>
                             </table>
                         </div>
                     )}
-
                     {isModalOpen && selectedPromo && (
                         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
                             <div className="bg-white p-5 rounded-lg w-11/12 md:w-1/3 max-h-screen overflow-y-auto">
@@ -194,26 +198,34 @@ const PromoList = () => {
                                     />
                                 </div>
 
-                                {/* Price */}
-                                <div className="mb-3">
-                                    <label className="block text-sm font-semibold">Price</label>
-                                    <input
-                                        type="number"
-                                        value={selectedPromo.price_promo}
-                                        onChange={(e) => setSelectedPromo({ ...selectedPromo, price_promo: e.target.value })}
-                                        className="w-full p-2 border rounded"
-                                    />
-                                </div>
-
                                 {/* Discount */}
                                 <div className="mb-3">
                                     <label className="block text-sm font-semibold">Discount</label>
                                     <input
                                         type="number"
                                         value={selectedPromo.discount}
-                                        onChange={(e) => setSelectedPromo({ ...selectedPromo, discount: e.target.value })}
+                                        onChange={(e) => {
+                                            const updatedDiscount = e.target.value;
+                                            const priceBeforeDiscount = selectedPromo.product?.price || 0;
+                                            const discountAmount = (priceBeforeDiscount * updatedDiscount) / 100;
+                                            const priceAfterDiscount = priceBeforeDiscount - discountAmount;
+                                            setSelectedPromo({ ...selectedPromo, discount: updatedDiscount, priceAfterDiscount });
+                                        }}
                                         className="w-full p-2 border rounded"
                                     />
+                                </div>
+
+                                {/* Preview Prices */}
+                                <div className="mb-3">
+                                    <label className="block text-sm font-semibold">Price Preview</label>
+                                    <div className="flex justify-between">
+                                        <span>Before Discount:</span>
+                                        <span>Rp.{selectedPromo.product?.price?.toLocaleString()}</span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <span>After Discount:</span>
+                                        <span>Rp.{(selectedPromo.product?.price - (selectedPromo.product?.price * selectedPromo.discount) / 100)?.toLocaleString()}</span>
+                                    </div>
                                 </div>
 
                                 {/* Start Promo */}
@@ -238,6 +250,19 @@ const PromoList = () => {
                                     />
                                 </div>
 
+                                {/* Status */}
+                                <div className="mb-3">
+                                    <label className="font-semibold">Status</label>
+                                    <select
+                                        value={selectedPromo.status || 'available'}
+                                        onChange={(e) => setSelectedPromo({ ...selectedPromo, status: e.target.value })}
+                                        className="w-full p-2 border rounded"
+                                    >
+                                        <option value="available">Available</option>
+                                        <option value="not available">Not Available</option>
+                                    </select>
+                                </div>
+
                                 {/* Product Selector */}
                                 <div className="mb-3">
                                     <label className="block text-sm font-semibold">Product</label>
@@ -251,19 +276,6 @@ const PromoList = () => {
                                                 {product.name}
                                             </option>
                                         ))}
-                                    </select>
-                                </div>
-
-                                {/* Status Selector */}
-                                <div className="mb-3">
-                                    <label className="block text-sm font-semibold">Status</label>
-                                    <select
-                                        value={selectedPromo.status}
-                                        onChange={(e) => setSelectedPromo({ ...selectedPromo, status: e.target.value })}
-                                        className="w-full p-2 border rounded"
-                                    >
-                                        <option value="active">Active</option>
-                                        <option value="inactive">Inactive</option>
                                     </select>
                                 </div>
 

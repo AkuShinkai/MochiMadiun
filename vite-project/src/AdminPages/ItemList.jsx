@@ -66,6 +66,7 @@ const ItemList = () => {
             formData.append('name', updatedItem.name);
             formData.append('description', updatedItem.description);
             formData.append('price', updatedItem.price);
+            formData.append('status', updatedItem.status); // Tambahkan status
 
             if (selectedFiles.length > 0) {
                 Array.from(selectedFiles).forEach((file) => {
@@ -95,22 +96,23 @@ const ItemList = () => {
         <section id="itemslist" className="pt-4">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="bg-white rounded-3xl shadow-md p-5">
-                    <h1 className="text-2xl font-bold mb-5">Item List</h1>
+                    <h1 className="text-2xl font-bold mb-6">Item List</h1>
                     {error && <div className="text-red-500 mb-3">{error}</div>}
                     {loading ? (
-                        <div className="flex items-center justify-center">
-                            <div className="animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-orange-500"></div>
+                        <div className="flex justify-center items-center h-32">
+                            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
                         </div>
                     ) : (
                         <div className="overflow-x-auto rounded-xl">
-                            <table className="min-w-full bg-white rounded-xl shadow-md">
+                            <table className="min-w-full bg-gray-50 rounded-xl shadow-md">
                                 <thead>
                                     <tr>
-                                        <th className="py-3 px-6 bg-primaryColor text-left text-sm text-black font-bold">Name</th>
-                                        <th className="py-3 px-6 bg-primaryColor text-left text-sm text-black font-bold">Description</th>
-                                        <th className="py-3 px-6 bg-primaryColor text-left text-sm text-black font-bold">Price</th>
-                                        <th className="py-3 px-6 bg-primaryColor text-left text-sm text-black font-bold">Photo</th>
-                                        <th className="py-3 px-6 bg-primaryColor text-left text-sm text-black font-bold">Actions</th>
+                                        <th className="py-3 px-6 bg-gray-200 text-left text-sm text-black font-bold">Name</th>
+                                        <th className="py-3 px-6 bg-gray-200 text-left text-sm text-black font-bold">Description</th>
+                                        <th className="py-3 px-6 bg-gray-200 text-left text-sm text-black font-bold">Price</th>
+                                        <th className="py-3 px-6 bg-gray-200 text-center text-sm text-black font-bold">Status</th>
+                                        <th className="py-3 px-6 bg-gray-200 text-left text-sm text-black font-bold">Photo</th>
+                                        <th className="py-3 px-6 bg-gray-200 text-left text-sm text-black font-bold">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -118,7 +120,15 @@ const ItemList = () => {
                                         <tr key={item.id ? item.id : index} className="border-b">
                                             <td className="py-3 px-6 text-black">{item.name}</td>
                                             <td className="py-3 px-6 text-black">{item.description}</td>
-                                            <td className="py-3 px-6 text-black">{item.price}</td>
+                                            <td className="py-3 px-6 text-black">Rp.{item.price.toLocaleString()}</td>
+                                            <td
+                                                className={`py-3 px-6 ${item.status === 'available'
+                                                        ? 'text-green-600 font-bold text-center'
+                                                        : 'text-red-600 font-bold text-pretty text-center'
+                                                    }`}
+                                            >
+                                                {item.status === 'available' ? 'Tersedia' : 'Tidak Tersedia'}
+                                            </td>
                                             <td className="py-3 px-6 text-black">
                                                 {item.image_urls?.map((imgPath, idx) => (
                                                     <img
@@ -174,6 +184,17 @@ const ItemList = () => {
                                         onChange={(e) => setSelectedItem({ ...selectedItem, price: e.target.value })}
                                         className="w-full p-2 border rounded"
                                     />
+                                </div>
+                                <div className="mb-3">
+                                    <label className="font-semibold">Status</label>
+                                    <select
+                                        value={selectedItem.status || 'available'}
+                                        onChange={(e) => setSelectedItem({ ...selectedItem, status: e.target.value })}
+                                        className="w-full p-2 border rounded"
+                                    >
+                                        <option value="available">Available</option>
+                                        <option value="not available">Not Available</option>
+                                    </select>
                                 </div>
                                 <div className="mb-3">
                                     <label className="font-semibold">Current Images</label>

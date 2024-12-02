@@ -17,24 +17,30 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
         $credentials = $request->validated();
+
+        // Cek apakah email ada di database
+        $user = User::where('email', $credentials['email'])->first();
+
+        // Jika pengguna tidak ditemukan atau statusnya nonaktif
+        if (!$user || $user->status === 'nonactive') {
+            return response([
+                'message' => 'Akun Anda tidak aktif. Silakan hubungi administrator.'
+            ], 403); // 403 Forbidden
+        }
+
+        // Lanjutkan proses login jika status aktif
         if (!Auth::attempt($credentials)) {
             return response([
-                'message' => 'Provided email address or password is incorrect'
+                'message' => 'Email atau password salah.'
             ], 422);
         }
 
-        // /** @var User $user */
-        // $user = Auth::user();
-        // $user->load('userProfile'); // Load user profile relationship
-
-        // Membuat token berdasarkan peran user
-        /** @var User $user */
-        $user = Auth::user();
-        // $user->load('userProfile'); // Load user profile relationship
+        // Buat token jika login berhasil
         $token = $user->createToken('main')->plainTextToken;
+
         return response([
             'user' => $user,
-            'roles' => $user->roles, // Include roles in response
+            'roles' => $user->roles, // Tambahkan roles ke respons
             'token' => $token
         ]);
     }

@@ -8,8 +8,25 @@ const UserList = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
-    const [newUser, setNewUser] = useState({ name: '', email: '', password: '', confirmPassword: '', roles: 'admin' });
-    const [updatedUser, setUpdatedUser] = useState({ name: '', email: '', password: '', confirmPassword: '', roles: '' });
+
+
+    const [newUser, setNewUser] = useState({
+        name: '',
+        email: '',
+        password: '',
+        status: 'not available',
+        confirmPassword: '',
+        roles: 'admin'
+    });
+
+    const [updatedUser, setUpdatedUser] = useState({
+        name: '',
+        email: '',
+        status: '',
+        password: '',
+        confirmPassword: '',
+        roles: ''
+    });
 
     const fetchUsers = async () => {
         try {
@@ -86,6 +103,20 @@ const UserList = () => {
         }
     };
 
+    const handleDeleteUser = async (userId) => {
+        if (!window.confirm('Are you sure you want to delete this admin?')) {
+            return;
+        }
+
+        try {
+            await axiosClient.delete(`/admins/${userId}`);
+            setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
+        } catch (error) {
+            setError('Failed to delete user.');
+            console.log(error.response ? error.response.data : error);
+        }
+    };
+
     useEffect(() => {
         fetchUsers();
     }, []);
@@ -94,7 +125,7 @@ const UserList = () => {
         <section id="userlist" className="pt-4">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="bg-white rounded-3xl shadow-md p-5">
-                    <h1 className="text-2xl font-bold mb-5">Admin List</h1>
+                    <h1 className="text-2xl font-bold mb-6">Admin List</h1>
                     <div className="flex justify-between items-center mb-4">
                         <button
                             onClick={openAddModal}
@@ -113,19 +144,28 @@ const UserList = () => {
                             <table className="min-w-full bg-gray-50 rounded-xl shadow">
                                 <thead>
                                     <tr>
-                                        <th className="py-3 px-6 text-left text-sm font-bold text-gray-700">Name</th>
-                                        <th className="py-3 px-6 text-left text-sm font-bold text-gray-700">Email</th>
-                                        <th className="py-3 px-6 text-left text-sm font-bold text-gray-700">Role</th>
-                                        <th className="py-3 px-6 text-sm font-bold text-gray-700 text-center">Actions</th>
+                                        <th className="py-3 px-6 text-left text-sm font-bold text-black bg-gray-200">Name</th>
+                                        <th className="py-3 px-6 text-left text-sm font-bold text-black bg-gray-200">Email</th>
+                                        <th className="py-3 px-6 text-left text-sm font-bold text-black bg-gray-200">Role</th>
+                                        <th className="py-3 px-6 text-sm font-bold text-black bg-gray-200 text-center">Status</th>
+                                        <th className="py-3 px-6 text-sm font-bold text-black bg-gray-200 text-center">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {users.map((user) => (
                                         <tr key={user.id} className="border-b">
-                                            <td className="py-3 px-6 text-gray-800">{user.name}</td>
-                                            <td className="py-3 px-6 text-gray-800">{user.email}</td>
-                                            <td className="py-3 px-6 text-gray-800">{user.roles}</td>
-                                            <td className="py-3 px-6 text-gray-800 text-center">
+                                            <td className="py-3 px-6 text-gray-600">{user.name}</td>
+                                            <td className="py-3 px-6 text-gray-600">{user.email}</td>
+                                            <td className="py-3 px-6 text-gray-600 first-letter:uppercase">{user.roles}</td>
+                                            <td
+                                                className={`py-3 px-6 ${user.status === 'active'
+                                                    ? 'text-green-600 font-bold text-center'
+                                                    : 'text-red-600 font-bold text-pretty text-center'
+                                                    }`}
+                                            >
+                                                {user.status === 'active' ? 'Aktif' : 'Tidak Aktif'}
+                                            </td>
+                                            <td className="py-3 px-6 text-gray-600 text-center">
                                                 <button
                                                     className="text-blue-500 hover:text-blue-700 mr-3"
                                                     onClick={() => openEditModal(user)}
@@ -154,6 +194,7 @@ const UserList = () => {
                             <h2 className="text-lg font-bold mb-4">Add Admin</h2>
                             <form onSubmit={handleCreateUser}>
                                 <div className="mb-4">
+                                    <label className="font-semibold">Nama<span className='text-red-600'>*</span></label>
                                     <input
                                         type="text"
                                         name="name"
@@ -164,6 +205,7 @@ const UserList = () => {
                                     />
                                 </div>
                                 <div className="mb-4">
+                                    <label className="font-semibold">Email<span className='text-red-600'>*</span></label>
                                     <input
                                         type="email"
                                         name="email"
@@ -174,6 +216,7 @@ const UserList = () => {
                                     />
                                 </div>
                                 <div className="mb-4">
+                                    <label className="font-semibold">Password<span className='text-red-600'>*</span></label>
                                     <input
                                         type="password"
                                         name="password"
@@ -184,6 +227,7 @@ const UserList = () => {
                                     />
                                 </div>
                                 <div className="mb-4">
+                                    <label className="font-semibold">Konfirmasi Ulang Password<span className='text-red-600'>*</span></label>
                                     <input
                                         type="password"
                                         name="confirmPassword"
@@ -194,6 +238,18 @@ const UserList = () => {
                                     />
                                 </div>
                                 <div className="mb-4">
+                                    <label className="font-semibold">Status<span className='text-red-600'>*</span></label>
+                                    <select
+                                        value={newUser.status || 'available'}
+                                        onChange={(e) => setNewUser({ ...newUser, status: e.target.value })}
+                                        className="w-full p-2 border rounded"
+                                    >
+                                        <option value="active">Aktif</option>
+                                        <option value="nonactive">Tidak Aktif</option>
+                                    </select>
+                                </div>
+                                <div className="mb-4">
+                                    <label className="font-semibold">Peran<span className='text-red-600'>*</span></label>
                                     <select
                                         name="roles"
                                         value={newUser.roles}
@@ -231,6 +287,7 @@ const UserList = () => {
                             <h2 className="text-lg font-bold mb-4">Edit Admin</h2>
                             <form onSubmit={handleUpdateUser}>
                                 <div className="mb-4">
+                                    <label className="font-semibold">Nama</label>
                                     <input
                                         type="text"
                                         name="name"
@@ -241,6 +298,7 @@ const UserList = () => {
                                     />
                                 </div>
                                 <div className="mb-4">
+                                    <label className="font-semibold">Email</label>
                                     <input
                                         type="email"
                                         name="email"
@@ -251,6 +309,7 @@ const UserList = () => {
                                     />
                                 </div>
                                 <div className="mb-4">
+                                    <label className="font-semibold">Pessword</label>
                                     <input
                                         type="password"
                                         name="password"
@@ -261,6 +320,7 @@ const UserList = () => {
                                     />
                                 </div>
                                 <div className="mb-4">
+                                    <label className="font-semibold">Konfirmasi Ulang Password</label>
                                     <input
                                         type="password"
                                         name="confirmPassword"
@@ -271,6 +331,18 @@ const UserList = () => {
                                     />
                                 </div>
                                 <div className="mb-4">
+                                    <label className="font-semibold">Status</label>
+                                    <select
+                                        value={updatedUser.status || 'available'}
+                                        onChange={(e) => setUpdatedUser({ ...updatedUser, status: e.target.value })}
+                                        className="w-full p-2 border rounded"
+                                    >
+                                        <option value="active">Aktif</option>
+                                        <option value="nonactive">Tidak Aktif</option>
+                                    </select>
+                                </div>
+                                <div className="mb-4">
+                                    <label className="font-semibold">Peran</label>
                                     <select
                                         name="roles"
                                         value={updatedUser.roles}

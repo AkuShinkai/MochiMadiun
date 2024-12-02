@@ -15,28 +15,27 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric',
-            'images.*' => 'required|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'status' => 'required|in:available,not available',
+            'images.*' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        // Simpan produk
         $product = Product::create([
             'name' => $request->name,
             'description' => $request->description,
             'price' => $request->price,
+            'status' => $request->status,
             'id_user' => Auth::id(),
         ]);
 
-        // Simpan gambar menggunakan Media Library
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                // Menyimpan gambar ke koleksi 'product_images'
                 $product->addMedia($image)
-                    ->usingFileName($image->getClientOriginalName()) // Menggunakan nama file asli
+                    ->usingFileName($image->getClientOriginalName())
                     ->toMediaCollection('product_images');
             }
         }
 
-        return response()->json(['success' => 'Product added successfully with images!']);
+        return response()->json(['success' => 'Product added successfully with status!']);
     }
 
     public function index()
@@ -65,26 +64,26 @@ class ProductController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Temukan produk berdasarkan ID
         $product = Product::findOrFail($id);
 
-        // Validasi input dari request (jika diperlukan)
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric',
+            'status' => 'required|in:available,not available',
             'images.*' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        // Mengupdate produk dengan data yang diterima dari request
-        $product->update($request->all());
+        $product->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'price' => $request->price,
+            'status' => $request->status,
+        ]);
 
-        // Jika ada gambar baru yang di-upload
         if ($request->hasFile('images')) {
-            // Hapus gambar lama sebelum menambahkan yang baru
             $product->clearMediaCollection('product_images');
 
-            // Menambahkan gambar baru ke koleksi 'product_images'
             foreach ($request->file('images') as $image) {
                 $product->addMedia($image)
                     ->usingFileName($image->getClientOriginalName())
@@ -92,8 +91,7 @@ class ProductController extends Controller
             }
         }
 
-        // Mengembalikan respons JSON dengan data produk yang diperbarui
-        return response()->json(['product' => $product]);
+        return response()->json(['product' => $product, 'message' => 'Product updated successfully with status!']);
     }
 
     public function destroy($id)

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Promo;
-use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,9 +14,9 @@ class PromoController extends Controller
         $validated = $request->validate([
             'name_promo' => 'required|string|max:255',
             'description_promo' => 'nullable|string',
-            'price_promo' => 'required|numeric',
             'start_promo' => 'required|date',
             'end_promo' => 'required|date',
+            'status' => 'required|in:available,not available',
             'discount' => 'required|numeric',
             'id_product' => 'required|exists:products,id', // ID produk yang valid
             'image_promo' => 'required|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -27,10 +26,9 @@ class PromoController extends Controller
         $promo = Promo::create([
             'name_promo' => $request->name_promo,
             'description_promo' => $request->description_promo,
-            'price_promo' => $request->price_promo,
             'start_promo' => $request->start_promo,
             'end_promo' => $request->end_promo,
-            'status' => 'not available', // default status
+            'status' => $request->status,
             'discount' => $request->discount,
             'id_user' => Auth::id(),
             'id_product' => $request->id_product,
@@ -55,8 +53,9 @@ class PromoController extends Controller
             // Menambahkan URL gambar dari koleksi 'promo_images'
             $promo->image_urls = $promo->getMedia('promo_images')->map->getUrl();
 
-            // Menyertakan nama produk jika relasi tersedia
+            // Menyertakan nama produk dan harga produk sebelum diskon
             $promo->product_name = $promo->product ? $promo->product->name : 'N/A';
+            $promo->price_before_discount = $promo->product ? $promo->product->price : 0;
 
             return $promo;
         });
@@ -84,8 +83,8 @@ class PromoController extends Controller
         $validated = $request->validate([
             'name_promo' => 'required|string|max:255',
             'description_promo' => 'nullable|string',
-            'price_promo' => 'required|numeric',
             'start_promo' => 'required|date',
+            'status' => 'required|in:available,not available',
             'end_promo' => 'required|date',
             'discount' => 'required|numeric',
             'id_product' => 'required|exists:products,id', // ID produk yang valid

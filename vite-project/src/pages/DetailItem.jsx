@@ -13,6 +13,7 @@ const DetailItem = () => {
             try {
                 const response = await axiosClient.get(`/products/${id}`);
                 setItem(response.data);
+                console.log(response.data);
             } catch (error) {
                 console.error('Failed to fetch item:', error);
             }
