@@ -3,7 +3,7 @@ import axiosClient from "../axios-client";
 import useCustomJS from "../useCostumeJS";
 import Slider from "react-slick"; // Import Slider
 
-function Promo() {
+const Promo = () => {
     useCustomJS();
 
     const [promos, setPromos] = useState([]);
