@@ -54,27 +54,27 @@ const Promo = () => {
                                     <img
                                         src={promo.image_urls[0]} // Ambil gambar pertama
                                         alt={promo.name_promo}
-                                        className="w-16 h-16 object-cover rounded-md" // Ukuran gambar lebih kecil
+                                        className="w-24 h-24 object-cover rounded-md" // Ukuran gambar lebih besar
                                     />
                                 ) : (
                                     <img
                                         src="/default-promo-image.jpg" // Gambar default jika promo tidak memiliki gambar
                                         alt={promo.name_promo}
-                                        className="w-16 h-16 object-cover rounded-md" // Ukuran gambar lebih kecil
+                                        className="w-24 h-24 object-cover rounded-md" // Ukuran gambar lebih besar
                                     />
                                 )}
                             </div>
 
                             {/* Deskripsi di sebelah kanan */}
                             <div className="flex flex-col justify-between">
-                                <h3 className="text-sm font-bold mb-1 uppercase">{promo.product_name}</h3>
-                                <p className="text-xs text-gray-600 mb-2">{promo.description_promo}</p>
-                                <p className="text-sm font-semibold mb-1">Price: ${promo.price_promo}</p>
-                                <p className="text-sm text-red-500 font-semibold mb-1">Discount: {promo.discount}%</p>
-                                <p className="text-xs text-secondaryColor">
+                                <h3 className="text-lg font-bold mb-1 uppercase">{promo.product_name}</h3>
+                                <p className="text-sm text-gray-600 mb-2">{promo.description_promo}</p>
+                                <p className="text-lg font-semibold mb-1">Price: ${promo.price_promo}</p>
+                                <p className="text-lg text-red-500 font-semibold mb-1">Discount: {promo.discount}%</p>
+                                <p className="text-sm text-secondaryColor">
                                     Valid from {new Date(promo.start_promo).toLocaleDateString()} to {new Date(promo.end_promo).toLocaleDateString()}
                                 </p>
-                                <a href="#" className="text-xs text-primaryColor underline mt-2">Read More</a>
+                                <a href="#" className="text-sm text-primaryColor underline mt-2">Read More</a>
                             </div>
                         </div>
                     ))}
