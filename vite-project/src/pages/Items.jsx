@@ -50,10 +50,8 @@ const Items = () => {
                     <div className="tabs_wrap">
                         <ul className="flex flex-wrap justify-center gap-2 py-10">
                             <li className={`btn ${activeCategory === 'all' ? 'active' : ''}`} onClick={() => handleCategoryClick('all')}>All</li>
-                            <li className={`btn ${activeCategory === 'gadget' ? 'active' : ''}`} onClick={() => handleCategoryClick('gadget')}>Gadget</li>
-                            <li className={`btn ${activeCategory === 'accessories' ? 'active' : ''}`} onClick={() => handleCategoryClick('accessories')}>Accessories</li>
-                            <li className={`btn ${activeCategory === 'laptop' ? 'active' : ''}`} onClick={() => handleCategoryClick('laptop')}>Laptop</li>
-                            <li className={`btn ${activeCategory === 'electronic' ? 'active' : ''}`} onClick={() => handleCategoryClick('electronic')}>Electronic</li>
+                            <li className={`btn ${activeCategory === 'mochi mantap' ? 'active' : ''}`} onClick={() => handleCategoryClick('mochi mantap')}>Mochi Mantap</li>
+                            <li className={`btn ${activeCategory === 'mochi daifuku' ? 'active' : ''}`} onClick={() => handleCategoryClick('mochi daifuku')}>Mochi Daifuku</li>
                         </ul>
                     </div>
                 </div>

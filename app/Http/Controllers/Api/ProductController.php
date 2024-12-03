@@ -16,6 +16,7 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'price' => 'required|numeric',
             'status' => 'required|in:available,not available',
+            'category' => 'required|in:mochi daifuku,mochi mantap',
             'images.*' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
@@ -23,6 +24,7 @@ class ProductController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'price' => $request->price,
+            'category' => $request->category,
             'status' => $request->status,
             'id_user' => Auth::id(),
         ]);
@@ -70,6 +72,7 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric',
+            'category' => 'required|in:mochi daifuku,mochi mantap',
             'status' => 'required|in:available,not available',
             'images.*' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
@@ -77,6 +80,7 @@ class ProductController extends Controller
         $product->update([
             'name' => $request->name,
             'description' => $request->description,
+            'category' => $request->category,
             'price' => $request->price,
             'status' => $request->status,
         ]);

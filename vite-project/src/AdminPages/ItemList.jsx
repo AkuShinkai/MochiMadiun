@@ -66,7 +66,8 @@ const ItemList = () => {
             formData.append('name', updatedItem.name);
             formData.append('description', updatedItem.description);
             formData.append('price', updatedItem.price);
-            formData.append('status', updatedItem.status); // Tambahkan status
+            formData.append('status', updatedItem.status);
+            formData.append('category', updatedItem.category);
 
             if (selectedFiles.length > 0) {
                 Array.from(selectedFiles).forEach((file) => {
@@ -110,6 +111,7 @@ const ItemList = () => {
                                         <th className="py-3 px-6 bg-gray-200 text-left text-sm text-black font-bold">Name</th>
                                         <th className="py-3 px-6 bg-gray-200 text-left text-sm text-black font-bold">Description</th>
                                         <th className="py-3 px-6 bg-gray-200 text-left text-sm text-black font-bold">Price</th>
+                                        <th className="py-3 px-6 bg-gray-200 text-left text-sm text-black font-bold">Category</th>
                                         <th className="py-3 px-6 bg-gray-200 text-center text-sm text-black font-bold">Status</th>
                                         <th className="py-3 px-6 bg-gray-200 text-left text-sm text-black font-bold">Photo</th>
                                         <th className="py-3 px-6 bg-gray-200 text-left text-sm text-black font-bold">Actions</th>
@@ -121,6 +123,7 @@ const ItemList = () => {
                                             <td className="py-3 px-6 text-black">{item.name}</td>
                                             <td className="py-3 px-6 text-black">{item.description}</td>
                                             <td className="py-3 px-6 text-black">Rp.{item.price.toLocaleString()}</td>
+                                            <td className="py-3 px-6 text-black first-letter:uppercase">{item.category}</td>
                                             <td
                                                 className={`py-3 px-6 ${item.status === 'available'
                                                         ? 'text-green-600 font-bold text-center'
@@ -184,6 +187,17 @@ const ItemList = () => {
                                         onChange={(e) => setSelectedItem({ ...selectedItem, price: e.target.value })}
                                         className="w-full p-2 border rounded"
                                     />
+                                </div>
+                                <div className="mb-3">
+                                    <label className="font-semibold">Category</label>
+                                    <select
+                                        value={selectedItem.category || 'mochi mantap'}
+                                        onChange={(e) => setSelectedItem({ ...selectedItem, category: e.target.value })}
+                                        className="w-full p-2 border rounded"
+                                    >
+                                        <option value="mochi mantap">Mochi Mantap</option>
+                                        <option value="mochi daifuku">Mochi Daifuku</option>
+                                    </select>
                                 </div>
                                 <div className="mb-3">
                                     <label className="font-semibold">Status</label>

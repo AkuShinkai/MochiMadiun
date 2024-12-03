@@ -8,7 +8,8 @@ const AddItems = () => {
         description: '',
         image: [],
         price: '',
-        status: 'not available', // Default status
+        status: 'not available',
+        category: '',
     });
 
     const [error, setError] = useState(null);
@@ -139,7 +140,22 @@ const AddItems = () => {
                         <option value="not available">Not Available</option>
                     </select>
                 </div>
-
+                <div className="flex flex-col">
+                    <label htmlFor="category" className="font-semibold">
+                        Category <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                        id="category"
+                        name="category"
+                        value={formData.category}
+                        onChange={handleChange}
+                        className="border rounded p-2 text-black"
+                        required
+                    >
+                        <option value="mochi daifuku">Mochi Daifuku</option>
+                        <option value="mochi mantap">Mochi Mantap</option>
+                    </select>
+                </div>
                 <div className="flex flex-col">
                     <label htmlFor="image" className="font-semibold">
                         image <span className="text-red-500">*</span>
