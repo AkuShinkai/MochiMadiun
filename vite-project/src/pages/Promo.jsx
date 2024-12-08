@@ -48,37 +48,33 @@ const Promo = () => {
                             key={promo.id}
                             className="promo_card bg-white dark:bg-darkColorLight rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105"
                         >
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
-                                {/* Gambar di sebelah kiri */}
-                                <div className="flex justify-center items-center">
-                                    {promo.image_urls && promo.image_urls.length > 0 ? (
-                                        <img
-                                            src={promo.image_urls[0]} // Ambil gambar pertama
-                                            alt={promo.name_promo}
-                                            className="w-40 h-40 object-cover rounded-md shadow-md"
-                                        />
-                                    ) : (
-                                        <img
-                                            src="/default-promo-image.jpg" // Gambar default jika promo tidak memiliki gambar
-                                            alt={promo.name_promo}
-                                            className="w-40 h-40 object-cover rounded-md shadow-md"
-                                        />
-                                    )}
-                                </div>
+                            {/* Gambar di sebelah kiri */}
+                            <div className="flex-shrink-0 mr-4">
+                                {promo.image_urls && promo.image_urls.length > 0 ? (
+                                    <img
+                                        src={promo.image_urls[0]} // Ambil gambar pertama
+                                        alt={promo.name_promo}
+                                        className="w-24 h-24 object-cover rounded-md" // Ukuran gambar lebih besar
+                                    />
+                                ) : (
+                                    <img
+                                        src="/default-promo-image.jpg" // Gambar default jika promo tidak memiliki gambar
+                                        alt={promo.name_promo}
+                                        className="w-24 h-24 object-cover rounded-md" // Ukuran gambar lebih besar
+                                    />
+                                )}
+                            </div>
 
-                                {/* Deskripsi di sebelah kanan */}
-                                <div className="flex flex-col justify-between">
-                                    <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2 uppercase">{promo.product_name}</h3>
-                                    <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">{promo.description_promo}</p>
-                                    <div className="mb-4">
-                                        <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">Price: ${promo.price_promo}</p>
-                                        <p className="text-lg font-semibold text-red-500">Discount: {promo.discount}%</p>
-                                    </div>
-                                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">
-                                        Valid from {new Date(promo.start_promo).toLocaleDateString()} to {new Date(promo.end_promo).toLocaleDateString()}
-                                    </p>
-                                    <a href="#" className="text-xs text-primaryColor hover:text-primaryColorDark underline">Read More</a>
-                                </div>
+                            {/* Deskripsi di sebelah kanan */}
+                            <div className="flex flex-col justify-between">
+                                <h3 className="text-lg font-bold mb-1 uppercase">{promo.product_name}</h3>
+                                <p className="text-sm text-gray-600 mb-2">{promo.description_promo}</p>
+                                <p className="text-lg font-semibold mb-1">Price: ${promo.price_promo}</p>
+                                <p className="text-lg text-red-500 font-semibold mb-1">Discount: {promo.discount}%</p>
+                                <p className="text-sm text-secondaryColor">
+                                    Valid from {new Date(promo.start_promo).toLocaleDateString()} to {new Date(promo.end_promo).toLocaleDateString()}
+                                </p>
+                                <a href="#" className="text-sm text-primaryColor underline mt-2">Read More</a>
                             </div>
                         </div>
                     ))}
