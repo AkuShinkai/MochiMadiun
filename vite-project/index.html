@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!--~~~~~~~~~~~~~~~ Favicon ~~~~~~~~~~~~~~~-->
-    <link rel="shortcut icon" href="/src/assets/[LT]-Dinada.png " type="image/x-icon" />
+    <link rel="shortcut icon" href="/src/assets/[LT]-Dinada.png" type="image/x-icon" />
 
     <!--~~~~~~~~~~~~~~~ Font Awesome ~~~~~~~~~~~~~~~-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -21,20 +21,78 @@
     <link href="index.css" rel="stylesheet" />
 
     <title>Mochi Madiun by Nada</title>
+
+    <style>
+        /* Adjust the position of buttons */
+        #scroll-up {
+            bottom: 70px; /* Spacing between buttons */
+            background-color: #cc3433;
+        }
+
+        #cart-button {
+            bottom: 20px; /* Increased space for cart button */
+        }
+
+        /* Add responsive behavior for smaller screens */
+        @media screen and (max-width: 768px) {
+            #scroll-up {
+                bottom: 60px;
+            }
+
+            #cart-button {
+                bottom: 10px;
+            }
+        }
+    </style>
 </head>
 
 <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
 
+    <!-- Scroll Up Button -->
     <a href="#"
-        class="fixed right-4 -bottom-1/2 shadow-sm inline-block px-4 py-4 rounded-full text-lg text-black font-bold z-50 hover:-translate-y-1 ease-in duration-200"
+        class="fixed right-4 bottom-10 shadow-sm inline-block px-4 py-4 rounded-full text-lg text-white font-bold z-50 hover:-translate-y-1 ease-in duration-200 opacity-0"
         id="scroll-up">
         <i class="fa-solid fa-arrow-up font-bold"></i>
     </a>
 
+    <!-- Cart Button -->
+    <a href="/cart"
+        class="fixed right-4 bottom-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full shadow-md z-50 opacity-0"
+        id="cart-button">
+        <i class="fas fa-shopping-cart"></i> Cart
+    </a>
+
     <!-- ~~~~~~~~~~~~~~~ Scroll Reveal ~~~~~~~~~~~~~~~ -->
     <script src="https://unpkg.com/scrollreveal"></script>
+
+    <!-- Main.js for Scroll Effect -->
+    <script>
+        window.addEventListener("scroll", function () {
+            const scrollUpButton = document.getElementById("scroll-up");
+            const cartButton = document.getElementById("cart-button");
+
+            // Scroll up button visibility
+            if (window.scrollY > 100) {
+                scrollUpButton.classList.add("opacity-100");
+                scrollUpButton.classList.remove("opacity-0");
+            } else {
+                scrollUpButton.classList.add("opacity-0");
+                scrollUpButton.classList.remove("opacity-100");
+            }
+
+            // Cart button visibility (optional, if you want it to show on scroll too)
+            if (window.scrollY > 200) {
+                cartButton.classList.add("opacity-100");
+                // cartButton.classList.remove("opacity-0");
+            } else {
+                // cartButton.classList.add("opacity-0");
+                // cartButton.classList.remove("opacity-100");
+            }
+        });
+    </script>
+
     <!--~~~~~~~~~~~~~~~ Main.js ~~~~~~~~~~~~~~~-->
     <script src="main.js"></script>
 </body>

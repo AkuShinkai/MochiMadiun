@@ -15,6 +15,7 @@ import OrderPage from './pages/OrderPage.jsx';
 import AddPromo from './AdminPages/AddPromo.jsx';
 import PromoList from './AdminPages/PromoList.jsx';
 import UserList from './AdminPages/UserList.jsx';
+import Cart from './pages/Cart.jsx';
 
 
 const router = createBrowserRouter([
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
             {
                 path: "/order/:id",
                 element: <OrderPage />
+            },
+            {
+                path: "/cart",
+                element: <Cart />
             },
             {
                 path: '*',

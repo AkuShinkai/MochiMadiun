@@ -27,7 +27,18 @@ const DetailItem = () => {
     }
 
     const handleOrder = () => {
-        navigate(`/order/${id}`);
+        // Get current cart from localStorage, or create a new one if it's empty
+        const currentCart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        // Add the current item to the cart
+        currentCart.push(item);
+
+        // Save the updated cart to localStorage
+        localStorage.setItem('cart', JSON.stringify(currentCart));
+        console.log(localStorage)
+
+        // // Navigate to order page (or directly to WhatsApp)
+        // navigate(`/order/${id}`);
     };
 
     // Slick settings for auto-slide and manual control
@@ -75,12 +86,8 @@ const DetailItem = () => {
                             <h1 className="text-3xl font-bold mb-4">{item.name}</h1>
                             <p className="text-lg mb-6">{item.description}</p>
                             <div className="mb-6">
-                                <table className="table-auto text-white">
+                                <table className="table-auto text-black">
                                     <tbody>
-                                        <tr>
-                                            <td className="font-semibold pr-2">Stock:</td>
-                                            <td>{item.stock}</td>
-                                        </tr>
                                         <tr>
                                             <td className="font-semibold pr-2">Price:</td>
                                             <td>{item.price}</td>

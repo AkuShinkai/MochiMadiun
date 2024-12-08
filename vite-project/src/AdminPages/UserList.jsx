@@ -8,7 +8,7 @@ const UserList = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
-
+    const [successMessage, setSuccessMessage] = useState(null);
 
     const [newUser, setNewUser] = useState({
         name: '',
@@ -54,6 +54,8 @@ const UserList = () => {
         setSelectedUser(null);
         setIsModalOpen(false);
         setIsAddModalOpen(false);
+        setSuccessMessage(null);
+        setError(null);
     };
 
     const handleCreateUser = async (e) => {
@@ -72,6 +74,7 @@ const UserList = () => {
             }
             await axiosClient.post('/admins', newUser);
             fetchUsers();
+            setSuccessMessage('User added successfully!');
             closeModal();
         } catch (error) {
             setError('Failed to add user.');
@@ -97,6 +100,7 @@ const UserList = () => {
             setUsers((prevUsers) =>
                 prevUsers.map((user) => (user.id === selectedUser.id ? updatedUser : user))
             );
+            setSuccessMessage('User updated successfully!');
             closeModal();
         } catch (error) {
             setError('Failed to update user.');
@@ -111,6 +115,7 @@ const UserList = () => {
         try {
             await axiosClient.delete(`/admins/${userId}`);
             setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
+            setSuccessMessage('User deleted successfully!');
         } catch (error) {
             setError('Failed to delete user.');
             console.log(error.response ? error.response.data : error);
@@ -135,6 +140,7 @@ const UserList = () => {
                         </button>
                     </div>
                     {error && <div className="text-red-500 mb-3">{error}</div>}
+                    {successMessage && <div className="text-green-500 mb-3">{successMessage}</div>}
                     {loading ? (
                         <div className="flex justify-center items-center h-32">
                             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
@@ -160,7 +166,7 @@ const UserList = () => {
                                             <td
                                                 className={`py-3 px-6 ${user.status === 'active'
                                                     ? 'text-green-600 font-bold text-center'
-                                                    : 'text-red-600 font-bold text-pretty text-center'
+                                                    : 'text-red-600 font-bold text-center'
                                                     }`}
                                             >
                                                 {user.status === 'active' ? 'Aktif' : 'Tidak Aktif'}
@@ -309,7 +315,7 @@ const UserList = () => {
                                     />
                                 </div>
                                 <div className="mb-4">
-                                    <label className="font-semibold">Pessword</label>
+                                    <label className="font-semibold">Password</label>
                                     <input
                                         type="password"
                                         name="password"
@@ -344,10 +350,9 @@ const UserList = () => {
                                 <div className="mb-4">
                                     <label className="font-semibold">Peran</label>
                                     <select
-                                        name="roles"
-                                        value={updatedUser.roles}
+                                        value={updatedUser.roles || 'admin'}
                                         onChange={(e) => setUpdatedUser({ ...updatedUser, roles: e.target.value })}
-                                        className="border w-full px-3 py-2 rounded"
+                                        className="w-full p-2 border rounded"
                                     >
                                         <option value="admin">Admin</option>
                                         <option value="super admin">Super Admin</option>

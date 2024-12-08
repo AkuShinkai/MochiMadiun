@@ -9,9 +9,12 @@ const ItemList = () => {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [previewImages, setPreviewImages] = useState([]);
+    const [deleteItemId, setDeleteItemId] = useState(null);
+    const [updateSuccess, setUpdateSuccess] = useState(false);
     const navigate = useNavigate();
 
     const fetchItems = async () => {
@@ -25,16 +28,16 @@ const ItemList = () => {
         }
     };
 
-    const deleteProduct = async (id) => {
+    const deleteProduct = async () => {
         try {
-            const response = await axiosClient.delete(`/products/${id}`);
+            const response = await axiosClient.delete(`/products/${deleteItemId}`);
             alert(response.data.message); // Tampilkan pesan sukses
             fetchItems(); // Panggil ulang fungsi untuk memuat daftar produk
+            setIsConfirmDeleteOpen(false); // Close the delete confirmation modal
         } catch (error) {
             alert(error.response?.data?.message || 'Failed to delete product');
         }
     };
-
 
     useEffect(() => {
         fetchItems();
@@ -81,6 +84,7 @@ const ItemList = () => {
                 },
             });
 
+            setUpdateSuccess(true);
             fetchItems();
             closeModal();
         } catch (error) {
@@ -146,10 +150,9 @@ const ItemList = () => {
                                                 <button onClick={() => openModal(item)} title="Edit">
                                                     <FontAwesomeIcon icon={faEdit} className="text-blue-500 text-lg cursor-pointer hover:text-blue-700" />
                                                 </button>
-                                                <button onClick={() => deleteProduct(item.id)} title="Delete">
+                                                <button onClick={() => { setDeleteItemId(item.id); setIsConfirmDeleteOpen(true); }} title="Delete">
                                                     <FontAwesomeIcon icon={faTrashAlt} className="text-red-500 text-lg cursor-pointer hover:text-red-700" />
                                                 </button>
-
                                             </td>
                                         </tr>
                                     ))}
@@ -161,7 +164,7 @@ const ItemList = () => {
                     {isModalOpen && selectedItem && (
                         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
                             <div className="bg-white p-5 rounded-lg w-11/12 md:w-1/3 max-h-screen overflow-y-auto">
-                                <h2 className="text-xl font-bold mb-3">Edit Item</h2>
+                            <h2 className="text-xl font-bold mb-3">Edit Item</h2>
                                 <div className="mb-3">
                                     <label className="font-semibold">Name</label>
                                     <input
@@ -253,6 +256,38 @@ const ItemList = () => {
                                         className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
                                         onClick={closeModal}
                                     >
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {isConfirmDeleteOpen && (
+                        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
+                            <div className="bg-white p-5 rounded-lg w-11/12 md:w-1/3">
+                                <h2 className="text-xl font-bold mb-4">Confirm Deletion</h2>
+                                <p>Are you sure you want to delete this item?</p>
+
+                                <div className="flex justify-end space-x-3 mt-4">
+                                    <button className="bg-gray-300 text-black py-2 px-4 rounded-lg" onClick={() => setIsConfirmDeleteOpen(false)}>
+                                        Cancel
+                                    </button>
+                                    <button className="bg-red-500 text-white py-2 px-4 rounded-lg" onClick={deleteProduct}>
+                                        Confirm Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {updateSuccess && (
+                        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
+                            <div className="bg-white p-5 rounded-lg w-11/12 md:w-1/3">
+                                <h2 className="text-xl font-bold mb-4">Success</h2>
+                                <p>Your changes have been saved successfully!</p>
+                                <div className="flex justify-end mt-4">
+                                    <button className="bg-green-500 text-white py-2 px-4 rounded-lg" onClick={() => setUpdateSuccess(false)}>
                                         Close
                                     </button>
                                 </div>

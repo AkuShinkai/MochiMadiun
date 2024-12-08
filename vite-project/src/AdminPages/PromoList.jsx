@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axiosClient from '../axios-client';
 import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 const PromoList = () => {
     const [promos, setPromos] = useState([]);
@@ -10,8 +12,11 @@ const PromoList = () => {
     const [selectedPromo, setSelectedPromo] = useState(null);
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [previewImages, setPreviewImages] = useState([]);
+    const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+    const [promoToDelete, setPromoToDelete] = useState(null);
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);
+    const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
     const fetchPromos = async () => {
         try {
@@ -33,16 +38,32 @@ const PromoList = () => {
         }
     };
 
-    const handleDeletePromo = async (id) => {
-        if (window.confirm("Are you sure you want to delete this promo?")) {
-            try {
-                await axiosClient.delete(`/promos/${id}`);
-                setPromos((prevPromos) => prevPromos.filter((promo) => promo.id !== id));
-            } catch (error) {
-                setError("Failed to delete promo.");
-                console.error(error);
-            }
+
+
+    const handleDeletePromo = async () => {
+        try {
+            await axiosClient.delete(`/promos/${promoToDelete.id}`);
+            setPromos((prevPromos) => prevPromos.filter((promo) => promo.id !== promoToDelete.id));
+            setPromoToDelete(null);
+            setIsConfirmModalOpen(false);
+
+            // Tampilkan animasi konfirmasi
+            setShowDeleteConfirmation(true);
+            setTimeout(() => setShowDeleteConfirmation(false), 3000); // Sembunyikan setelah 3 detik
+        } catch (error) {
+            setError('Failed to delete promo.');
+            console.error(error);
         }
+    };
+
+    const openConfirmModal = (promo) => {
+        setPromoToDelete(promo);
+        setIsConfirmModalOpen(true);
+    };
+
+    const closeConfirmModal = () => {
+        setPromoToDelete(null);
+        setIsConfirmModalOpen(false);
     };
 
     useEffect(() => {
@@ -118,6 +139,17 @@ const PromoList = () => {
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="bg-white rounded-3xl shadow-md p-5">
                     <h1 className="text-2xl font-bold mb-6">Promo List</h1>
+                    {/* Pesan konfirmasi setelah penghapusan */}
+                    {showDeleteConfirmation && (
+                        <div
+                            className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg animate-fade-in-out"
+                            style={{
+                                animation: 'fade-in-out 3s ease-in-out',
+                            }}
+                        >
+                            Promo berhasil dihapus!
+                        </div>
+                    )}
                     {error && <div className="text-red-500 mb-3">{error}</div>}
 
                     {loading ? (
@@ -154,15 +186,20 @@ const PromoList = () => {
                                                 </td>
                                                 <td className="py-3 px-6">
                                                     {promo.image_urls?.map((url, idx) => (
-                                                        <img key={idx} src={url} alt={`Promo ${idx + 1}`} className="h-16 w-16 object-cover rounded-md" />
+                                                        <img
+                                                            key={idx}
+                                                            src={url}
+                                                            alt={`Promo ${idx + 1}`}
+                                                            className="h-16 w-16 object-cover rounded-md"
+                                                        />
                                                     )) || <span>No images available</span>}
                                                 </td>
-                                                <td className="py-3 px-6">
-                                                    <button className="text-blue-500 hover:text-blue-700" title="View/Edit" onClick={() => openModal(promo)}>
-                                                        <i className="fa fa-edit"></i>
+                                                <td className="py-3 px-6 space-x-4">
+                                                    <button className="text-blue-500 hover:text-blue-700" title="Edit" onClick={() => openModal(promo)}>
+                                                        <FontAwesomeIcon icon={faEdit} />
                                                     </button>
-                                                    <button className="text-red-500 hover:text-red-700 ml-4" title="Delete" onClick={() => handleDeletePromo(promo.id)}>
-                                                        <i className="fa fa-trash-alt"></i>
+                                                    <button className="text-red-500 hover:text-red-700" title="Delete" onClick={() => openConfirmModal(promo)}>
+                                                        <FontAwesomeIcon icon={faTrashAlt} />
                                                     </button>
                                                 </td>
                                             </tr>
@@ -172,6 +209,8 @@ const PromoList = () => {
                             </table>
                         </div>
                     )}
+
+                    {/* Modal Edit Promo */}
                     {isModalOpen && selectedPromo && (
                         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
                             <div className="bg-white p-5 rounded-lg w-11/12 md:w-1/3 max-h-screen overflow-y-auto">
@@ -200,7 +239,7 @@ const PromoList = () => {
 
                                 {/* Discount */}
                                 <div className="mb-3">
-                                    <label className="block text-sm font-semibold">Discount</label>
+                                    <label className="block text-sm font-semibold">Discount (%)</label>
                                     <input
                                         type="number"
                                         value={selectedPromo.discount}
@@ -209,9 +248,11 @@ const PromoList = () => {
                                             const priceBeforeDiscount = selectedPromo.product?.price || 0;
                                             const discountAmount = (priceBeforeDiscount * updatedDiscount) / 100;
                                             const priceAfterDiscount = priceBeforeDiscount - discountAmount;
-                                            setSelectedPromo({ ...selectedPromo, discount: updatedDiscount, priceAfterDiscount });
+                                            setSelectedPromo({ ...selectedPromo, discount: updatedDiscount, price_after_discount: priceAfterDiscount });
                                         }}
                                         className="w-full p-2 border rounded"
+                                        min="0"
+                                        max="100"
                                     />
                                 </div>
 
@@ -252,7 +293,7 @@ const PromoList = () => {
 
                                 {/* Status */}
                                 <div className="mb-3">
-                                    <label className="font-semibold">Status</label>
+                                    <label className="block text-sm font-semibold">Status</label>
                                     <select
                                         value={selectedPromo.status || 'available'}
                                         onChange={(e) => setSelectedPromo({ ...selectedPromo, status: e.target.value })}
@@ -318,16 +359,40 @@ const PromoList = () => {
                                 {/* Action Buttons */}
                                 <div className="flex justify-end mt-4">
                                     <button
-                                        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4"
+                                        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"
                                         onClick={() => handleUpdatePromo(selectedPromo)}
                                     >
                                         Update Promo
                                     </button>
                                     <button
-                                        className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mt-4 ml-2"
+                                        className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
                                         onClick={closeModal}
                                     >
                                         Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Modal Konfirmasi Hapus */}
+                    {isConfirmModalOpen && promoToDelete && (
+                        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
+                            <div className="bg-white p-6 rounded-lg w-11/12 md:w-1/3">
+                                <h2 className="text-xl font-bold mb-4">Konfirmasi Hapus Promo</h2>
+                                <p>Apakah Anda yakin ingin menghapus promo: <strong>{promoToDelete.name_promo}</strong>?</p>
+                                <div className="flex justify-end mt-6 space-x-4">
+                                    <button
+                                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                                        onClick={handleDeletePromo}
+                                    >
+                                        Hapus
+                                    </button>
+                                    <button
+                                        className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+                                        onClick={closeConfirmModal}
+                                    >
+                                        Batal
                                     </button>
                                 </div>
                             </div>
