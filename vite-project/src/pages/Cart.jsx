@@ -8,6 +8,7 @@ const Cart = () => {
     useEffect(() => {
         // Ambil data keranjang dari localStorage
         const currentCart = JSON.parse(localStorage.getItem('cart')) || [];
+        // localStorage.removeItem('cart')
         setCart(currentCart);
     }, []);
 
@@ -27,7 +28,7 @@ const Cart = () => {
     };
 
     return (
-        <div className="container mx-auto px-4 py-10">
+        <div className="container mx-auto px-4 py-40">
             <h2 className="text-3xl font-bold mb-6">Your Cart</h2>
             <div className="space-y-4">
                 {cart.length === 0 ? (

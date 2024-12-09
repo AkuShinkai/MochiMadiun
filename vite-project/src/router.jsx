@@ -7,7 +7,7 @@ import AppElement from './AppElement.jsx';
 import AppAdmin from './AppAdmin.jsx';
 import AppAuth from './AppAuth.jsx';
 import Login from './pages/Login.jsx';
-import Register from './pages/Register.jsx';
+// import Register from './pages/Register.jsx';
 import AddItems from './AdminPages/AddItems.jsx';
 import ItemList from './AdminPages/ItemList.jsx';
 import DetailItem from './pages/DetailItem.jsx';
@@ -53,10 +53,10 @@ const router = createBrowserRouter([
                 path: '/login',
                 element: <Login />
             },
-            {
-                path: '/register',
-                element: <Register />
-            },
+            // {
+            //     path: '/register',
+            //     element: <Register />
+            // },
             {
                 path: '*',
                 element: <NotFound />,

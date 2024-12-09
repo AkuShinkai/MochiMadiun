@@ -30,7 +30,7 @@ const AuthNav = () => {
                                 Login
                             </a>
                         </li>
-                        <li className={currentPath === '/register' ? 'active-class' : ''}>
+                        {/* <li className={currentPath === '/register' ? 'active-class' : ''}>
                             <a
                                 href="/register"
                                 className={`hover:text-secondaryColor ease-in duration-200 ${currentPath === '/register' ? 'active-class' : ''
@@ -38,7 +38,7 @@ const AuthNav = () => {
                             >
                                 Register
                             </a>
-                        </li>
+                        </li> */}
                     </ul>
 
                     <div className="absolute top-[0.7rem] right-4 text-2xl cursor-pointer md:hidden" id="nav-close">

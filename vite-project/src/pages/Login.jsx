@@ -9,7 +9,7 @@ function Login() {
     const emailRef = useRef();
     const passwordRef = useRef();
     const [errors, setErrors] = useState(null);
-    const { setUser, setToken } = useStateContext();
+    const { setUser, setToken, setRoles } = useStateContext();
 
     const onSubmit = (ev) => {
         ev.preventDefault();
@@ -25,6 +25,7 @@ function Login() {
             .then(({ data }) => {
                 setUser(data.user);
                 setToken(data.token);
+                setRoles(data.roles);
                 localStorage.setItem('USER_ROLES', data.roles);
 
                 // Arahkan berdasarkan peran pengguna
@@ -90,12 +91,12 @@ function Login() {
                         <button className="bg-[#FF9843] rounded-xl text-white py-2 hover:scale-105 duration-300" title="login" >Login</button>
                     </form>
 
-                    <div className="mt-3 text-xs flex justify-between items-center text-[#002D74]">
+                    {/* <div className="mt-3 text-xs flex justify-between items-center text-[#002D74]">
                         <p>Don't have an account?</p>
                         <button
                             onClick={handleClick}
                             className="py-2 px-5 bg-white border rounded-xl hover:scale-110 duration-300" >Register</button>
-                    </div>
+                    </div> */}
                 </div>
 
                 <div className="md:block hidden w-1/2">

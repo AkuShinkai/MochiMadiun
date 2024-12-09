@@ -18,6 +18,7 @@ export const ContextProvider = ({ children }) => {
     });
     const [token, _setToken] = useState(localStorage.getItem('ACCESS_TOKEN'));
     const [roles, setRoles] = useState(localStorage.getItem('USER_ROLES'));
+    // localStorage.removeItem('ACCESS_TOKEN')
 
     // useEffect(() => {
     //     if (token) {
