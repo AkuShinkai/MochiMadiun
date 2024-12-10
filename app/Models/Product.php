@@ -24,4 +24,9 @@ class Product extends Model implements HasMedia
     {
         return $this->belongsTo(User::class, 'id_user');
     }
+
+    public function promos()
+    {
+        return $this->hasMany(Promo::class, 'id_product');
+    }
 }

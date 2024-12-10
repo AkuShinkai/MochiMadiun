@@ -26,7 +26,7 @@ const Cart = () => {
             localStorage.setItem('cart', JSON.stringify(updatedCart));
 
             // Tampilkan notifikasi
-            setNotification('Item removed successfully!');
+            setNotification('Item berhasil dihapus!');
             setTimeout(() => setNotification(null), 3000);
 
             // Tutup modal
@@ -36,11 +36,15 @@ const Cart = () => {
     };
 
     const createOrderMessage = (cart) => {
-        let message = 'I would like to order the following products:\n\n';
+        let message = 'Saya ingin memesan produk berikut:\n\n';
         cart.forEach(item => {
-            message += `${item.name} - $${item.price}\n`;
+            message += `- ${item.name} - Rp ${item.price}\n`;
+            if (item.discount > 0) {
+                message += `  *Promo:* Diskon ${item.discount}% - Harga Setelah Diskon: Rp ${getDiscountedPrice(item)}\n`;
+            }
+            message += `\n`;
         });
-        message += '\nThank you!';
+        message += '\nTerima kasih!';
         return message;
     };
 
@@ -49,68 +53,87 @@ const Cart = () => {
         window.open(`https://wa.me/+6285790258894?text=${encodeURIComponent(orderMessage)}`, '_blank');
     };
 
+    const getDiscountedPrice = (item) => {
+        if (item.discount > 0) {
+            const discountedPrice = item.originalPrice - (item.originalPrice * (item.discount / 100));
+            return discountedPrice;
+        }
+        return null; // No discount
+    };
+
     return (
-        <div className="container mx-auto px-4 py-40">
-            <h2 className="text-3xl font-bold mb-6">Your Cart</h2>
-            <div className="space-y-4">
+        <div className="container mx-auto px-4 py-12">
+            <h2 className="text-3xl font-bold mb-6 text-gray-800 text-center sm:text-left">Keranjang Anda</h2>
+            <div className="space-y-6">
                 {cart.length === 0 ? (
-                    <p>Your cart is empty. Add products to the cart first.</p>
+                    <p className="text-lg text-gray-600 text-center">Keranjang Anda kosong. Tambahkan produk terlebih dahulu.</p>
                 ) : (
-                    <ul>
-                        {cart.map((item, index) => (
-                            <li key={index} className="flex justify-between items-center py-4 border-b space-x-4">
-                                <div className="flex items-center space-x-4">
-                                    {item.image_urls && item.image_urls.length > 0 && (
-                                        <img
-                                            src={item.image_urls[0]}
-                                            alt={item.name}
-                                            className="w-16 h-16 object-cover rounded-lg"
-                                        />
-                                    )}
-                                    <div>
-                                        <h3 className="font-bold text-lg">{item.name}</h3>
-                                        <p className="text-gray-600 text-sm">{item.description}</p>
+                    <ul className="space-y-4">
+                        {cart.map((item, index) => {
+                            const discountedPrice = getDiscountedPrice(item); // Get discounted price if available
+                            return (
+                                <li key={index} className="flex flex-col sm:flex-row justify-between items-center py-4 border-b border-gray-300 sm:space-x-4">
+                                    <div className="flex items-center space-x-4 w-full sm:w-auto">
+                                        {item.image_urls && item.image_urls.length > 0 && (
+                                            <img
+                                                src={item.image_urls[0]}
+                                                alt={item.name}
+                                                className="w-20 h-20 object-cover rounded-lg"
+                                            />
+                                        )}
+                                        <div>
+                                            <h3 className="font-semibold text-lg text-gray-800">{item.name}</h3>
+                                            <p className="text-gray-600 text-sm">{item.description}</p>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="flex items-center space-x-4">
-                                    <span className="font-bold">${item.price}</span>
-                                    <button
-                                        className="text-red-500 hover:text-red-700"
-                                        onClick={() => handleConfirmDelete(index)}
-                                    >
-                                        <i className="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </li>
-                        ))}
+                                    <div className="flex items-center space-x-6 mt-4 sm:mt-0">
+                                        {/* Tampilkan harga dengan promo jika ada */}
+                                        {discountedPrice ? (
+                                            <>
+                                                <span className="line-through text-gray-500">Rp {item.originalPrice}</span>
+                                                <span className="font-semibold text-lg text-red-600">Rp {discountedPrice}</span>
+                                            </>
+                                        ) : (
+                                            <span className="font-semibold text-lg text-gray-800">Rp {item.price}</span>
+                                        )}
+                                        <button
+                                            className="text-red-600 hover:text-red-800"
+                                            onClick={() => handleConfirmDelete(index)}
+                                        >
+                                            <i className="fas fa-trash-alt"></i> Hapus
+                                        </button>
+                                    </div>
+                                </li>
+                            );
+                        })}
                     </ul>
                 )}
             </div>
             <button
-                className="mt-6 bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg"
+                className="mt-6 bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg w-full sm:w-auto flex items-center justify-center mx-auto"
                 onClick={handleWhatsAppOrder}
             >
-                Order via WhatsApp
+                <i className="fab fa-whatsapp mr-2"></i> Pesan lewat WhatsApp
             </button>
 
             {/* Modal Konfirmasi Hapus */}
             {showModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm">
-                        <h3 className="text-xl font-bold mb-4">Confirm Delete</h3>
-                        <p>Are you sure you want to remove this item from the cart?</p>
-                        <div className="mt-4 flex justify-end space-x-4">
+                    <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+                        <h3 className="text-xl font-bold mb-4 text-gray-800">Konfirmasi Hapus</h3>
+                        <p className="text-gray-600 mb-4">Apakah Anda yakin ingin menghapus item ini dari keranjang?</p>
+                        <div className="flex justify-end space-x-4">
                             <button
                                 className="bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded-lg"
                                 onClick={() => setShowModal(false)}
                             >
-                                Cancel
+                                Batal
                             </button>
                             <button
-                                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg"
+                                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg"
                                 onClick={handleRemoveItem}
                             >
-                                Delete
+                                Hapus
                             </button>
                         </div>
                     </div>
@@ -119,8 +142,8 @@ const Cart = () => {
 
             {/* Notifikasi */}
             {notification && (
-                <div className="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50">
-                    {notification}
+                <div className="fixed top-4 right-4 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 flex items-center">
+                    <i className="fas fa-check-circle mr-2"></i>{notification}
                 </div>
             )}
         </div>

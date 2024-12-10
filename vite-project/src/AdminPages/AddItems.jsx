@@ -9,7 +9,7 @@ const AddItems = () => {
         image: [],
         price: '',
         status: 'not available',
-        category: '',
+        category: 'mochi daifuku',
     });
 
     const [error, setError] = useState(null);
