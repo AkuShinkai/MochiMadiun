@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import axiosClient from '../axios-client';
 import Slider from 'react-slick';
 
 const DetailItem = () => {
     const { id } = useParams();
     const [item, setItem] = useState(null);
-    const navigate = useNavigate();
+    const [notification, setNotification] = useState(null); // State for notification
 
     useEffect(() => {
         const fetchItem = async () => {
             try {
                 const response = await axiosClient.get(`/products/${id}`);
                 setItem(response.data);
-                console.log(response.data);
             } catch (error) {
                 console.error('Failed to fetch item:', error);
             }
@@ -35,25 +34,29 @@ const DetailItem = () => {
 
         // Save the updated cart to localStorage
         localStorage.setItem('cart', JSON.stringify(currentCart));
-        console.log(localStorage)
 
-        // // Navigate to order page (or directly to WhatsApp)
-        // navigate(`/order/${id}`);
+        // Show success notification
+        setNotification('Item added to cart!');
+
+        // Remove notification after 3 seconds
+        setTimeout(() => {
+            setNotification(null);
+        }, 3000);
     };
 
     // Slick settings for auto-slide and manual control
     const settings = {
-        dots: true, // Show dots for navigation
-        infinite: true, // Infinite loop
-        speed: 500, // Transition speed
-        slidesToShow: 1, // Show one image at a time
-        slidesToScroll: 1, // Scroll one image at a time
-        autoplay: true, // Auto slide
-        autoplaySpeed: 3000, // Delay for auto slide
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 3000,
     };
 
     return (
-        <section id="detailitem" className="bg-primaryColorLight py-10 pt-24">
+        <section id="detailitem" className="bg-primaryColorLight py-10 pt-24 relative">
             <div className="container mx-auto px-4 md:px-0">
                 <div className="max-w-screen-lg mx-auto bg-primaryColor rounded-3xl shadow-md overflow-hidden">
                     <div className="md:flex">
@@ -109,6 +112,12 @@ const DetailItem = () => {
                     </div>
                 </div>
             </div>
+            {/* Toast Notification */}
+            {notification && (
+                <div className="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50">
+                    {notification}
+                </div>
+            )}
         </section>
     );
 };
