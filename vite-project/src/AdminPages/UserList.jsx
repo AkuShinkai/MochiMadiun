@@ -136,7 +136,7 @@ const UserList = () => {
                             onClick={openAddModal}
                             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                         >
-                            Add Admin
+                            Tambah Admin
                         </button>
                     </div>
                     {error && <div className="text-red-500 mb-3">{error}</div>}
@@ -150,9 +150,9 @@ const UserList = () => {
                             <table className="min-w-full bg-gray-50 rounded-xl shadow">
                                 <thead>
                                     <tr>
-                                        <th className="py-3 px-6 text-left text-sm font-bold text-black bg-gray-200">Name</th>
+                                        <th className="py-3 px-6 text-left text-sm font-bold text-black bg-gray-200">Nama</th>
                                         <th className="py-3 px-6 text-left text-sm font-bold text-black bg-gray-200">Email</th>
-                                        <th className="py-3 px-6 text-left text-sm font-bold text-black bg-gray-200">Role</th>
+                                        <th className="py-3 px-6 text-left text-sm font-bold text-black bg-gray-200">Peran</th>
                                         <th className="py-3 px-6 text-sm font-bold text-black bg-gray-200 text-center">Status</th>
                                         <th className="py-3 px-6 text-sm font-bold text-black bg-gray-200 text-center">Actions</th>
                                     </tr>
@@ -197,7 +197,7 @@ const UserList = () => {
                 {isAddModalOpen && (
                     <div className="fixed inset-0 flex items-center justify-center px-5 bg-black bg-opacity-50 z-50">
                         <div className="bg-white p-4 sm:p-6 rounded-lg shadow-lg w-full max-w-md sm:max-w-lg">
-                            <h2 className="text-lg font-bold mb-4">Add Admin</h2>
+                            <h2 className="text-lg font-bold mb-4">Tambah Admin</h2>
                             <form onSubmit={handleCreateUser}>
                                 <div className="mb-4">
                                     <label className="font-semibold">Nama<span className='text-red-600'>*</span></label>
@@ -272,13 +272,13 @@ const UserList = () => {
                                         onClick={closeModal}
                                         className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400 transition"
                                     >
-                                        Cancel
+                                        Batal
                                     </button>
                                     <button
                                         type="submit"
                                         className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
                                     >
-                                        Save
+                                        Simpan
                                     </button>
                                 </div>
                             </form>
@@ -364,13 +364,13 @@ const UserList = () => {
                                         onClick={closeModal}
                                         className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400 transition"
                                     >
-                                        Cancel
+                                        Batal
                                     </button>
                                     <button
                                         type="submit"
                                         className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
                                     >
-                                        Save
+                                        Simpan
                                     </button>
                                 </div>
                             </form>

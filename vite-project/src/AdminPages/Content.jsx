@@ -17,7 +17,8 @@ const Contents = () => {
         abouts: '',
         about_decs: '',
         phones: '',
-        emails: ''
+        emails: '',
+        alamat: ''
     });
 
     const [updatedContent, setUpdatedContent] = useState({
@@ -30,17 +31,18 @@ const Contents = () => {
         abouts: '',
         about_decs: '',
         phones: '',
-        emails: ''
+        emails: '',
+        alamat: ''
     });
 
-    const [selectedColumn, setSelectedColumn] = useState(''); // Track selected column for add/edit
+    const [selectedColumn, setSelectedColumn] = useState(''); // Melacak kolom yang dipilih untuk ditambah/edit
 
     const fetchContent = async () => {
         try {
             const response = await axiosClient.get('/content');
             setContent(response.data);  // Mengambil satu konten
         } catch (error) {
-            setError('Failed to fetch content.');
+            setError('Gagal mengambil konten.');
         } finally {
             setLoading(false);
         }
@@ -65,7 +67,7 @@ const Contents = () => {
 
         // Pastikan nilai kolom tidak kosong
         if (!updatedContent[selectedColumn]) {
-            setError(`${selectedColumn} is required.`);
+            setError(`${selectedColumn} harus diisi.`);
             return;
         }
 
@@ -73,22 +75,22 @@ const Contents = () => {
             if (content && content[selectedColumn] !== undefined) {
                 // Jika konten sudah ada, lakukan update kolom tertentu
                 await axiosClient.put(`/content/${selectedColumn}`, { [selectedColumn]: updatedContent[selectedColumn] });
-                setSuccessMessage(`${selectedColumn} updated successfully!`);
+                setSuccessMessage(`${selectedColumn} berhasil diperbarui!`);
             } else {
                 // Jika konten belum ada, lakukan penambahan kolom
                 await axiosClient.post('/content', updatedContent);
-                setSuccessMessage(`${selectedColumn} added successfully!`);
+                setSuccessMessage(`${selectedColumn} berhasil ditambahkan!`);
             }
 
             fetchContent(); // Refresh konten setelah update
             closeModal();   // Menutup modal setelah aksi selesai
         } catch (error) {
-            setError('Failed to save content.');
+            setError('Gagal menyimpan konten.');
         }
     };
 
     const handleDeleteContentColumn = async (column) => {
-        if (!window.confirm(`Are you sure you want to delete this ${column}?`)) {
+        if (!window.confirm(`Apakah Anda yakin ingin menghapus ${column} ini?`)) {
             return;
         }
 
@@ -100,19 +102,19 @@ const Contents = () => {
             // Memanggil API untuk menghapus kolom dari server
             await axiosClient.put(`/content/${column}`, { [column]: '' });
 
-            setSuccessMessage(`${column} deleted successfully!`);
+            setSuccessMessage(`${column} berhasil dihapus!`);
         } catch (error) {
-            setError('Failed to delete column content.');
+            setError('Gagal menghapus kolom konten.');
         }
     };
 
     useEffect(() => {
-        fetchContent();  // Fetch konten saat pertama kali render
+        fetchContent();  // Ambil konten saat pertama kali render
     }, []);
 
     const renderTableData = (column, contentValue) => {
         return (
-            <td className="py-3 px-6 text-gray-600">
+            <td className="py-3 px-6 text-gray-600 border-b-2">
                 {contentValue || "Belum ada data"}
             </td>
         );
@@ -122,7 +124,7 @@ const Contents = () => {
         <section id="contents" className="pt-4">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="bg-white rounded-3xl shadow-md p-5">
-                    <h1 className="text-2xl font-bold mb-6">Content</h1>
+                    <h1 className="text-2xl font-bold mb-6">Konten</h1>
                     {error && <div className="text-red-500 mb-3">{error}</div>}
                     {successMessage && <div className="text-green-500 mb-3">{successMessage}</div>}
                     {loading ? (
@@ -134,28 +136,29 @@ const Contents = () => {
                             <table className="min-w-full bg-gray-50 rounded-xl shadow">
                                 <thead>
                                     <tr>
-                                        <th className="py-3 px-6 text-left text-sm font-bold text-black bg-gray-200">Column Name</th>
-                                        <th className="py-3 px-6 text-left text-sm font-bold text-black bg-gray-200">Content</th>
-                                        <th className="py-3 px-6 text-sm font-bold text-black bg-gray-200 text-center">Actions</th>
+                                        <th className="py-3 px-6 text-left text-sm font-bold text-black bg-gray-200">Nama Kolom</th>
+                                        <th className="py-3 px-6 text-left text-sm font-bold text-black bg-gray-200">Konten</th>
+                                        <th className="py-3 px-6 text-sm font-bold text-black bg-gray-200 text-center">Action</th>
                                     </tr>
                                 </thead>
-                                <tbody className='text-justify'>
+                                <tbody className='text-justify border-b-2'>
                                     {[
-                                        ["IG Links", "ig_links"],
-                                        ["FB Links", "fb_links"],
-                                        ["Twitter Links", "twitter_links"],
-                                        ["Tiktok Links", "tiktok_links"],
+                                        ["Tautan IG", "ig_links"],
+                                        ["Tautan FB", "fb_links"],
+                                        ["Tautan Twitter", "twitter_links"],
+                                        ["Tautan Tiktok", "tiktok_links"],
                                         ["Header", "headers"],
-                                        ["Header Description", "header_decs"],
-                                        ["About", "abouts"],
-                                        ["About Description", "about_decs"],
-                                        ["Phone", "phones"],
-                                        ["Email", "emails"]
+                                        ["Deskripsi Header", "header_decs"],
+                                        ["Tentang", "abouts"],
+                                        ["Deskripsi Tentang", "about_decs"],
+                                        ["Telepon", "phones"],
+                                        ["Email", "emails"],
+                                        ["Alamat", "alamat"]
                                     ].map(([column, field]) => (
                                         <tr key={field}>
-                                            <td className="py-3 px-6 text-gray-600">{column}</td>
+                                            <td className="py-3 px-6 text-gray-600 border-b-2">{column}</td>
                                             {renderTableData(field, content[field])}
-                                            <td className="py-3 px-6 text-gray-600 text-center">
+                                            <td className="py-3 px-6 text-gray-600 text-center border-b-2">
                                                 <button
                                                     className="text-blue-500 hover:text-blue-700 mr-3"
                                                     onClick={() => openEditModal(field, content[field])}
@@ -175,15 +178,15 @@ const Contents = () => {
                             </table>
                         </div>
                     ) : (
-                        <p>No content available</p>
+                        <p>Tidak ada konten yang tersedia</p>
                     )}
                 </div>
 
-                {/* Edit or Add Content Modal */}
+                {/* Modal Edit atau Tambah Konten */}
                 {isModalOpen && (
                     <div className="fixed inset-0 flex items-center justify-center px-5 bg-black bg-opacity-50 z-50">
                         <div className="bg-white p-4 sm:p-6 rounded-lg shadow-lg w-full max-w-md sm:max-w-lg">
-                            <h2 className="text-lg font-bold mb-4">{content && content[selectedColumn] ? 'Edit' : 'Add'} {selectedColumn}</h2>
+                            <h2 className="text-lg font-bold mb-4">{content && content[selectedColumn] ? 'Edit' : 'Tambah'} {selectedColumn}</h2>
                             <form onSubmit={handleCreateOrUpdateContent}>
                                 <div className="mb-4">
                                     <label className="font-semibold">{selectedColumn}</label>
@@ -202,13 +205,13 @@ const Contents = () => {
                                         onClick={closeModal}
                                         className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400 transition"
                                     >
-                                        Cancel
+                                        Batal
                                     </button>
                                     <button
                                         type="submit"
                                         className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
                                     >
-                                        Save Changes
+                                        Simpan Perubahan
                                     </button>
                                 </div>
                             </form>

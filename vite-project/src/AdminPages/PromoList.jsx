@@ -161,7 +161,7 @@ const PromoList = () => {
                             <table className="min-w-full bg-gray-50 rounded-xl shadow-md">
                                 <thead>
                                     <tr>
-                                        {['Promo Name', 'Description', 'Price Before Discount', 'Price After Discount', 'Discount', 'Start Promo', 'End Promo', 'Status', 'Images', 'Actions'].map((header) => (
+                                        {['Nama Promo', 'Deskripsi', 'Harga Sebelum Diskon', 'Harga Setelah Diskon', 'Diskon', 'Mulai Promo', 'Akhir Promo', 'Status', 'Gambar', 'Actions'].map((header) => (
                                             <th key={header} className="py-4 px-6 text-left bg-gray-200 text-sm font-bold text-black">{header}</th>
                                         ))}
                                     </tr>
@@ -218,7 +218,7 @@ const PromoList = () => {
 
                                 {/* Promo Name */}
                                 <div className="mb-3">
-                                    <label className="block text-sm font-semibold">Promo Name</label>
+                                    <label className="block text-sm font-semibold">Nama Promo</label>
                                     <input
                                         type="text"
                                         value={selectedPromo.name_promo}
@@ -229,7 +229,7 @@ const PromoList = () => {
 
                                 {/* Description */}
                                 <div className="mb-3">
-                                    <label className="block text-sm font-semibold">Description</label>
+                                    <label className="block text-sm font-semibold">Deskripsi</label>
                                     <textarea
                                         value={selectedPromo.description_promo}
                                         onChange={(e) => setSelectedPromo({ ...selectedPromo, description_promo: e.target.value })}
@@ -239,7 +239,7 @@ const PromoList = () => {
 
                                 {/* Discount */}
                                 <div className="mb-3">
-                                    <label className="block text-sm font-semibold">Discount (%)</label>
+                                    <label className="block text-sm font-semibold">Diskon (%)</label>
                                     <input
                                         type="number"
                                         value={selectedPromo.discount}
@@ -258,20 +258,20 @@ const PromoList = () => {
 
                                 {/* Preview Prices */}
                                 <div className="mb-3">
-                                    <label className="block text-sm font-semibold">Price Preview</label>
+                                    <label className="block text-sm font-semibold">Preview Harga</label>
                                     <div className="flex justify-between">
-                                        <span>Before Discount:</span>
+                                        <span>Sebelum Diskon:</span>
                                         <span>Rp.{selectedPromo.product?.price?.toLocaleString()}</span>
                                     </div>
                                     <div className="flex justify-between">
-                                        <span>After Discount:</span>
+                                        <span>Setelah Diskon:</span>
                                         <span>Rp.{(selectedPromo.product?.price - (selectedPromo.product?.price * selectedPromo.discount) / 100)?.toLocaleString()}</span>
                                     </div>
                                 </div>
 
                                 {/* Start Promo */}
                                 <div className="mb-3">
-                                    <label className="block text-sm font-semibold">Start Promo</label>
+                                    <label className="block text-sm font-semibold">Mulai Promo</label>
                                     <input
                                         type="date"
                                         value={selectedPromo.start_promo}
@@ -282,7 +282,7 @@ const PromoList = () => {
 
                                 {/* End Promo */}
                                 <div className="mb-3">
-                                    <label className="block text-sm font-semibold">End Promo</label>
+                                    <label className="block text-sm font-semibold">Akhir Promo</label>
                                     <input
                                         type="date"
                                         value={selectedPromo.end_promo}
@@ -299,14 +299,14 @@ const PromoList = () => {
                                         onChange={(e) => setSelectedPromo({ ...selectedPromo, status: e.target.value })}
                                         className="w-full p-2 border rounded"
                                     >
-                                        <option value="available">Available</option>
-                                        <option value="not available">Not Available</option>
+                                        <option value="available">Tersedia</option>
+                                        <option value="not available">Tidak Tersedia</option>
                                     </select>
                                 </div>
 
                                 {/* Product Selector */}
                                 <div className="mb-3">
-                                    <label className="block text-sm font-semibold">Product</label>
+                                    <label className="block text-sm font-semibold">Produk</label>
                                     <select
                                         value={selectedPromo.id_product}
                                         onChange={(e) => setSelectedPromo({ ...selectedPromo, id_product: e.target.value })}
@@ -322,7 +322,7 @@ const PromoList = () => {
 
                                 {/* Current Images */}
                                 <div className="mb-3">
-                                    <label className="block text-sm font-semibold">Current Images</label>
+                                    <label className="block text-sm font-semibold">Gambar Promo Saat Ini</label>
                                     <div className="flex flex-wrap gap-2">
                                         {selectedPromo.image_urls?.map((url, idx) => (
                                             <img
@@ -337,7 +337,7 @@ const PromoList = () => {
 
                                 {/* Upload New Images */}
                                 <div className="mb-3">
-                                    <label className="block text-sm font-semibold">Upload New Images</label>
+                                    <label className="block text-sm font-semibold">Upload Gambar Baru</label>
                                     <input
                                         type="file"
                                         multiple
@@ -368,7 +368,7 @@ const PromoList = () => {
                                         className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
                                         onClick={closeModal}
                                     >
-                                        Cancel
+                                        Batal
                                     </button>
                                 </div>
                             </div>
@@ -403,7 +403,7 @@ const PromoList = () => {
                         className="mt-4 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded"
                         onClick={navigateToAddPromo}
                     >
-                        Add New Promo
+                        Tambah Promo Baru
                     </button>
                 </div>
             </div>

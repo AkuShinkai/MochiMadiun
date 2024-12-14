@@ -25,7 +25,7 @@ const AddPromo = () => {
             .then(response => {
                 setProducts(response.data);
             })
-            .catch(error => setError('Failed to fetch products'));
+            .catch(error => setError('Gagal mengambil data produk'));
     }, []);
 
     const handleChange = (e) => {
@@ -64,13 +64,13 @@ const AddPromo = () => {
 
         try {
             await axiosClient.post('/promos', data);
-            setSuccess('Promo added successfully!');
-            navigate('/promo'); // Redirect to promo list page
+            setSuccess('Promo berhasil ditambahkan!');
+            navigate('/promo'); // Arahkan ke halaman daftar promo
         } catch (error) {
             if (error.response && error.response.data) {
-                setError(error.response.data.errors || 'Failed to add promo.');
+                setError(error.response.data.errors || 'Gagal menambahkan promo.');
             } else {
-                setError('Failed to add promo.');
+                setError('Gagal menambahkan promo.');
             }
         }
     };
@@ -82,12 +82,12 @@ const AddPromo = () => {
 
     return (
         <div className="container">
-            <h1 className="text-2xl font-bold mb-5">Add Promo</h1>
+            <h1 className="text-2xl font-bold mb-5">Tambah Promo</h1>
             {error && <div className="text-red-500 mb-3">{error}</div>}
             {success && <div className="text-green-500 mb-3">{success}</div>}
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="flex flex-col">
-                    <label htmlFor="name_promo" className="font-bold text-black">Promo Name</label>
+                    <label htmlFor="name_promo" className="font-bold text-black">Nama Promo</label>
                     <input
                         type="text"
                         id="name_promo"
@@ -99,7 +99,7 @@ const AddPromo = () => {
                     />
                 </div>
                 <div className="flex flex-col">
-                    <label htmlFor="description_promo" className="font-bold text-black">Description</label>
+                    <label htmlFor="description_promo" className="font-bold text-black">Deskripsi</label>
                     <textarea
                         id="description_promo"
                         name="description_promo"
@@ -110,7 +110,7 @@ const AddPromo = () => {
                     ></textarea>
                 </div>
                 <div className="flex flex-col">
-                    <label htmlFor="start_promo" className="font-bold text-black">Start Date</label>
+                    <label htmlFor="start_promo" className="font-bold text-black">Tanggal Mulai</label>
                     <input
                         type="date"
                         id="start_promo"
@@ -122,7 +122,7 @@ const AddPromo = () => {
                     />
                 </div>
                 <div className="flex flex-col">
-                    <label htmlFor="end_promo" className="font-bold text-black">End Date</label>
+                    <label htmlFor="end_promo" className="font-bold text-black">Tanggal Selesai</label>
                     <input
                         type="date"
                         id="end_promo"
@@ -134,7 +134,7 @@ const AddPromo = () => {
                     />
                 </div>
                 <div className="flex flex-col">
-                    <label htmlFor="id_product" className="font-bold text-black">Product</label>
+                    <label htmlFor="id_product" className="font-bold text-black">Produk</label>
                     <select
                         id="id_product"
                         name="id_product"
@@ -143,14 +143,14 @@ const AddPromo = () => {
                         className="border rounded p-2"
                         required
                     >
-                        <option value="">Select a Product</option>
+                        <option value="">Pilih Produk</option>
                         {products.map(product => (
                             <option key={product.id} value={product.id}>{product.name}</option>
                         ))}
                     </select>
                 </div>
                 <div className="flex flex-col">
-                    <label htmlFor="discount" className="font-bold text-black">Discount (%)</label>
+                    <label htmlFor="discount" className="font-bold text-black">Diskon (%)</label>
                     <input
                         type="number"
                         id="discount"
@@ -165,7 +165,7 @@ const AddPromo = () => {
                 {/* Debugging: Menampilkan nilai harga produk dan diskon */}
                 {productPrice > 0 && formData.discount !== '' && (
                     <div className="flex flex-col">
-                        <label className="font-bold text-black">Promo Price Preview</label>
+                        <label className="font-bold text-black">Pratinjau Harga Promo</label>
                         <p>Harga sebelum diskon: Rp {productPrice.toLocaleString()}</p>
                         <p>Harga setelah diskon: Rp {priceAfterDiscount.toFixed(2).toLocaleString()}</p>
                     </div>
@@ -182,13 +182,13 @@ const AddPromo = () => {
                         className="border rounded p-2 text-black"
                         required
                     >
-                        <option value="available">Available</option>
-                        <option value="not available">Not Available</option>
+                        <option value="available">Tersedia</option>
+                        <option value="not available">Tidak Tersedia</option>
                     </select>
                 </div>
 
                 <div className="flex flex-col">
-                    <label htmlFor="image_promo" className="font-bold text-black">Promo Image</label>
+                    <label htmlFor="image_promo" className="font-bold text-black">Gambar Promo</label>
                     <input
                         type="file"
                         id="image_promo"
@@ -200,11 +200,11 @@ const AddPromo = () => {
                 </div>
 
                 <div className="flex justify-between">
-                    <button type="submit" className="bg-blue-500 text-white p-2 rounded">Add Promo</button>
+                    <button type="submit" className="bg-blue-500 text-white p-2 rounded">Tambah Promo</button>
                     <button
                         onClick={() => window.history.back()}
                         className="inline-flex items-center bg-red-500 text-md px-3 py-1 rounded text-white hover:bg-red-600">
-                        <span>Cancel</span>
+                        <span>Batalkan</span>
                     </button>
                 </div>
             </form>

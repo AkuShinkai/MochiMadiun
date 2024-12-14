@@ -72,7 +72,7 @@ const Footer = () => {
 
                         <li className="space-y-8">
                             <div className="space-y-2">
-                                <h3 className="text-lg uppercase font-oswald">phone</h3>
+                                <h3 className="text-lg uppercase font-oswald">Telfon</h3>
 
                                 <p className="flex items-center gap-2 text-xs">
                                     <i className="fa-solid fa-phone text-lg text-secondaryColor"></i>
@@ -92,11 +92,11 @@ const Footer = () => {
 
                         <li className="space-y-8">
                             <div className="space-y-2">
-                                <h3 className="text-lg uppercase font-oswald">address</h3>
+                                <h3 className="text-lg uppercase font-oswald">alamat toko</h3>
 
                                 <p className="flex items-center gap-2 text-xs">
                                     <i className="fa-solid fa-location-dot text-lg text-secondaryColor"></i>
-                                    Athanor No 32
+                                    {content.alamat}
                                 </p>
                             </div>
 

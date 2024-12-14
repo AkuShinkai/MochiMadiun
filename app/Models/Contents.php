@@ -19,6 +19,7 @@ class Contents extends Model
         'abouts',
         'about_decs',
         'phones',
-        'emails'
+        'emails',
+        'alamat'
     ];
 }

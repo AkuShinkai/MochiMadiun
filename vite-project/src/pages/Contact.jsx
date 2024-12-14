@@ -14,7 +14,7 @@ function Contact() {
 
                     <div className="flex flex-col gap-3 md:flex-row md:flex-1">
                         <input type="email" placeholder="Email address" className="p-2 bg-white text-blackColor rounded-lg outline-none md:w-full" />
-                        <a href="" className="flex items-center justify-center gap-2 btn bg-primaryColorLight text-white hover:opacity-80">
+                        <a href="" className="flex items-center justify-center gap-2 btn bg-primaryColorLight text-black hover:opacity-80">
                             <i className="fa-solid fa-paper-plane"></i>
                             Subscribe
                         </a>

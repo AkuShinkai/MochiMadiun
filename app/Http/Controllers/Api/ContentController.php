@@ -29,6 +29,7 @@ class ContentController extends Controller
             'about_decs' => 'nullable|string',
             'phones' => 'nullable|string',
             'emails' => 'nullable|email',
+            'alamat' => 'nullable|email',
         ]);
 
         $content = Contents::first(); // Cek apakah sudah ada konten
@@ -73,7 +74,7 @@ class ContentController extends Controller
         }
 
         $column = $request->input('column');
-        if (in_array($column, ['ig_links', 'fb_links', 'twitter_links', 'tiktok_links','headers', 'header_decs', 'abouts', 'about_decs', 'phones', 'emails'])) {
+        if (in_array($column, ['ig_links', 'fb_links', 'twitter_links', 'tiktok_links','headers', 'header_decs', 'abouts', 'about_decs', 'phones', 'emails', 'alamat'])) {
             // Set kolom yang dipilih menjadi null (menghapus nilainya)
             $content->$column = null;
             $content->save();

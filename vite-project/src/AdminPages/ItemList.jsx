@@ -23,7 +23,7 @@ const ItemList = () => {
             setItems(response.data);
             setLoading(false);
         } catch (error) {
-            setError('Failed to fetch items.');
+            setError('Gagal mengambil data produk.');
             setLoading(false);
         }
     };
@@ -33,9 +33,9 @@ const ItemList = () => {
             const response = await axiosClient.delete(`/products/${deleteItemId}`);
             alert(response.data.message); // Tampilkan pesan sukses
             fetchItems(); // Panggil ulang fungsi untuk memuat daftar produk
-            setIsConfirmDeleteOpen(false); // Close the delete confirmation modal
+            setIsConfirmDeleteOpen(false); // Tutup modal konfirmasi penghapusan
         } catch (error) {
-            alert(error.response?.data?.message || 'Failed to delete product');
+            alert(error.response?.data?.message || 'Gagal menghapus produk');
         }
     };
 
@@ -88,7 +88,7 @@ const ItemList = () => {
             fetchItems();
             closeModal();
         } catch (error) {
-            setError('Failed to update item.');
+            setError('Gagal memperbarui produk.');
             console.error(error);
         }
     };
@@ -101,7 +101,7 @@ const ItemList = () => {
         <section id="itemslist" className="pt-4">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="bg-white rounded-3xl shadow-md p-5">
-                    <h1 className="text-2xl font-bold mb-6">Item List</h1>
+                    <h1 className="text-2xl font-bold mb-6">Daftar Produk</h1>
                     {error && <div className="text-red-500 mb-3">{error}</div>}
                     {loading ? (
                         <div className="flex justify-center items-center h-32">
@@ -112,13 +112,13 @@ const ItemList = () => {
                             <table className="min-w-full bg-gray-50 rounded-xl shadow-md">
                                 <thead>
                                     <tr>
-                                        <th className="py-3 px-6 bg-gray-200 text-left text-sm text-black font-bold">Name</th>
-                                        <th className="py-3 px-6 bg-gray-200 text-left text-sm text-black font-bold">Description</th>
-                                        <th className="py-3 px-6 bg-gray-200 text-left text-sm text-black font-bold">Price</th>
-                                        <th className="py-3 px-6 bg-gray-200 text-left text-sm text-black font-bold">Category</th>
+                                        <th className="py-3 px-6 bg-gray-200 text-left text-sm text-black font-bold">Nama</th>
+                                        <th className="py-3 px-6 bg-gray-200 text-left text-sm text-black font-bold">Deskripsi</th>
+                                        <th className="py-3 px-6 bg-gray-200 text-left text-sm text-black font-bold">Harga</th>
+                                        <th className="py-3 px-6 bg-gray-200 text-left text-sm text-black font-bold">Kategori</th>
                                         <th className="py-3 px-6 bg-gray-200 text-center text-sm text-black font-bold">Status</th>
-                                        <th className="py-3 px-6 bg-gray-200 text-left text-sm text-black font-bold">Photo</th>
-                                        <th className="py-3 px-6 bg-gray-200 text-left text-sm text-black font-bold">Actions</th>
+                                        <th className="py-3 px-6 bg-gray-200 text-left text-sm text-black font-bold">Foto</th>
+                                        <th className="py-3 px-6 bg-gray-200 text-left text-sm text-black font-bold">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -144,13 +144,13 @@ const ItemList = () => {
                                                         alt={`${item.name} ${idx + 1}`}
                                                         className="h-16 w-16 object-cover rounded-md"
                                                     />
-                                                )) || <span>No images available</span>}
+                                                )) || <span>Tidak ada gambar</span>}
                                             </td>
                                             <td className="py-16 px-6 text-black flex items-center space-x-4">
                                                 <button onClick={() => openModal(item)} title="Edit">
                                                     <FontAwesomeIcon icon={faEdit} className="text-blue-500 text-lg cursor-pointer hover:text-blue-700" />
                                                 </button>
-                                                <button onClick={() => { setDeleteItemId(item.id); setIsConfirmDeleteOpen(true); }} title="Delete">
+                                                <button onClick={() => { setDeleteItemId(item.id); setIsConfirmDeleteOpen(true); }} title="Hapus">
                                                     <FontAwesomeIcon icon={faTrashAlt} className="text-red-500 text-lg cursor-pointer hover:text-red-700" />
                                                 </button>
                                             </td>
@@ -164,9 +164,9 @@ const ItemList = () => {
                     {isModalOpen && selectedItem && (
                         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
                             <div className="bg-white p-5 rounded-lg w-11/12 md:w-1/3 max-h-screen overflow-y-auto">
-                            <h2 className="text-xl font-bold mb-3">Edit Item</h2>
+                            <h2 className="text-xl font-bold mb-3">Edit Produk</h2>
                                 <div className="mb-3">
-                                    <label className="font-semibold">Name</label>
+                                    <label className="font-semibold">Nama</label>
                                     <input
                                         type="text"
                                         value={selectedItem.name}
@@ -175,7 +175,7 @@ const ItemList = () => {
                                     />
                                 </div>
                                 <div className="mb-3">
-                                    <label className="font-semibold">Description</label>
+                                    <label className="font-semibold">Deskripsi</label>
                                     <textarea
                                         value={selectedItem.description}
                                         onChange={(e) => setSelectedItem({ ...selectedItem, description: e.target.value })}
@@ -183,7 +183,7 @@ const ItemList = () => {
                                     />
                                 </div>
                                 <div className="mb-3">
-                                    <label className="font-semibold">Price</label>
+                                    <label className="font-semibold">Harga</label>
                                     <input
                                         type="number"
                                         value={selectedItem.price}
@@ -192,7 +192,7 @@ const ItemList = () => {
                                     />
                                 </div>
                                 <div className="mb-3">
-                                    <label className="font-semibold">Category</label>
+                                    <label className="font-semibold">Kategori</label>
                                     <select
                                         value={selectedItem.category || 'mochi mantap'}
                                         onChange={(e) => setSelectedItem({ ...selectedItem, category: e.target.value })}
@@ -209,25 +209,25 @@ const ItemList = () => {
                                         onChange={(e) => setSelectedItem({ ...selectedItem, status: e.target.value })}
                                         className="w-full p-2 border rounded"
                                     >
-                                        <option value="available">Available</option>
-                                        <option value="not available">Not Available</option>
+                                        <option value="available">Tersedia</option>
+                                        <option value="not available">Tidak Tersedia</option>
                                     </select>
                                 </div>
                                 <div className="mb-3">
-                                    <label className="font-semibold">Current Images</label>
+                                    <label className="font-semibold">Gambar Saat Ini</label>
                                     <div className="flex flex-wrap gap-2">
                                         {selectedItem.image_urls?.map((url, idx) => (
                                             <img
                                                 key={idx}
                                                 src={url}
-                                                alt={`Current ${idx + 1}`}
+                                                alt={`Saat ini ${idx + 1}`}
                                                 className="w-20 h-20 object-cover rounded-md"
                                             />
                                         ))}
                                     </div>
                                 </div>
                                 <div className="mb-3">
-                                    <label className="font-semibold">Upload New Images</label>
+                                    <label className="font-semibold">Unggah Gambar Baru</label>
                                     <input
                                         type="file"
                                         multiple
@@ -239,7 +239,7 @@ const ItemList = () => {
                                             <img
                                                 key={idx}
                                                 src={src}
-                                                alt={`Preview ${idx + 1}`}
+                                                alt={`Pratinjau ${idx + 1}`}
                                                 className="w-20 h-20 object-cover rounded-md"
                                             />
                                         ))}
@@ -250,13 +250,13 @@ const ItemList = () => {
                                         className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
                                         onClick={() => handleUpdateItem(selectedItem)}
                                     >
-                                        Save Changes
+                                        Simpan Perubahan
                                     </button>
                                     <button
                                         className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
                                         onClick={closeModal}
                                     >
-                                        Close
+                                        Tutup
                                     </button>
                                 </div>
                             </div>
@@ -266,15 +266,15 @@ const ItemList = () => {
                     {isConfirmDeleteOpen && (
                         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
                             <div className="bg-white p-5 rounded-lg w-11/12 md:w-1/3">
-                                <h2 className="text-xl font-bold mb-4">Confirm Deletion</h2>
-                                <p>Are you sure you want to delete this item?</p>
+                                <h2 className="text-xl font-bold mb-4">Konfirmasi Penghapusan</h2>
+                                <p>Apakah Anda yakin ingin menghapus produk ini?</p>
 
                                 <div className="flex justify-end space-x-3 mt-4">
                                     <button className="bg-gray-300 text-black py-2 px-4 rounded-lg" onClick={() => setIsConfirmDeleteOpen(false)}>
-                                        Cancel
+                                        Batal
                                     </button>
                                     <button className="bg-red-500 text-white py-2 px-4 rounded-lg" onClick={deleteProduct}>
-                                        Confirm Delete
+                                        Konfirmasi Hapus
                                     </button>
                                 </div>
                             </div>
@@ -284,11 +284,11 @@ const ItemList = () => {
                     {updateSuccess && (
                         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
                             <div className="bg-white p-5 rounded-lg w-11/12 md:w-1/3">
-                                <h2 className="text-xl font-bold mb-4">Success</h2>
-                                <p>Your changes have been saved successfully!</p>
+                                <h2 className="text-xl font-bold mb-4">Sukses</h2>
+                                <p>Perubahan Anda berhasil disimpan!</p>
                                 <div className="flex justify-end mt-4">
                                     <button className="bg-green-500 text-white py-2 px-4 rounded-lg" onClick={() => setUpdateSuccess(false)}>
-                                        Close
+                                        Tutup
                                     </button>
                                 </div>
                             </div>
@@ -300,7 +300,7 @@ const ItemList = () => {
                             className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
                             onClick={navigateToAddItem}
                         >
-                            Add Item
+                            Tambah Produk
                         </button>
                     </div>
                 </div>

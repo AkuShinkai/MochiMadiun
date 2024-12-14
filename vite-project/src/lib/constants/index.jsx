@@ -3,11 +3,9 @@ import {
     HiReceiptTax,
 	HiOutlineUsers,
 	HiOutlineQuestionMarkCircle,
-    HiDesktopComputer,
 	HiOutlineCog,
 	HiOutlineUserGroup,
-	HiIdentification,
-	HiOutlineClipboardList
+    HiPuzzle,
 
 } from 'react-icons/hi'
 
@@ -76,7 +74,7 @@ export const ADMIN_SIDEBAR_LINKS = [
 		key: 'content',
 		label: 'Content',
 		path: '/content',
-		icon: <HiOutlineUserGroup />
+		icon: <HiPuzzle />
 	},
 	// {
 	// 	key: 'dataLogbook',

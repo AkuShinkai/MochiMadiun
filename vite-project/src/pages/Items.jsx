@@ -16,17 +16,17 @@ const Items = () => {
                 // Ambil data produk
                 const productsResponse = await axiosClient.get('/products');
                 setItems(productsResponse.data);
-                // console.log("Products:", productsResponse.data); // Log produk untuk verifikasi
+                // console.log("Produk:", productsResponse.data); // Log produk untuk verifikasi
 
                 // Ambil data promo
                 const promosResponse = await axiosClient.get('/promos');
                 setPromos(promosResponse.data);
-                // console.log("Promos:", promosResponse.data); // Log promo untuk verifikasi
+                // console.log("Promo:", promosResponse.data); // Log promo untuk verifikasi
 
                 // Filter produk yang tersedia
                 setFilteredItems(productsResponse.data.filter(item => item.status === 'available'));
             } catch (error) {
-                console.error('Failed to fetch items or promos:', error);
+                console.error('Gagal mengambil data produk atau promo:', error);
             }
         };
 
@@ -52,12 +52,12 @@ const Items = () => {
     };
 
     const getDiscountedPrice = (item) => {
-        // console.log('Checking promo for product', item.name); // Log nama produk
-        // console.log('Promo IDs:', promos.map(promo => promo.id_product)); // Log ID produk pada promo
+        // console.log('Memeriksa promo untuk produk', item.name); // Log nama produk
+        // console.log('ID Promo:', promos.map(promo => promo.id_product)); // Log ID produk pada promo
 
         const currentPromo = promos.find(promo => promo.id_product === item.id && promo.status === 'available');
 
-        // console.log('Current Promo:', currentPromo); // Log promo yang ditemukan
+        // console.log('Promo Saat Ini:', currentPromo); // Log promo yang ditemukan
 
         if (currentPromo) {
             const discount = currentPromo.discount;
@@ -73,12 +73,12 @@ const Items = () => {
         <section id="more">
             <div className="container">
                 <div className="max-w-md mx-auto text-center">
-                    <h2 className="section__title">Our Products</h2>
+                    <h2 className="section__title">Produk Kami</h2>
                     <div className="separator mx-auto"></div>
 
                     <div className="tabs_wrap">
                         <ul className="flex flex-wrap justify-center gap-2 py-10 font-extrabold">
-                            <li className={`btn ${activeCategory === 'all' ? 'active' : ''}`} onClick={() => handleCategoryClick('all')}>All</li>
+                            <li className={`btn ${activeCategory === 'all' ? 'active' : ''}`} onClick={() => handleCategoryClick('all')}>Semua</li>
                             <li className={`btn ${activeCategory === 'mochi mantap' ? 'active' : ''}`} onClick={() => handleCategoryClick('mochi mantap')}>Mochi Mantap</li>
                             <li className={`btn ${activeCategory === 'mochi daifuku' ? 'active' : ''}`} onClick={() => handleCategoryClick('mochi daifuku')}>Mochi Daifuku</li>
                         </ul>
@@ -95,7 +95,7 @@ const Items = () => {
                                         {item.image_urls && item.image_urls.length > 0 ? (
                                             <img src={item.image_urls[0]} alt={item.name} className="h-full w-full object-cover transition-transform transform hover:scale-110 ease-linear duration-200 rounded-3xl" />
                                         ) : (
-                                            <span>No image available</span>
+                                            <span>Gambar tidak tersedia</span>
                                         )}
                                     </div>
                                     <div className="description pt-3 text-center">

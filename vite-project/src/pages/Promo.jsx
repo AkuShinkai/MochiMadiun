@@ -21,7 +21,7 @@ const Promo = () => {
                 setPromos(promosResponse.data.filter(promo => promo.status === "available"));
                 setItems(productsResponse.data);
             } catch (error) {
-                console.error("There was an error fetching the promo and product data!", error);
+                console.error("Terjadi kesalahan saat mengambil data promo dan produk!", error);
             }
         };
 
@@ -57,7 +57,7 @@ const Promo = () => {
     return (
         <section id="promo" className="py-8 dark:bg-gray-800">
             <div className="container mx-auto px-4">
-                <h2 className="section__title text-center">Hot Promo</h2>
+                <h2 className="section__title text-center">Promo Menarik</h2>
                 <div className="separator mx-auto mb-8"></div>
 
                 {/* Slider untuk promo */}
@@ -99,24 +99,24 @@ const Promo = () => {
                                             {discountInfo ? (
                                                 <>
                                                     <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                                                        Price: <span className="line-through text-gray-400">${discountInfo.priceBeforeDiscount}</span>
+                                                        Harga: <span className="line-through text-gray-400">Rp{discountInfo.priceBeforeDiscount}</span>
                                                     </p>
                                                     <p className="text-lg font-semibold text-red-500">
-                                                        Discount: {discountInfo.discount}%
+                                                        Diskon: {discountInfo.discount}%
                                                     </p>
                                                     <p className="text-lg font-semibold text-green-500">
-                                                        Promo Price: ${discountInfo.discountedPrice.toFixed(2)}
+                                                        Harga Promo: Rp{discountInfo.discountedPrice.toFixed(2)}
                                                     </p>
                                                 </>
                                             ) : (
                                                 <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                                                    Price: ${associatedItem ? associatedItem.price : "N/A"}
+                                                    Harga: Rp{associatedItem ? associatedItem.price : "N/A"}
                                                 </p>
                                             )}
                                         </div>
                                         <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">
-                                            Valid from{" "}
-                                            {new Date(promo.start_promo).toLocaleDateString()} to{" "}
+                                            Berlaku dari{" "}
+                                            {new Date(promo.start_promo).toLocaleDateString()} sampai{" "}
                                             {new Date(promo.end_promo).toLocaleDateString()}
                                         </p>
                                     </div>

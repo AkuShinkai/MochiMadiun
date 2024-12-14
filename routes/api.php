@@ -35,7 +35,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/promos/{id}', [PromoController::class, 'update']);
     Route::delete('/promos/{id}', [PromoController::class, 'destroy']);
 
-    Route::get('/content', [ContentController::class, 'index']); // Menampilkan konten
+
     Route::post('/content', [ContentController::class, 'store']); // Menambah atau menyimpan konten
     Route::put('/content/{column}', [ContentController::class, 'update']); // Update konten
     Route::delete('/content/{column}', [ContentController::class, 'deleteColumn']); // Hapus kolom konten tertentu
@@ -46,6 +46,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/admins/{id}', [AdminController::class, 'destroy']); // Hapus admin
 });
 
+Route::get('/content', [ContentController::class, 'index']); // Menampilkan konten
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
