@@ -16,12 +16,12 @@ const Items = () => {
                 // Ambil data produk
                 const productsResponse = await axiosClient.get('/products');
                 setItems(productsResponse.data);
-                console.log("Products:", productsResponse.data); // Log produk untuk verifikasi
+                // console.log("Products:", productsResponse.data); // Log produk untuk verifikasi
 
                 // Ambil data promo
                 const promosResponse = await axiosClient.get('/promos');
                 setPromos(promosResponse.data);
-                console.log("Promos:", promosResponse.data); // Log promo untuk verifikasi
+                // console.log("Promos:", promosResponse.data); // Log promo untuk verifikasi
 
                 // Filter produk yang tersedia
                 setFilteredItems(productsResponse.data.filter(item => item.status === 'available'));
@@ -52,12 +52,12 @@ const Items = () => {
     };
 
     const getDiscountedPrice = (item) => {
-        console.log('Checking promo for product', item.name); // Log nama produk
-        console.log('Promo IDs:', promos.map(promo => promo.id_product)); // Log ID produk pada promo
+        // console.log('Checking promo for product', item.name); // Log nama produk
+        // console.log('Promo IDs:', promos.map(promo => promo.id_product)); // Log ID produk pada promo
 
         const currentPromo = promos.find(promo => promo.id_product === item.id && promo.status === 'available');
 
-        console.log('Current Promo:', currentPromo); // Log promo yang ditemukan
+        // console.log('Current Promo:', currentPromo); // Log promo yang ditemukan
 
         if (currentPromo) {
             const discount = currentPromo.discount;

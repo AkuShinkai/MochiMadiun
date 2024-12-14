@@ -1,8 +1,46 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import useCustomJS from "../useCostumeJS";
+import axiosClient from "../axios-client";
 
 const Footer = () => {
     useCustomJS();
+
+    const [content, setContent] = useState(null);  // Menyimpan satu konten
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    const fetchContent = async () => {
+        try {
+            const response = await axiosClient.get('/content');
+            setContent(response.data);  // Mengambil satu konten
+            // console.log(response.data)
+        } catch (error) {
+            setError('Failed to fetch content.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchContent();  // Fetch konten saat pertama kali render
+    }, []);
+
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center h-32">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return <div className="text-red-500">{error}</div>;
+    }
+
+    if (!content) {
+        return <div>No content available</div>;
+    }
+
     return (
         <footer className="w-screen border-t border-secondaryColor">
             <section className="footer">
@@ -38,7 +76,7 @@ const Footer = () => {
 
                                 <p className="flex items-center gap-2 text-xs">
                                     <i className="fa-solid fa-phone text-lg text-secondaryColor"></i>
-                                    +62 857 0258 894
+                                    {content.phones}
                                 </p>
                             </div>
 
@@ -47,7 +85,7 @@ const Footer = () => {
 
                                 <p className="flex items-center gap-2 text-xs">
                                     <i className="fa-solid fa-envelope text-lg text-secondaryColor"></i>
-                                    whywelose272@gmail.com
+                                    {content.emails}
                                 </p>
                             </div>
                         </li>
@@ -66,14 +104,18 @@ const Footer = () => {
                                 <h3 className="text-lg uppercase font-oswald">follow us on</h3>
 
                                 <div className="space-x-3">
-                                    <i
-                                        className="fa-brands fa-facebook-f text-lg cursor-pointer text-secondaryColor hover:-translate-y-1 ease-in duration-200"></i>
-                                    <i
-                                        className="fa-brands fa-twitter text-lg cursor-pointer text-secondaryColor hover:-translate-y-1 ease-in duration-200"></i>
-                                    <i
-                                        className="fa-brands fa-square-instagram text-lg cursor-pointer text-secondaryColor hover:-translate-y-1 ease-in duration-200"></i>
-                                    <i
-                                        className="fa-brands fa-square-github text-lg cursor-pointer text-secondaryColor hover:-translate-y-1 ease-in duration-200"></i>
+                                    <a href={content.fb_links} target="_blank" rel="noopener noreferrer">
+                                        <i className="fa-brands fa-facebook-f text-lg cursor-pointer text-secondaryColor hover:-translate-y-1 ease-in duration-200"></i>
+                                    </a>
+                                    <a href={content.twitter_links} target="_blank" rel="noopener noreferrer">
+                                        <i className="fa-brands fa-twitter text-lg cursor-pointer text-secondaryColor hover:-translate-y-1 ease-in duration-200"></i>
+                                    </a>
+                                    <a href={content.ig_links} target="_blank" rel="noopener noreferrer">
+                                        <i className="fa-brands fa-square-instagram text-lg cursor-pointer text-secondaryColor hover:-translate-y-1 ease-in duration-200"></i>
+                                    </a>
+                                    <a href={content.tiktok_links} target="_blank" rel="noopener noreferrer">
+                                        <i className="fab fa-tiktok text-lg cursor-pointer text-secondaryColor hover:-translate-y-1 ease-in duration-200"></i>
+                                    </a>
                                 </div>
                             </div>
                         </li>

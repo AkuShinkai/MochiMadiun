@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ContentController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\PromoController;
 use Illuminate\Http\Request;
@@ -33,6 +34,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/promos', [PromoController::class, 'store']);
     Route::put('/promos/{id}', [PromoController::class, 'update']);
     Route::delete('/promos/{id}', [PromoController::class, 'destroy']);
+
+    Route::get('/content', [ContentController::class, 'index']); // Menampilkan konten
+    Route::post('/content', [ContentController::class, 'store']); // Menambah atau menyimpan konten
+    Route::put('/content/{column}', [ContentController::class, 'update']); // Update konten
+    Route::delete('/content/{column}', [ContentController::class, 'deleteColumn']); // Hapus kolom konten tertentu
 
     Route::get('/admins', [AdminController::class, 'index']);       // List admin
     Route::post('/admins', [AdminController::class, 'store']);      // Tambah admin

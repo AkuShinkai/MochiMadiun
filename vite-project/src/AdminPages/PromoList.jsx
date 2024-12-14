@@ -97,8 +97,8 @@ const PromoList = () => {
         const priceAfterDiscount = priceBeforeDiscount - discountAmount;
 
         // Anda bisa menambahkan perhitungan harga di sini jika perlu
-        console.log('Price before discount:', priceBeforeDiscount);
-        console.log('Price after discount:', priceAfterDiscount);
+        // console.log('Price before discount:', priceBeforeDiscount);
+        // console.log('Price after discount:', priceAfterDiscount);
 
         try {
             const formData = new FormData();

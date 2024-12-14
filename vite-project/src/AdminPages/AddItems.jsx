@@ -59,7 +59,7 @@ const AddItems = () => {
             });
         } catch (error) {
             setError('Failed to add item.');
-            console.log(error);
+            // console.log(error);
         }
     };
 

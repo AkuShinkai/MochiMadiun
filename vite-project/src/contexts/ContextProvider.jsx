@@ -29,22 +29,22 @@ export const ContextProvider = ({ children }) => {
     const setToken = (token) => {
         _setToken(token);
         if (token) {
-            console.log("Setting token in localStorage:", token);
+            // console.log("Setting token in localStorage:", token);
             localStorage.setItem('ACCESS_TOKEN', token);
         }
         else {
-            console.log("Removing token from localStorage");
+            // console.log("Removing token from localStorage");
             localStorage.removeItem('ACCESS_TOKEN');
         }
     };
 
     const updateUser = (newUser, userRoles) => {
-        console.log("Updating user context:", newUser);
-        console.log("Updating roles context:", userRoles);
+        // console.log("Updating user context:", newUser);
+        // console.log("Updating roles context:", userRoles);
         setUser(newUser);
         setRoles(userRoles);
         if (userRoles) {
-            console.log("Setting roles in localStorage:", userRoles);
+            // console.log("Setting roles in localStorage:", userRoles);
             localStorage.setItem('USER_ROLES', userRoles);
         }
         // else {

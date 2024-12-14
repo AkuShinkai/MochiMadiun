@@ -72,6 +72,12 @@ export const ADMIN_SIDEBAR_LINKS = [
 		path: '/adminlist',
 		icon: <HiOutlineUserGroup />
 	},
+    {
+		key: 'content',
+		label: 'Content',
+		path: '/content',
+		icon: <HiOutlineUserGroup />
+	},
 	// {
 	// 	key: 'dataLogbook',
 	// 	label: 'Data Logbook',

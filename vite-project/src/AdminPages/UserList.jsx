@@ -78,7 +78,7 @@ const UserList = () => {
             closeModal();
         } catch (error) {
             setError('Failed to add user.');
-            console.log(error.response ? error.response.data : error);
+            // console.log(error.response ? error.response.data : error);
         }
     };
 
@@ -118,7 +118,7 @@ const UserList = () => {
             setSuccessMessage('User deleted successfully!');
         } catch (error) {
             setError('Failed to delete user.');
-            console.log(error.response ? error.response.data : error);
+            // console.log(error.response ? error.response.data : error);
         }
     };
 

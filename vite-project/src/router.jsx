@@ -16,6 +16,7 @@ import AddPromo from './AdminPages/AddPromo.jsx';
 import PromoList from './AdminPages/PromoList.jsx';
 import UserList from './AdminPages/UserList.jsx';
 import Cart from './pages/Cart.jsx';
+import Contents from './AdminPages/Content.jsx';
 
 
 const router = createBrowserRouter([
@@ -90,6 +91,10 @@ const router = createBrowserRouter([
             {
                 path: '/adminlist',
                 element: <UserList />
+            },
+            {
+                path: '/content',
+                element: <Contents />
             }
             // {
             //     path: '/detailitems',

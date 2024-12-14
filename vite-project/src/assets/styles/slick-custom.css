@@ -1,0 +1,17 @@
+/* CSS untuk memperbesar dots pada slider */
+.slick-dots {
+    bottom: -30px; /* Posisi dots lebih rendah */
+  }
+
+  .slick-dots li button:before {
+    font-size: 50px; /* Ukuran titik yang lebih besar */
+    color: #000; /* Warna titik */
+  }
+
+  .slick-dots li.slick-active button:before {
+    color: #ff0000; /* Warna titik yang aktif */
+  }
+
+  .slick-dots li button {
+    padding: 10px; /* Jarak antara dots */
+  }

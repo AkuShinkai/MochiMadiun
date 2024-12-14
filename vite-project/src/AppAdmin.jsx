@@ -15,7 +15,7 @@ const AppAdmin = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log("AppAdmin - roles:", roles);
+        // console.log("AppAdmin - roles:", roles);
         if (roles !== 'admin' && roles !== 'super admin') {
             navigate('/');
         }

@@ -1,91 +1,133 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import axiosClient from "../axios-client";
 import useCustomJS from "../useCostumeJS";
-import Slider from "react-slick"; // Import Slider
+import Slider from "react-slick";
+// Impor file CSS kustom
+import "../assets/styles/slick-custom.css";
 
 const Promo = () => {
     useCustomJS();
 
     const [promos, setPromos] = useState([]);
+    const [items, setItems] = useState([]);
 
-    // Ambil data promo dari API
     useEffect(() => {
-        axiosClient
-            .get("/promos") // Ganti dengan endpoint API yang sesuai
-            .then((response) => {
-                setPromos(response.data);
-            })
-            .catch((error) => {
-                console.error("There was an error fetching the promo data!", error);
-            });
+        // Ambil data promo dan produk yang tersedia
+        const fetchPromosAndItems = async () => {
+            try {
+                const promosResponse = await axiosClient.get("/promos");
+                const productsResponse = await axiosClient.get("/products");
+                setPromos(promosResponse.data.filter(promo => promo.status === "available"));
+                setItems(productsResponse.data);
+            } catch (error) {
+                console.error("There was an error fetching the promo and product data!", error);
+            }
+        };
+
+        fetchPromosAndItems();
     }, []);
 
-    // Pengaturan Slider
     const settings = {
         dots: true,
-        infinite: true,
+        infinite: promos.length > 1, // Harus lebih dari 1 item untuk loop
         speed: 500,
-        slidesToShow: 1,
+        slidesToShow: promos.length === 1 ? 1 : 1,
         slidesToScroll: 1,
-        autoplay: true,
-        autoplaySpeed: 3000,
+        autoplay: true, // Selalu aktifkan autoplay untuk testing
+        autoplaySpeed: 2000, // Ubah kecepatan autoplay menjadi 2 detik
         arrows: false,
         centerMode: true,
         centerPadding: "0",
         focusOnSelect: true,
     };
 
+    // Fungsi untuk menghitung harga diskon
+    const getDiscountedPrice = (promo, item) => {
+        if (promo && promo.id_product === item.id) {
+            const discount = promo.discount;
+            const priceBeforeDiscount = item.price;
+            const discountedPrice = priceBeforeDiscount - (priceBeforeDiscount * (discount / 100));
+
+            return { priceBeforeDiscount, discountedPrice, discount };
+        }
+        return null;
+    };
+
     return (
-        <section id="promo" className="py-8 bg-gray-50 dark:bg-gray-800">
+        <section id="promo" className="py-8 dark:bg-gray-800">
             <div className="container mx-auto px-4">
-            <h2 className="section__title text-center">Hot Promo</h2>
+                <h2 className="section__title text-center">Hot Promo</h2>
                 <div className="separator mx-auto mb-8"></div>
 
                 {/* Slider untuk promo */}
                 <Slider {...settings}>
-                    {promos.map((promo) => (
-                        <div
-                            key={promo.id}
-                            className="promo_card bg-white dark:bg-darkColorLight rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105"
-                        >
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
-                                {/* Gambar di sebelah kiri */}
-                                <div className="flex justify-center items-center">
-                                    {promo.image_urls && promo.image_urls.length > 0 ? (
-                                        <img
-                                            src={promo.image_urls[0]} // Ambil gambar pertama
-                                            alt={promo.name_promo}
-                                            className="w-40 h-40 object-cover rounded-md shadow-md"
-                                        />
-                                    ) : (
-                                        <img
-                                            src="/default-promo-image.jpg" // Gambar default jika promo tidak memiliki gambar
-                                            alt={promo.name_promo}
-                                            className="w-40 h-40 object-cover rounded-md shadow-md"
-                                        />
-                                    )}
-                                </div>
+                    {promos.map((promo) => {
+                        const associatedItem = items.find(item => item.id === promo.id_product);
+                        const discountInfo = associatedItem ? getDiscountedPrice(promo, associatedItem) : null;
 
-                                {/* Deskripsi di sebelah kanan */}
-                                <div className="flex flex-col justify-between">
-                                    <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2 uppercase">{promo.product_name}</h3>
-                                    <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">{promo.description_promo}</p>
-                                    <div className="mb-4">
-                                        <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">Price: ${promo.price_promo}</p>
-                                        <p className="text-lg font-semibold text-red-500">Discount: {promo.discount}%</p>
+                        return (
+                            <Link
+                                key={promo.id}
+                                to={`/detailitem/${promo.id_product}`}
+                                className="promo_card bg-gray-50 dark:bg-darkColorLight rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105"
+                            >
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
+                                    <div className="flex justify-center items-center">
+                                        {promo.image_urls && promo.image_urls.length > 0 ? (
+                                            <img
+                                                src={promo.image_urls[0]}
+                                                alt={promo.name_promo}
+                                                className="w-40 h-40 object-cover rounded-md shadow-md"
+                                            />
+                                        ) : (
+                                            <img
+                                                src="/default-promo-image.jpg"
+                                                alt={promo.name_promo}
+                                                className="w-40 h-40 object-cover rounded-md shadow-md"
+                                            />
+                                        )}
                                     </div>
-                                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">
-                                        Valid from {new Date(promo.start_promo).toLocaleDateString()} to {new Date(promo.end_promo).toLocaleDateString()}
-                                    </p>
-                                    <a href="#" className="text-xs text-primaryColor hover:text-primaryColorDark underline">Read More</a>
+                                    <div className="flex flex-col justify-between">
+                                        <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2 uppercase">
+                                            {promo.product_name}
+                                        </h3>
+                                        <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
+                                            {promo.description_promo}
+                                        </p>
+                                        <div className="mb-4">
+                                            {discountInfo ? (
+                                                <>
+                                                    <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                                                        Price: <span className="line-through text-gray-400">${discountInfo.priceBeforeDiscount}</span>
+                                                    </p>
+                                                    <p className="text-lg font-semibold text-red-500">
+                                                        Discount: {discountInfo.discount}%
+                                                    </p>
+                                                    <p className="text-lg font-semibold text-green-500">
+                                                        Promo Price: ${discountInfo.discountedPrice.toFixed(2)}
+                                                    </p>
+                                                </>
+                                            ) : (
+                                                <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                                                    Price: ${associatedItem ? associatedItem.price : "N/A"}
+                                                </p>
+                                            )}
+                                        </div>
+                                        <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">
+                                            Valid from{" "}
+                                            {new Date(promo.start_promo).toLocaleDateString()} to{" "}
+                                            {new Date(promo.end_promo).toLocaleDateString()}
+                                        </p>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    ))}
+                            </Link>
+                        );
+                    })}
                 </Slider>
             </div>
         </section>
     );
-}
+};
 
 export default Promo;
