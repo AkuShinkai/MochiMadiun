@@ -51,7 +51,7 @@ function Login() {
         <section className="bg-gray-50 min-h-screen flex items-center justify-center">
             <div className="bg-white flex rounded-2xl shadow-lg max-w-3xl p-5 items-center">
                 <div className="md:w-1/2 px-8 md:px-16">
-                    <h2 className="font-bold text-2xl text-[#002D74]">MyToko</h2>
+                    <h2 className="font-bold text-2xl text-[#002D74]">MochiMadiun</h2>
                     <p className="text-xs mt-4 text-[#002D74] mb-4">If you are already a member, easily log in</p>
 
                     {errors && <div className="bg-red-600 rounded-lg p-2">

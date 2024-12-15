@@ -49,13 +49,13 @@ const Footer = () => {
                         <li>
                             <div className="space-y-3">
                                 <a href="#" className="text-4xl font-oswald uppercase">
-                                    <i className="fa-solid fa-quote-left text-4xl text-secondaryColor ml-auto"></i>F₂<span
-                                        className="text-secondaryColor">group</span><i
+                                    <i className="fa-solid fa-quote-left text-4xl text-secondaryColor ml-auto"></i>Mochi<span
+                                        className="text-secondaryColor">Madiun</span><i
                                             className="fa-solid fa-quote-right text-4xl text-whiteColor ml-auto"></i>
                                 </a>
 
                                 <p className="text-xs capitalize">
-                                    keinginan anda adalah prioritas kami. dengan menyediakan gadget terkini dan berkualitas.
+                                    keinginan anda adalah prioritas kami. Melayani dengan sepenuh hati
                                 </p>
                             </div>
                         </li>
@@ -123,7 +123,7 @@ const Footer = () => {
 
                     <div
                         className="flex flex-col items-center border-t border-primaryColorLight dark:border-darkColorLight py-5 md:flex-row md:justify-between">
-                        <p className="paragraph">F2Group</p>
+                        <p className="paragraph">MochiMadiun</p>
                         <p className="paragraph">Copyright © 2024. All rights reserved.</p>
                     </div>
                 </div>

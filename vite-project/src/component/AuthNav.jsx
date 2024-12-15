@@ -13,7 +13,7 @@ const AuthNav = () => {
             <nav className="container relative h-14 flex justify-between items-center">
                 <div>
                     <a href="/" className="text-2xl uppercase  font-oswald">
-                        F₂<span className="text-secondaryColor">Group</span>
+                        Mochi<span className="text-secondaryColor">Madiun</span>
                     </a>
                 </div>
 
