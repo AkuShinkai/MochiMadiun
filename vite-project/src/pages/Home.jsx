@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import useCustomJS from "../useCostumeJS";
 import axiosClient from "../axios-client";
+import home from "../assets/Dinada.png";
 
 const Home = () => {
     useCustomJS();
@@ -45,7 +46,7 @@ const Home = () => {
         <section id="home">
             <div className="container flex flex-col items-center gap-10 md:flex-row">
                 <div className="mx-auto md:basis-1/2 lg:basis-2/5 animate-movingY">
-                    <img src="/src/assets/[LT]-Dinada.png" alt="home image" className="home__image w-60 md:w-full"/>
+                    <img src={home} alt="home image" className="home__image w-60 md:w-full"/>
                 </div>
 
                 <div className="home__content text-center md:basis-1/2 md:text-start lg:basis-3/5">

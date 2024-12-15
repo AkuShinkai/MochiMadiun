@@ -5,7 +5,7 @@ import { HiOutlineLogout } from 'react-icons/hi'
 import { ADMIN_SIDEBAR_LINKS, ADMIN_SIDEBAR_BOTTOM_LINKS } from '../lib/constants'
 import Logout from '../pages/Logout'
 // Import logo UMKM
-import logoUMKM from '../assets/[LT]-Dinada.png'
+import logoUMKM from '../assets/Dinada.png'
 
 const linkClass =
 	'flex items-center gap-2 font-light px-3 py-2 hover:bg-[#FF9843] hover:no-underline hover:text-white active:text-white active:bg-[#FF9843] rounded-full text-base'

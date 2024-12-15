@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import useCustomJS from "../useCostumeJS";
 import axiosClient from "../axios-client";
+import about from "../assets/Android WIth Github.png";
 
 function About() {
     useCustomJS();
@@ -45,7 +46,7 @@ function About() {
         <section id="about">
             <div className="container flex flex-col gap-10 md:flex-row">
                 <div className="about__img flex-1">
-                    <img src="src/assets/Android WIth Github.png" alt="about image" className="rounded-lg" />
+                    <img src={about} alt="about image" className="rounded-lg" />
                 </div>
 
                 <div className="about__content flex-1">
