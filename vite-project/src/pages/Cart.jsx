@@ -50,7 +50,7 @@ const Cart = () => {
 
     const handleWhatsAppOrder = () => {
         const orderMessage = createOrderMessage(cart);
-        window.open(`https://wa.me/+6285790258894?text=${encodeURIComponent(orderMessage)}`, '_blank');
+        window.open(`https://wa.me/+6287755226610?text=${encodeURIComponent(orderMessage)}`, '_blank');
     };
 
     const getDiscountedPrice = (item) => {
