@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import useCustomJS from "../useCostumeJS";
 import axiosClient from "../axios-client";
-import about from "../assets/Android WIth Github.png";
+import about from "../assets/About.jpg";
 
 function About() {
     useCustomJS();
