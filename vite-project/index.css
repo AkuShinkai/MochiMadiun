@@ -106,3 +106,12 @@
         display: block;
     }
 }
+
+@media (max-width: 425px) {
+    table {
+        font-size: 12px; /* Perkecil ukuran font */
+    }
+    table th, table td {
+        padding: 4px; /* Kurangi padding untuk tampilan mobile */
+    }
+}

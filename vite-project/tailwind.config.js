@@ -4,10 +4,11 @@ export default {
     darkMode: 'class',
   theme: {
     screens: {
-      sm: "480px",
-      md: "768px",
-      lg: "1100px"
-    },
+        xs: "320px", // Breakpoint tambahan untuk layar kecil
+        sm: "480px",
+        md: "768px",
+        lg: "1100px"
+     },
     extend: {
       colors: {
         primaryColor: '#fff',
@@ -32,12 +33,14 @@ export default {
       }
     },
     container: {
-      center: true,
-      padding: {
-        DEFAULT: '1rem',
-        sm: '1.5rem'
-      }
-    },
+        center: true,
+        padding: {
+           DEFAULT: '1rem',
+           sm: '1.5rem',
+           xs: '0.5rem', // Tambahkan padding kecil untuk layar kecil
+        }
+     },
+
     fontFamily: {
       oswald: ['Oswald', 'sans-serif'],
       dmsans: ['DM Sans', 'sans-serif']

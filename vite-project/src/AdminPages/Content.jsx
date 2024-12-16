@@ -122,7 +122,7 @@ const Contents = () => {
 
     return (
         <section id="contents" className="pt-4">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="container mx-auto px-0">
                 <div className="bg-white rounded-3xl shadow-md p-5">
                     <h1 className="text-2xl font-bold mb-6">Konten</h1>
                     {error && <div className="text-red-500 mb-3">{error}</div>}

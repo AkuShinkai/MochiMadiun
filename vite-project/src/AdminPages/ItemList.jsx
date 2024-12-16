@@ -99,7 +99,7 @@ const ItemList = () => {
 
     return (
         <section id="itemslist" className="pt-4">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="container mx-auto px-0">
                 <div className="bg-white rounded-3xl shadow-md p-5">
                     <h1 className="text-2xl font-bold mb-6">Daftar Produk</h1>
                     {error && <div className="text-red-500 mb-3">{error}</div>}
@@ -108,8 +108,8 @@ const ItemList = () => {
                             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
                         </div>
                     ) : (
-                        <div className="overflow-x-auto rounded-xl">
-                            <table className="min-w-full bg-gray-50 rounded-xl shadow-md">
+                        <div className="overflow-x-auto w-full rounded-xl">
+                            <table className="min-w-full table-auto sm:min-w-full bg-gray-50 rounded-xl shadow-md">
                                 <thead>
                                     <tr>
                                         <th className="py-3 px-6 bg-gray-200 text-left text-sm text-black font-bold">Nama</th>
@@ -124,10 +124,10 @@ const ItemList = () => {
                                 <tbody>
                                     {items.map((item, index) => (
                                         <tr key={item.id ? item.id : index} className="border-b">
-                                            <td className="py-3 px-6 text-black">{item.name}</td>
-                                            <td className="py-3 px-6 text-black">{item.description}</td>
-                                            <td className="py-3 px-6 text-black">Rp.{item.price.toLocaleString()}</td>
-                                            <td className="py-3 px-6 text-black first-letter:uppercase">{item.category}</td>
+                                            <td className="py-3 px-6 text-black whitespace-nowrap min-w-[100px]">{item.name}</td>
+                                            <td className="py-3 px-6 text-black whitespace-nowrap min-w-[100px]">{item.description}</td>
+                                            <td className="py-3 px-6 text-black whitespace-nowrap min-w-[100px]">Rp.{item.price.toLocaleString()}</td>
+                                            <td className="py-3 px-6 text-black whitespace-nowrap min-w-[100px] first-letter:uppercase">{item.category}</td>
                                             <td
                                                 className={`py-3 px-6 ${item.status === 'available'
                                                         ? 'text-green-600 font-bold text-center'
@@ -136,7 +136,7 @@ const ItemList = () => {
                                             >
                                                 {item.status === 'available' ? 'Tersedia' : 'Tidak Tersedia'}
                                             </td>
-                                            <td className="py-3 px-6 text-black">
+                                            <td className="py-3 px-6 text-black whitespace-nowrap min-w-[100px]">
                                                 {item.image_urls?.map((imgPath, idx) => (
                                                     <img
                                                         key={idx}
@@ -146,7 +146,7 @@ const ItemList = () => {
                                                     />
                                                 )) || <span>Tidak ada gambar</span>}
                                             </td>
-                                            <td className="py-16 px-6 text-black flex items-center space-x-4">
+                                            <td className="py-16 px-6 text-black whitespace-nowrap min-w-[100px] flex items-center space-x-4">
                                                 <button onClick={() => openModal(item)} title="Edit">
                                                     <FontAwesomeIcon icon={faEdit} className="text-blue-500 text-lg cursor-pointer hover:text-blue-700" />
                                                 </button>

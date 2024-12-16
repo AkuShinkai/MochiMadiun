@@ -81,134 +81,138 @@ const AddPromo = () => {
         productPrice;
 
     return (
-        <div className="container">
-            <h1 className="text-2xl font-bold mb-5">Tambah Promo</h1>
-            {error && <div className="text-red-500 mb-3">{error}</div>}
-            {success && <div className="text-green-500 mb-3">{success}</div>}
-            <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="flex flex-col">
-                    <label htmlFor="name_promo" className="font-bold text-black">Nama Promo</label>
-                    <input
-                        type="text"
-                        id="name_promo"
-                        name="name_promo"
-                        value={formData.name_promo}
-                        onChange={handleChange}
-                        className="border rounded p-2"
-                        required
-                    />
-                </div>
-                <div className="flex flex-col">
-                    <label htmlFor="description_promo" className="font-bold text-black">Deskripsi</label>
-                    <textarea
-                        id="description_promo"
-                        name="description_promo"
-                        value={formData.description_promo}
-                        onChange={handleChange}
-                        className="border rounded p-2"
-                        required
-                    ></textarea>
-                </div>
-                <div className="flex flex-col">
-                    <label htmlFor="start_promo" className="font-bold text-black">Tanggal Mulai</label>
-                    <input
-                        type="date"
-                        id="start_promo"
-                        name="start_promo"
-                        value={formData.start_promo}
-                        onChange={handleChange}
-                        className="border rounded p-2"
-                        required
-                    />
-                </div>
-                <div className="flex flex-col">
-                    <label htmlFor="end_promo" className="font-bold text-black">Tanggal Selesai</label>
-                    <input
-                        type="date"
-                        id="end_promo"
-                        name="end_promo"
-                        value={formData.end_promo}
-                        onChange={handleChange}
-                        className="border rounded p-2"
-                        required
-                    />
-                </div>
-                <div className="flex flex-col">
-                    <label htmlFor="id_product" className="font-bold text-black">Produk</label>
-                    <select
-                        id="id_product"
-                        name="id_product"
-                        value={formData.id_product}
-                        onChange={handleProductChange}
-                        className="border rounded p-2"
-                        required
-                    >
-                        <option value="">Pilih Produk</option>
-                        {products.map(product => (
-                            <option key={product.id} value={product.id}>{product.name}</option>
-                        ))}
-                    </select>
-                </div>
-                <div className="flex flex-col">
-                    <label htmlFor="discount" className="font-bold text-black">Diskon (%)</label>
-                    <input
-                        type="number"
-                        id="discount"
-                        name="discount"
-                        value={formData.discount}
-                        onChange={handleChange}
-                        className="border rounded p-2"
-                        required
-                        min="0"
-                    />
-                </div>
-                {/* Debugging: Menampilkan nilai harga produk dan diskon */}
-                {productPrice > 0 && formData.discount !== '' && (
-                    <div className="flex flex-col">
-                        <label className="font-bold text-black">Pratinjau Harga Promo</label>
-                        <p>Harga sebelum diskon: Rp {productPrice.toLocaleString()}</p>
-                        <p>Harga setelah diskon: Rp {priceAfterDiscount.toFixed(2).toLocaleString()}</p>
-                    </div>
-                )}
-                <div className="flex flex-col">
-                    <label htmlFor="status" className="font-semibold">
-                        Status <span className="text-red-500">*</span>
-                    </label>
-                    <select
-                        id="status"
-                        name="status"
-                        value={formData.status}
-                        onChange={handleChange}
-                        className="border rounded p-2 text-black"
-                        required
-                    >
-                        <option value="available">Tersedia</option>
-                        <option value="not available">Tidak Tersedia</option>
-                    </select>
-                </div>
+        <section id="promos" className="pt-4">
+            <div className="container mx-auto px-0">
+                <div className="bg-white rounded-3xl shadow-md p-5">
+                    <h1 className="text-2xl font-bold mb-5">Tambah Promo</h1>
+                    {error && <div className="text-red-500 mb-3">{error}</div>}
+                    {success && <div className="text-green-500 mb-3">{success}</div>}
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <div className="flex flex-col">
+                            <label htmlFor="name_promo" className="font-bold text-black">Nama Promo</label>
+                            <input
+                                type="text"
+                                id="name_promo"
+                                name="name_promo"
+                                value={formData.name_promo}
+                                onChange={handleChange}
+                                className="border rounded p-2"
+                                required
+                            />
+                        </div>
+                        <div className="flex flex-col">
+                            <label htmlFor="description_promo" className="font-bold text-black">Deskripsi</label>
+                            <textarea
+                                id="description_promo"
+                                name="description_promo"
+                                value={formData.description_promo}
+                                onChange={handleChange}
+                                className="border rounded p-2"
+                                required
+                            ></textarea>
+                        </div>
+                        <div className="flex flex-col">
+                            <label htmlFor="start_promo" className="font-bold text-black">Tanggal Mulai</label>
+                            <input
+                                type="date"
+                                id="start_promo"
+                                name="start_promo"
+                                value={formData.start_promo}
+                                onChange={handleChange}
+                                className="border rounded p-2"
+                                required
+                            />
+                        </div>
+                        <div className="flex flex-col">
+                            <label htmlFor="end_promo" className="font-bold text-black">Tanggal Selesai</label>
+                            <input
+                                type="date"
+                                id="end_promo"
+                                name="end_promo"
+                                value={formData.end_promo}
+                                onChange={handleChange}
+                                className="border rounded p-2"
+                                required
+                            />
+                        </div>
+                        <div className="flex flex-col">
+                            <label htmlFor="id_product" className="font-bold text-black">Produk</label>
+                            <select
+                                id="id_product"
+                                name="id_product"
+                                value={formData.id_product}
+                                onChange={handleProductChange}
+                                className="border rounded p-2"
+                                required
+                            >
+                                <option value="">Pilih Produk</option>
+                                {products.map(product => (
+                                    <option key={product.id} value={product.id}>{product.name}</option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="flex flex-col">
+                            <label htmlFor="discount" className="font-bold text-black">Diskon (%)</label>
+                            <input
+                                type="number"
+                                id="discount"
+                                name="discount"
+                                value={formData.discount}
+                                onChange={handleChange}
+                                className="border rounded p-2"
+                                required
+                                min="0"
+                            />
+                        </div>
+                        {/* Debugging: Menampilkan nilai harga produk dan diskon */}
+                        {productPrice > 0 && formData.discount !== '' && (
+                            <div className="flex flex-col">
+                                <label className="font-bold text-black">Pratinjau Harga Promo</label>
+                                <p>Harga sebelum diskon: Rp {productPrice.toLocaleString()}</p>
+                                <p>Harga setelah diskon: Rp {priceAfterDiscount.toFixed(2).toLocaleString()}</p>
+                            </div>
+                        )}
+                        <div className="flex flex-col">
+                            <label htmlFor="status" className="font-semibold">
+                                Status <span className="text-red-500">*</span>
+                            </label>
+                            <select
+                                id="status"
+                                name="status"
+                                value={formData.status}
+                                onChange={handleChange}
+                                className="border rounded p-2 text-black"
+                                required
+                            >
+                                <option value="available">Tersedia</option>
+                                <option value="not available">Tidak Tersedia</option>
+                            </select>
+                        </div>
 
-                <div className="flex flex-col">
-                    <label htmlFor="image_promo" className="font-bold text-black">Gambar Promo</label>
-                    <input
-                        type="file"
-                        id="image_promo"
-                        name="image_promo"
-                        onChange={handleFileChange}
-                        className="border rounded p-2"
-                        required
-                    />
-                </div>
+                        <div className="flex flex-col">
+                            <label htmlFor="image_promo" className="font-bold text-black">Gambar Promo</label>
+                            <input
+                                type="file"
+                                id="image_promo"
+                                name="image_promo"
+                                onChange={handleFileChange}
+                                className="border rounded p-2"
+                                required
+                            />
+                        </div>
 
-                <div className="flex justify-between">
-                    <button type="submit" className="bg-blue-500 text-white p-2 rounded">Tambah Promo</button>
-                    <button
-                        onClick={() => window.history.back()}
-                        className="inline-flex items-center bg-red-500 text-md px-3 py-1 rounded text-white hover:bg-red-600">
-                        <span>Batalkan</span>
-                    </button>
+                        <div className="flex justify-between">
+                            <button type="submit" className="bg-blue-500 text-white p-2 rounded">Tambah Promo</button>
+                            <button
+                                onClick={() => window.history.back()}
+                                className="inline-flex items-center bg-red-500 text-md px-3 py-1 rounded text-white hover:bg-red-600">
+                                <span>Batalkan</span>
+                            </button>
+                        </div>
+                    </form>
                 </div>
-            </form>
-        </div>
+            </div>
+        </section>
     );
 };
 

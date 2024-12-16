@@ -128,7 +128,7 @@ const UserList = () => {
 
     return (
         <section id="userlist" className="pt-4">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="container mx-auto px-0">
                 <div className="bg-white rounded-3xl shadow-md p-5">
                     <h1 className="text-2xl font-bold mb-6">Admin List</h1>
                     <div className="flex justify-between items-center mb-4">
