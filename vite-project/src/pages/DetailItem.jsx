@@ -132,46 +132,48 @@ const DetailItem = () => {
                                 )}
                             </Slider>
                         </div>
-                        <div className="md:w-1/2 p-6">
+                        <div className="md:w-1/2">
                             <h1 className="text-3xl font-bold text-gray-800 mb-4">{item.name}</h1>
                             <p className="text-lg text-gray-700 mb-6">{item.description}</p>
-                            <div className="mb-6">
+                            <div className="mb-6 overflow-auto">
                                 <table className="table-auto text-gray-800 w-full">
                                     <tbody>
-                                        <tr>
-                                            <td className="font-semibold pr-2 py-2">
-                                                <i className="fas fa-tag mr-2 text-green-500"></i>Price:
+                                        {/* Harga */}
+                                        <tr className="flex flex-col sm:table-row">
+                                            <td className="font-semibold py-2 sm:pr-2">
+                                                <i className="fas fa-tag mr-2 text-green-500"></i>Harga:
                                             </td>
-                                            <td className="text-right py-2">
-                                                {/* Jika ada diskon, tampilkan harga asli dan harga diskon */}
+                                            <td className="py-2 text-red-600 sm:text-right">
                                                 {priceDetails ? (
-                                                    <>
-                                                        <span className="line-through text-gray-500 mr-2">
+                                                    <div className="flex flex-col sm:flex-row sm:justify-end">
+                                                        <span className="line-through text-gray-500 mr-0 sm:mr-2">
                                                             Rp.{priceDetails.priceBeforeDiscount}
                                                         </span>
-                                                        <span className="text-lg font-semibold text-red-600">
+                                                        <span className="text-lg font-semibold">
                                                             Rp.{priceDetails.discountedPrice}
                                                         </span>
-                                                    </>
+                                                    </div>
                                                 ) : (
-                                                    // Jika tidak ada promo, tampilkan harga normal
                                                     `Rp.${item.price}`
                                                 )}
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td className="font-semibold pr-2 py-2">
-                                                <i className="fas fa-th-large mr-2 text-blue-500"></i>Category:
+
+                                        {/* Kategori */}
+                                        <tr className="flex flex-col sm:table-row">
+                                            <td className="font-semibold py-2 sm:pr-2">
+                                                <i className="fas fa-th-large mr-2 text-blue-500"></i>Ketegori:
                                             </td>
-                                            <td className="text-right py-2">{item.category}</td>
+                                            <td className="py-2 sm:text-right">{item.category}</td>
                                         </tr>
-                                        {/* Display promo information if available */}
+
+                                        {/* Promo */}
                                         {priceDetails && (
-                                            <tr>
-                                                <td className="font-semibold pr-2 py-2">
-                                                    <i className="fas fa-percent mr-2 text-red-500"></i>Promo:
+                                            <tr className="flex flex-col sm:table-row">
+                                                <td className="font-semibold py-2 sm:pr-2">
+                                                    <i className="fas fa-percent mr-2 text-red-500"></i>Sedang promo!
                                                 </td>
-                                                <td className="text-right py-2 text-red-600">
+                                                <td className="py-2 text-red-600 sm:text-right">
                                                     {priceDetails.discount}% off
                                                 </td>
                                             </tr>
