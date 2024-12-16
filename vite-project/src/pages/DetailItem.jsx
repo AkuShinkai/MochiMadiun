@@ -93,13 +93,14 @@ const DetailItem = () => {
     // Slick settings for auto-slide and manual control
     const settings = {
         dots: true,
-        infinite: true,
+        infinite: item.image_urls && item.image_urls.length > 1, // Hanya looping jika lebih dari 1 gambar
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
-        autoplay: true,
+        autoplay: item.image_urls && item.image_urls.length > 1, // Autoplay hanya untuk lebih dari 1 gambar
         autoplaySpeed: 3000,
     };
+
 
     return (
         <section id="detailitem" className="bg-primaryColorLight py-10 pt-24 relative">

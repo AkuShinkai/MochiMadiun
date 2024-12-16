@@ -52,7 +52,7 @@ class AdminController extends Controller
         $admin = User::findOrFail($id);
 
         // Hanya update kolom yang ada di request
-        $admin->update($request->only(['name', 'email', 'roles']));
+        $admin->update($request->only(['name', 'email', 'roles', 'status']));
 
         // Hash password jika ada
         if ($request->has('password') && $request->password) {

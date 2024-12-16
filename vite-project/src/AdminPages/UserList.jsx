@@ -14,7 +14,7 @@ const UserList = () => {
         name: '',
         email: '',
         password: '',
-        status: 'not available',
+        status: 'nonactive',
         confirmPassword: '',
         roles: 'admin'
     });
@@ -46,7 +46,7 @@ const UserList = () => {
     };
 
     const openAddModal = () => {
-        setNewUser({ name: '', email: '', password: '', confirmPassword: '', roles: 'admin' });
+        setNewUser({ name: '', email: '', password: '', confirmPassword: '', roles: 'admin', status: 'nonactive' });
         setIsAddModalOpen(true);
     };
 
@@ -92,7 +92,7 @@ const UserList = () => {
         }
 
         try {
-            if (!updatedUser.name || !updatedUser.email || !updatedUser.roles) {
+            if (!updatedUser.name || !updatedUser.email || !updatedUser.roles || !updatedUser.status) {
                 setError("All fields are required.");
                 return;
             }
@@ -246,7 +246,7 @@ const UserList = () => {
                                 <div className="mb-4">
                                     <label className="font-semibold">Status<span className='text-red-600'>*</span></label>
                                     <select
-                                        value={newUser.status || 'available'}
+                                        value={newUser.status || 'nonactive'}
                                         onChange={(e) => setNewUser({ ...newUser, status: e.target.value })}
                                         className="w-full p-2 border rounded"
                                     >
@@ -339,7 +339,7 @@ const UserList = () => {
                                 <div className="mb-4">
                                     <label className="font-semibold">Status</label>
                                     <select
-                                        value={updatedUser.status || 'available'}
+                                        value={updatedUser.status || 'nonactive'}
                                         onChange={(e) => setUpdatedUser({ ...updatedUser, status: e.target.value })}
                                         className="w-full p-2 border rounded"
                                     >
