@@ -14,6 +14,7 @@ import axiosClient from '../axios-client'
 const linkClass = 'flex items-center gap-2 font-light px-3 py-2 hover:bg-[#FF9843] hover:no-underline hover:text-white active:text-white active:bg-[#FF9843] rounded-full text-base';
 const Header = ({ toggleSidebar }) => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [users, setUsers] = useState([]);
 
     const handleToggleSidebar = () => {
         setSidebarOpen(!sidebarOpen);
@@ -28,6 +29,19 @@ const Header = ({ toggleSidebar }) => {
 
     const profileImageUrl = placeholderImageUrl;
 
+    const fetchUser = async () => {
+        try {
+            const response = await axiosClient.get('/user');
+            setUsers(response.data);
+        } catch (error) {
+            console.error('Failed to fetch user:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchUser();
+    }, []);
+
     return (
         <div className='w-full'>
             <div className="bg-white md:justify-end justify-between h-16 px-4 flex items-center border-b border-gray-200">
@@ -36,7 +50,7 @@ const Header = ({ toggleSidebar }) => {
                 </button>
                 <div className="flex items-center gap-2 mr-2 md:mr-0">
                     <Popover className="relative">
-                        <p>{"Admin"}</p>
+                        {users.name && <p>{users.name}</p>} {/* Menampilkan nama pengguna jika ada */}
                     </Popover>
 
                     <Menu as="div" className="relative">

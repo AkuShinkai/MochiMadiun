@@ -32,7 +32,7 @@ class AdminController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'status'=>$request->status,
+            'status' => $request->status,
             'roles' => $request->roles, // Mengambil roles dari request
         ]);
 
@@ -60,6 +60,14 @@ class AdminController extends Controller
         }
 
         return response()->json($admin);
+    }
+
+    // Menampilkan data pengguna yang sedang login
+    public function showAuthenticatedUser()
+    {
+        // Mengambil data pengguna yang sedang login
+        $user = auth()->user();
+        return response()->json($user);
     }
 
 

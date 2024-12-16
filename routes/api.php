@@ -44,6 +44,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/admins', [AdminController::class, 'store']);      // Tambah admin
     Route::put('/admins/{id}', [AdminController::class, 'update']); // Update admin
     Route::delete('/admins/{id}', [AdminController::class, 'destroy']); // Hapus admin
+
+    Route::get('/user', [AdminController::class, 'showAuthenticatedUser']);
 });
 
 Route::get('/content', [ContentController::class, 'index']); // Menampilkan konten
