@@ -109,34 +109,34 @@ const ItemList = () => {
                         </div>
                     ) : (
                         <div className="overflow-x-auto w-full rounded-xl">
-                            <table className="min-w-full table-auto sm:min-w-full bg-gray-50 rounded-xl shadow-md">
+                            <table className="table-fixed min-w-full bg-gray-50 rounded-xl shadow-md">
                                 <thead>
                                     <tr>
-                                        <th className="py-3 px-6 bg-gray-200 text-left text-sm text-black font-bold">Nama</th>
-                                        <th className="py-3 px-6 bg-gray-200 text-left text-sm text-black font-bold">Deskripsi</th>
-                                        <th className="py-3 px-6 bg-gray-200 text-left text-sm text-black font-bold">Harga</th>
-                                        <th className="py-3 px-6 bg-gray-200 text-left text-sm text-black font-bold">Kategori</th>
-                                        <th className="py-3 px-6 bg-gray-200 text-center text-sm text-black font-bold">Status</th>
-                                        <th className="py-3 px-6 bg-gray-200 text-left text-sm text-black font-bold">Foto</th>
-                                        <th className="py-3 px-6 bg-gray-200 text-left text-sm text-black font-bold">Aksi</th>
+                                        <th className="w-1/6 py-3 px-6 bg-gray-200 text-left text-sm font-bold text-black">Nama</th>
+                                        <th className="w-2/6 py-3 px-6 bg-gray-200 text-left text-sm font-bold text-black">Deskripsi</th>
+                                        <th className="w-1/6 py-3 px-6 bg-gray-200 text-left text-sm font-bold text-black">Harga</th>
+                                        <th className="w-1/6 py-3 px-6 bg-gray-200 text-left text-sm font-bold text-black">Kategori</th>
+                                        <th className="w-1/6 py-3 px-6 bg-gray-200 text-center text-sm font-bold text-black">Status</th>
+                                        <th className="w-1/6 py-3 px-6 bg-gray-200 text-left text-sm font-bold text-black">Foto</th>
+                                        <th className="w-1/6 py-3 px-6 bg-gray-200 text-center text-sm font-bold text-black">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {items.map((item, index) => (
-                                        <tr key={item.id ? item.id : index} className="border-b">
-                                            <td className="py-3 px-6 text-black whitespace-nowrap min-w-[100px]">{item.name}</td>
-                                            <td className="py-3 px-6 text-black whitespace-nowrap min-w-[100px]">{item.description}</td>
-                                            <td className="py-3 px-6 text-black whitespace-nowrap min-w-[100px]">Rp.{item.price.toLocaleString()}</td>
-                                            <td className="py-3 px-6 text-black whitespace-nowrap min-w-[100px] first-letter:uppercase">{item.category}</td>
+                                        <tr key={item.id || index} className="border-b">
+                                            <td className="py-3 px-6 text-black truncate whitespace-normal">{item.name}</td>
+                                            <td className="py-3 px-6 text-black truncate whitespace-normal">{item.description}</td>
+                                            <td className="py-3 px-6 text-black truncate whitespace-nowrap">Rp.{item.price.toLocaleString()}</td>
+                                            <td className="py-3 px-6 text-black truncate whitespace-normal">{item.category}</td>
                                             <td
-                                                className={`py-3 px-6 ${item.status === 'available'
-                                                        ? 'text-green-600 font-bold text-center'
-                                                        : 'text-red-600 font-bold text-pretty text-center'
+                                                className={`py-3 px-6 text-center ${item.status === 'available'
+                                                    ? 'text-green-600 font-bold'
+                                                    : 'text-red-600 font-bold'
                                                     }`}
                                             >
                                                 {item.status === 'available' ? 'Tersedia' : 'Tidak Tersedia'}
                                             </td>
-                                            <td className="py-3 px-6 text-black whitespace-nowrap min-w-[100px]">
+                                            <td className="py-3 px-6 text-black whitespace-nowrap">
                                                 {item.image_urls?.map((imgPath, idx) => (
                                                     <img
                                                         key={idx}
@@ -164,7 +164,7 @@ const ItemList = () => {
                     {isModalOpen && selectedItem && (
                         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
                             <div className="bg-white p-5 rounded-lg w-11/12 md:w-1/3 max-h-screen overflow-y-auto">
-                            <h2 className="text-xl font-bold mb-3">Edit Produk</h2>
+                                <h2 className="text-xl font-bold mb-3">Edit Produk</h2>
                                 <div className="mb-3">
                                     <label className="font-semibold">Nama</label>
                                     <input
