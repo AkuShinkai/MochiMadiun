@@ -61,7 +61,6 @@ const UserList = () => {
     const handleCreateUser = async (e) => {
         e.preventDefault();
 
-        // Validasi password dan confirmPassword
         if (newUser.password !== newUser.confirmPassword) {
             setError('Passwords do not match.');
             return;
@@ -77,25 +76,23 @@ const UserList = () => {
             setSuccessMessage('User added successfully!');
             closeModal();
         } catch (error) {
-            setError('Failed to add user.');
-            // console.log(error.response ? error.response.data : error);
+            if (error.response && error.response.status === 403) {
+                setError('Gagal: Anda bukan Super Admin.');
+            } else {
+                setError('Failed to add user.');
+            }
         }
     };
 
     const handleUpdateUser = async (e) => {
         e.preventDefault();
 
-        // Validasi password dan confirmPassword untuk edit
         if (updatedUser.password !== updatedUser.confirmPassword) {
             setError('Passwords do not match.');
             return;
         }
 
         try {
-            if (!updatedUser.name || !updatedUser.email || !updatedUser.roles || !updatedUser.status) {
-                setError("All fields are required.");
-                return;
-            }
             await axiosClient.put(`/admins/${selectedUser.id}`, updatedUser);
             setUsers((prevUsers) =>
                 prevUsers.map((user) => (user.id === selectedUser.id ? updatedUser : user))
@@ -103,9 +100,14 @@ const UserList = () => {
             setSuccessMessage('User updated successfully!');
             closeModal();
         } catch (error) {
-            setError('Failed to update user.');
+            if (error.response && error.response.status === 403) {
+                setError('Gagal: Anda bukan Super Admin.');
+            } else {
+                setError('Failed to update user.');
+            }
         }
     };
+
 
     const handleDeleteUser = async (userId) => {
         if (!window.confirm('Are you sure you want to delete this admin?')) {
@@ -117,10 +119,14 @@ const UserList = () => {
             setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
             setSuccessMessage('User deleted successfully!');
         } catch (error) {
-            setError('Failed to delete user.');
-            // console.log(error.response ? error.response.data : error);
+            if (error.response && error.response.status === 403) {
+                setError('Gagal: Anda bukan Super Admin.');
+            } else {
+                setError('Failed to delete user.');
+            }
         }
     };
+
 
     useEffect(() => {
         fetchUsers();

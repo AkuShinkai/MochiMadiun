@@ -17,9 +17,16 @@ class AdminController extends Controller
     }
 
     // Menambahkan admin baru
-    // Menambahkan admin baru
     public function store(Request $request)
     {
+        // Periksa apakah pengguna yang login adalah "super admin"
+        if (auth()->user()->roles !== 'super admin') {
+            return response()->json([
+                'message' => 'Anda tidak memiliki izin untuk menambahkan user.'
+            ], 403);
+        }
+
+        // Validasi input
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
@@ -28,6 +35,7 @@ class AdminController extends Controller
             'roles' => 'required|in:admin,super admin', // Validasi roles
         ]);
 
+        // Buat user baru
         $admin = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -42,19 +50,28 @@ class AdminController extends Controller
     // Memperbarui admin
     public function update(Request $request, $id)
     {
+        // Periksa apakah pengguna yang login adalah "super admin"
+        if (auth()->user()->roles !== 'super admin') {
+            return response()->json([
+                'message' => 'Anda tidak memiliki izin untuk memperbarui data user.'
+            ], 403);
+        }
+
+        // Validasi input
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email',
             'status' => 'required|in:active,nonactive',
-            'roles' => 'sometimes|required|in:admin,super admin', // Validasi roles jika ada perubahan
+            'roles' => 'sometimes|required|in:admin,super admin',
         ]);
 
+        // Temukan user berdasarkan ID
         $admin = User::findOrFail($id);
 
-        // Hanya update kolom yang ada di request
+        // Update kolom yang ada di request
         $admin->update($request->only(['name', 'email', 'roles', 'status']));
 
-        // Hash password jika ada
+        // Jika ada password baru
         if ($request->has('password') && $request->password) {
             $admin->update(['password' => bcrypt($request->password)]);
         }
@@ -65,18 +82,26 @@ class AdminController extends Controller
     // Menampilkan data pengguna yang sedang login
     public function showAuthenticatedUser()
     {
-        // Mengambil data pengguna yang sedang login
         $user = auth()->user();
         return response()->json($user);
     }
 
-
     // Menghapus admin
     public function destroy($id)
     {
+        // Periksa apakah pengguna yang login adalah "super admin"
+        if (auth()->user()->roles !== 'super admin') {
+            return response()->json([
+                'message' => 'Anda tidak memiliki izin untuk menghapus user.'
+            ], 403);
+        }
+
+        // Temukan user berdasarkan ID dan hapus
         $admin = User::findOrFail($id);
         $admin->delete();
 
-        return response()->json(null, 204);
+        return response()->json([
+            'message' => 'User berhasil dihapus.'
+        ], 204);
     }
 }
